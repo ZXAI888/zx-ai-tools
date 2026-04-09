@@ -3,1433 +3,530 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ZX AI Tools 管理后台</title>
+<title>ZX AI Tools — AI IDE 账号管理工具</title>
+<meta name="description" content="统一管理 Cursor、Windsurf、Trae 等 AI 编程工具的多账号切换、实例管理与批量导入导出。">
 <style>
 /* ===== Reset & Base ===== */
-*{margin:0;padding:0;box-sizing:border-box}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#f5f5f7;
-  --surface:#ffffff;
-  --surface2:#f0f0f5;
-  --border:#d1d1d6;
-  --border-light:#e5e5ea;
-  --primary:#007AFF;
-  --primary-hover:#0066d6;
-  --primary-light:rgba(0,122,255,0.1);
-  --text:#1d1d1f;
-  --text-secondary:#6e6e73;
-  --text-placeholder:#aeaeb2;
-  --danger:#ff3b30;
-  --danger-light:rgba(255,59,48,0.1);
-  --success:#34c759;
-  --success-light:rgba(52,199,89,0.1);
-  --warning:#ff9500;
-  --warning-light:rgba(255,149,0,0.1);
-  --info:#007AFF;
-  --info-light:rgba(0,122,255,0.1);
-  --shadow-sm:0 1px 3px rgba(0,0,0,0.08),0 1px 2px rgba(0,0,0,0.04);
-  --shadow:0 4px 16px rgba(0,0,0,0.08),0 1px 4px rgba(0,0,0,0.04);
-  --shadow-lg:0 8px 32px rgba(0,0,0,0.12),0 2px 8px rgba(0,0,0,0.06);
-  --radius:12px;
+  --bg:#09090b;
+  --surface:#18181b;
+  --border:#27272a;
+  --border-hover:#3f3f46;
+  --accent:#E8613C;
+  --accent-hover:#d4532e;
+  --accent-bg:rgba(232,97,60,0.1);
+  --accent-bg-light:rgba(232,97,60,0.06);
+  --text:#f4f4f5;
+  --text-muted:#a1a1aa;
+  --text-faint:#71717a;
+  --success:#22c55e;
+  --warn:#eab308;
   --radius-sm:8px;
-  --radius-lg:16px;
-  --font:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;
+  --radius:16px;
+  --radius-pill:20px;
+  --shadow-card:0 4px 6px -1px rgba(0,0,0,0.3),0 2px 4px -2px rgba(0,0,0,0.3);
+  --shadow-nav:0 1px 3px rgba(0,0,0,0.5);
+  --font:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans SC",system-ui,sans-serif;
 }
-body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
 
-/* ===== Login Page ===== */
-#login-page{
-  min-height:100vh;display:flex;align-items:center;justify-content:center;
-  background:linear-gradient(135deg,#e0e7ff 0%,#f0f9ff 50%,#fce7f3 100%);
-}
-.login-card{
-  background:rgba(255,255,255,0.85);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
-  border:1px solid rgba(255,255,255,0.6);border-radius:20px;
-  padding:40px 44px;width:100%;max-width:400px;
-  box-shadow:0 8px 40px rgba(0,0,0,0.12),0 0 0 1px rgba(255,255,255,0.5);
-}
-.login-logo{text-align:center;margin-bottom:28px}
-.login-logo .icon{
-  width:64px;height:64px;border-radius:16px;margin:0 auto 12px;
-  background:linear-gradient(135deg,#007AFF,#5856d6);
-  display:flex;align-items:center;justify-content:center;font-size:32px;
-  box-shadow:0 4px 16px rgba(0,122,255,0.3);
-}
-.login-logo h1{font-size:22px;font-weight:700;color:var(--text)}
-.login-logo p{font-size:13px;color:var(--text-secondary);margin-top:4px}
-.login-form .form-group{margin-bottom:16px}
-.login-form label{display:block;font-size:13px;font-weight:500;color:var(--text-secondary);margin-bottom:6px}
-.login-form input{
-  width:100%;padding:11px 14px;
-  border:1.5px solid var(--border-light);border-radius:10px;
-  font-size:15px;color:var(--text);background:#fff;outline:none;
-  transition:border-color .2s,box-shadow .2s;
-}
-.login-form input:focus{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-light)}
-.login-form .btn-login{
-  width:100%;margin-top:8px;padding:13px;border:none;border-radius:10px;
-  background:linear-gradient(135deg,#007AFF,#5856d6);color:#fff;
-  font-size:15px;font-weight:600;cursor:pointer;
-  transition:opacity .2s,transform .15s;box-shadow:0 4px 16px rgba(0,122,255,0.3);
-}
-.login-form .btn-login:hover{opacity:.92;transform:translateY(-1px)}
-.login-form .btn-login:active{transform:translateY(0)}
-.login-form .btn-login:disabled{opacity:.6;cursor:not-allowed;transform:none}
-.login-error{
-  background:var(--danger-light);border:1px solid rgba(255,59,48,0.2);
-  color:var(--danger);border-radius:8px;padding:10px 14px;
-  font-size:13px;margin-top:12px;display:none;
-}
+/* ===== Animations ===== */
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.anim{opacity:0;animation:fadeUp .6s ease-out forwards}
+.anim-d1{animation-delay:.1s}
+.anim-d2{animation-delay:.2s}
+.anim-d3{animation-delay:.3s}
+.anim-d4{animation-delay:.4s}
+.anim-d5{animation-delay:.5s}
+.anim-d6{animation-delay:.6s}
+.anim-d7{animation-delay:.7s}
+.anim-d8{animation-delay:.8s}
 
-/* ===== App Layout ===== */
-#app{display:none;flex-direction:column;min-height:100vh}
-.topbar{
-  position:sticky;top:0;z-index:100;
-  background:rgba(255,255,255,0.85);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
-  border-bottom:1px solid var(--border-light);
-  padding:0 24px;height:56px;display:flex;align-items:center;justify-content:space-between;
+/* ===== Layout Helpers ===== */
+.container{max-width:1200px;margin:0 auto;padding:0 24px}
+.flex{display:flex}.items-center{align-items:center}
+.gap-8{gap:8px}.gap-12{gap:12px}.gap-16{gap:16px}
+.justify-between{justify-content:space-between}
+
+/* ===== Navigation ===== */
+.nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  height:64px;
+  background:rgba(9,9,11,0.85);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);
+  box-shadow:var(--shadow-nav);
 }
-.topbar-brand{display:flex;align-items:center;gap:10px}
-.topbar-brand .brand-icon{
+.nav-inner{
+  height:64px;display:flex;align-items:center;justify-content:space-between;
+}
+.nav-brand{display:flex;align-items:center;gap:10px;cursor:pointer}
+.nav-brand-name{font-size:18px;font-weight:600;color:var(--text);letter-spacing:-.3px}
+.nav-links{display:flex;align-items:center;gap:4px}
+.nav-link{
+  display:flex;align-items:center;gap:6px;
+  padding:8px 14px;border-radius:var(--radius-sm);
+  font-size:14px;color:var(--text-muted);
+  transition:all .2s ease;
+}
+.nav-link:hover{color:var(--text);background:rgba(255,255,255,0.06)}
+
+/* ===== Hero Section ===== */
+.hero{
+  padding-top:160px;padding-bottom:120px;
+  position:relative;overflow:hidden;
+}
+/* subtle grid background */
+.hero::before{
+  content:'';position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(232,97,60,0.03) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(232,97,60,0.03) 1px,transparent 1px);
+  background-size:48px 48px;
+  pointer-events:none;
+}
+/* radial glow */
+.hero::after{
+  content:'';position:absolute;top:-200px;left:50%;transform:translateX(-50%);
+  width:800px;height:600px;border-radius:50%;
+  background:radial-gradient(ellipse,rgba(232,97,60,0.12) 0%,transparent 70%);
+  pointer-events:none;
+}
+.hero-inner{
+  display:grid;grid-template-columns:55fr 45fr;gap:64px;align-items:center;
+  position:relative;z-index:1;
+}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:7px;
+  background:rgba(232,97,60,0.12);border:1px solid rgba(232,97,60,0.28);
+  border-radius:var(--radius-pill);padding:6px 14px;
+  font-size:14px;font-weight:500;color:var(--accent);
+  margin-bottom:24px;
+}
+.hero-title{
+  font-size:clamp(42px,6vw,68px);font-weight:700;line-height:1.08;
+  letter-spacing:-2px;margin-bottom:24px;
+}
+.hero-title .accent{color:var(--accent)}
+.hero-desc{
+  font-size:18px;color:var(--text-muted);line-height:1.75;
+  max-width:480px;margin-bottom:40px;
+}
+.btn-primary{
+  display:inline-flex;align-items:center;gap:10px;
+  background:var(--accent);color:#fff;
+  padding:14px 32px;border-radius:var(--radius-sm);
+  font-size:16px;font-weight:500;border:none;cursor:pointer;
+  transition:all .2s ease;box-shadow:0 4px 16px rgba(232,97,60,0.35);
+  text-decoration:none;
+}
+.btn-primary:hover{background:var(--accent-hover);transform:scale(1.02);box-shadow:0 6px 20px rgba(232,97,60,0.45)}
+
+/* ===== Mock App Window ===== */
+.hero-visual{position:relative}
+.mock-window{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);overflow:hidden;
+  box-shadow:0 32px 64px -12px rgba(0,0,0,0.7),0 0 0 1px rgba(255,255,255,0.04);
+  transform:perspective(1000px) rotateY(-5deg) rotateX(2deg);
+  transition:transform .4s ease;
+}
+.mock-window:hover{transform:perspective(1000px) rotateY(-2deg) rotateX(1deg)}
+.mock-titlebar{
+  background:#1c1c1e;padding:14px 18px;
+  display:flex;align-items:center;gap:8px;
+  border-bottom:1px solid var(--border);
+}
+.mock-dot{width:12px;height:12px;border-radius:50%}
+.mock-dot-r{background:#ff5f56}
+.mock-dot-y{background:#ffbd2e}
+.mock-dot-g{background:#27c93f}
+.mock-titlebar-label{
+  margin-left:8px;font-size:13px;color:var(--text-faint);
+  flex:1;text-align:center;letter-spacing:.3px;
+}
+.mock-body{padding:20px;background:#141416;min-height:360px}
+.mock-topbar{
+  display:flex;gap:8px;margin-bottom:16px;
+  background:var(--surface);border-radius:8px;padding:10px 14px;
+  border:1px solid var(--border);
+}
+.mock-tab{
+  font-size:12px;padding:4px 12px;border-radius:4px;
+  color:var(--text-faint);cursor:pointer;
+}
+.mock-tab.active{background:var(--accent-bg);color:var(--accent);font-weight:600}
+.mock-cards{display:flex;flex-direction:column;gap:10px}
+.mock-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:10px;padding:14px 16px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.mock-card-left{display:flex;align-items:center;gap:10px}
+.mock-card-avatar{
   width:32px;height:32px;border-radius:8px;
-  background:linear-gradient(135deg,#007AFF,#5856d6);
-  display:flex;align-items:center;justify-content:center;font-size:16px;
-}
-.topbar-brand h1{font-size:16px;font-weight:700;color:var(--text)}
-.topbar-actions{display:flex;align-items:center;gap:8px}
-.btn-logout{
-  padding:6px 14px;border:1px solid var(--border);border-radius:20px;
-  background:transparent;color:var(--text-secondary);font-size:13px;
-  cursor:pointer;transition:all .2s;font-family:var(--font);
-}
-.btn-logout:hover{background:var(--danger-light);color:var(--danger);border-color:var(--danger)}
-
-/* ===== Tab Navigation ===== */
-.tab-bar{
-  background:var(--surface);border-bottom:1px solid var(--border-light);
-  padding:0 24px;display:flex;gap:0;
-}
-.tab-btn{
-  padding:0 20px;height:44px;border:none;background:transparent;
-  color:var(--text-secondary);font-size:14px;font-weight:500;
-  cursor:pointer;position:relative;transition:color .2s;
-  font-family:var(--font);white-space:nowrap;
-}
-.tab-btn:hover{color:var(--text)}
-.tab-btn.active{color:var(--primary);font-weight:600}
-.tab-btn.active::after{
-  content:'';position:absolute;bottom:0;left:0;right:0;height:2px;
-  background:var(--primary);border-radius:2px 2px 0 0;
-}
-
-/* ===== Main Content ===== */
-.main-content{flex:1;padding:24px;max-width:1200px;margin:0 auto;width:100%}
-.tab-panel{display:none}
-.tab-panel.active{display:block}
-
-/* ===== Cards & Sections ===== */
-.card{
-  background:var(--surface);border:1px solid var(--border-light);
-  border-radius:var(--radius);padding:24px;margin-bottom:16px;
-  box-shadow:var(--shadow-sm);
-}
-.card-title{
-  font-size:15px;font-weight:600;color:var(--text);
-  margin-bottom:20px;display:flex;align-items:center;gap:8px;
-}
-.card-title .badge-tag{
-  font-size:11px;font-weight:500;padding:2px 8px;border-radius:20px;
-  background:var(--primary-light);color:var(--primary);
-}
-.section-header{
-  display:flex;align-items:center;justify-content:space-between;
-  margin-bottom:16px;
-}
-.section-header h2{font-size:15px;font-weight:600;color:var(--text)}
-
-/* ===== Form Elements ===== */
-.form-group{margin-bottom:16px}
-.form-group label{
-  display:block;font-size:13px;font-weight:500;
-  color:var(--text-secondary);margin-bottom:6px;
-}
-.form-group label .required{color:var(--danger);margin-left:2px}
-.form-group input,.form-group textarea,.form-group select{
-  width:100%;padding:9px 12px;
-  border:1.5px solid var(--border-light);border-radius:var(--radius-sm);
-  font-size:14px;color:var(--text);background:#fff;
-  outline:none;transition:border-color .2s,box-shadow .2s;
-  font-family:var(--font);
-}
-.form-group input:focus,.form-group textarea:focus,.form-group select:focus{
-  border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-light);
-}
-.form-group textarea{resize:vertical;min-height:80px;line-height:1.5}
-.form-group select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236e6e73' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:32px;cursor:pointer}
-.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.form-row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
-.form-hint{font-size:12px;color:var(--text-placeholder);margin-top:4px}
-
-/* ===== Toggle Switch ===== */
-.toggle-row{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:10px 0;border-bottom:1px solid var(--border-light);
-}
-.toggle-row:last-child{border-bottom:none}
-.toggle-label{font-size:14px;color:var(--text)}
-.toggle-desc{font-size:12px;color:var(--text-secondary);margin-top:1px}
-.toggle{position:relative;display:inline-block;width:44px;height:26px;flex-shrink:0}
-.toggle input{opacity:0;width:0;height:0;position:absolute}
-.toggle-track{
-  position:absolute;inset:0;border-radius:13px;
-  background:#d1d1d6;cursor:pointer;transition:background .25s;
-}
-.toggle input:checked+.toggle-track{background:var(--primary)}
-.toggle-thumb{
-  position:absolute;top:3px;left:3px;width:20px;height:20px;
-  border-radius:50%;background:#fff;transition:transform .25s;
-  box-shadow:0 1px 4px rgba(0,0,0,0.2);pointer-events:none;
-}
-.toggle input:checked~.toggle-thumb{transform:translateX(18px)}
-
-/* ===== Buttons ===== */
-.btn{
-  display:inline-flex;align-items:center;gap:6px;
-  padding:9px 16px;border:none;border-radius:var(--radius-sm);
-  font-size:14px;font-weight:500;cursor:pointer;
-  transition:all .2s;font-family:var(--font);white-space:nowrap;
-}
-.btn:disabled{opacity:.55;cursor:not-allowed}
-.btn-primary{background:var(--primary);color:#fff}
-.btn-primary:hover:not(:disabled){background:var(--primary-hover);transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,122,255,0.3)}
-.btn-secondary{background:var(--surface2);color:var(--text);border:1px solid var(--border)}
-.btn-secondary:hover:not(:disabled){background:var(--border-light)}
-.btn-danger{background:var(--danger-light);color:var(--danger);border:1px solid rgba(255,59,48,0.2)}
-.btn-danger:hover:not(:disabled){background:rgba(255,59,48,0.2)}
-.btn-success{background:var(--success);color:#fff}
-.btn-success:hover:not(:disabled){background:#2eb350;transform:translateY(-1px)}
-.btn-ghost{background:transparent;color:var(--text-secondary);border:1px solid var(--border)}
-.btn-ghost:hover:not(:disabled){background:var(--surface2);color:var(--text)}
-.btn-sm{padding:6px 12px;font-size:13px;border-radius:6px}
-.btn-icon{padding:8px;border-radius:8px;background:transparent;border:1px solid var(--border);color:var(--text-secondary);cursor:pointer;transition:all .2s;font-size:14px;display:inline-flex;align-items:center}
-.btn-icon:hover{background:var(--surface2);color:var(--text)}
-
-/* ===== Announcement Cards ===== */
-.ann-list{display:flex;flex-direction:column;gap:10px;margin-top:8px}
-.ann-card{
-  background:var(--surface);border:1px solid var(--border-light);
-  border-radius:var(--radius-sm);padding:16px;
-  display:flex;align-items:flex-start;gap:12px;
-  transition:box-shadow .2s;
-}
-.ann-card:hover{box-shadow:var(--shadow-sm)}
-.ann-card-left{flex:1;min-width:0}
-.ann-card-header{display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap}
-.ann-card-title{font-size:14px;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:300px}
-.ann-card-summary{font-size:13px;color:var(--text-secondary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.ann-card-meta{display:flex;align-items:center;gap:8px;margin-top:6px;flex-wrap:wrap}
-.ann-card-actions{display:flex;align-items:center;gap:6px;flex-shrink:0}
-.type-badge{
-  display:inline-flex;align-items:center;gap:4px;
-  font-size:11px;font-weight:600;padding:2px 8px;border-radius:20px;
-}
-.type-info{background:var(--info-light);color:var(--info)}
-.type-feature{background:var(--success-light);color:#1a8a3c}
-.type-warning{background:var(--warning-light);color:#b56700}
-.priority-badge{
-  font-size:11px;color:var(--text-placeholder);
-  background:var(--surface2);padding:2px 7px;border-radius:4px;
-}
-.popup-badge{font-size:11px;color:#5856d6;background:rgba(88,86,214,0.1);padding:2px 7px;border-radius:4px}
-.once-badge{font-size:11px;color:var(--text-secondary);background:var(--surface2);padding:2px 7px;border-radius:4px}
-
-/* ===== Preview Panel ===== */
-.preview-box{
-  background:linear-gradient(135deg,#1a1a2e 0%,#16213e 50%,#0f3460 100%);
-  border-radius:var(--radius-sm);padding:20px;min-height:80px;
+  background:var(--accent-bg);
   display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:700;color:var(--accent);letter-spacing:0;
 }
-.ad-preview-inner{
-  background:linear-gradient(135deg,rgba(255,255,255,0.08),rgba(255,255,255,0.04));
-  border:1px solid rgba(255,255,255,0.12);border-radius:10px;
-  padding:12px 16px;max-width:360px;width:100%;
-  display:flex;align-items:center;justify-content:space-between;gap:12px;
+.mock-card-name{font-size:13px;color:var(--text);font-weight:500}
+.mock-card-sub{font-size:11px;color:var(--text-faint);margin-top:2px}
+.mock-badge{
+  font-size:10px;padding:3px 8px;border-radius:4px;font-weight:600;
 }
-.ad-preview-text-area{flex:1;min-width:0}
-.ad-preview-badge{
-  display:inline-block;font-size:10px;font-weight:700;padding:2px 7px;
-  border-radius:4px;background:rgba(0,122,255,0.8);color:#fff;
-  margin-bottom:4px;letter-spacing:.5px;
+.mock-badge-green{background:rgba(34,197,94,0.1);color:var(--success)}
+.mock-badge-orange{background:var(--accent-bg);color:var(--accent)}
+.mock-quota{
+  margin-top:16px;background:var(--surface);border:1px solid var(--border);
+  border-radius:10px;padding:14px 16px;
 }
-.ad-preview-text{font-size:13px;color:rgba(255,255,255,0.9);font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.ad-preview-btn{
-  flex-shrink:0;padding:6px 12px;border-radius:6px;
-  background:#007AFF;color:#fff;font-size:12px;font-weight:600;
-  white-space:nowrap;
-}
+.mock-quota-title{font-size:11px;color:var(--text-faint);margin-bottom:10px;font-weight:600;letter-spacing:.5px;text-transform:uppercase}
+.mock-quota-bar{height:5px;background:#27272a;border-radius:3px;margin-bottom:6px;overflow:hidden}
+.mock-quota-fill{height:100%;border-radius:3px}
+.mock-quota-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.mock-quota-label{font-size:11px;color:var(--text-muted)}
+.mock-quota-val{font-size:11px;color:var(--text-faint)}
 
-/* ===== Announcement Preview Modal ===== */
-.ann-preview-popup{
-  background:#1a1d27;border-radius:12px;padding:24px;max-width:380px;width:100%;
-  border:1px solid rgba(255,255,255,0.08);
+/* ===== Features Section ===== */
+.features{
+  padding:120px 0;
+  border-top:1px solid var(--border);
 }
-.ann-preview-header{display:flex;align-items:center;gap:10px;margin-bottom:12px}
-.ann-preview-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
-.ann-preview-title{font-size:16px;font-weight:700;color:#fff}
-.ann-preview-summary{font-size:13px;color:rgba(255,255,255,0.6);margin-bottom:12px}
-.ann-preview-content{font-size:13px;color:rgba(255,255,255,0.8);line-height:1.6;margin-bottom:16px;white-space:pre-line}
-.ann-preview-action{
-  width:100%;padding:10px;border-radius:8px;
-  background:linear-gradient(135deg,#007AFF,#5856d6);
-  color:#fff;font-size:14px;font-weight:600;
-  border:none;cursor:pointer;
+.section-label{
+  font-size:13px;font-weight:600;color:var(--accent);
+  letter-spacing:2.5px;text-transform:uppercase;margin-bottom:14px;
 }
+.section-title{
+  font-size:clamp(28px,4vw,42px);font-weight:700;
+  letter-spacing:-1px;margin-bottom:14px;
+}
+.section-desc{font-size:16px;color:var(--text-muted);line-height:1.65}
+.section-header{text-align:center;margin-bottom:64px}
+.features-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:24px;
+}
+.feature-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);padding:32px;
+  box-shadow:var(--shadow-card);
+  transition:all .2s ease;cursor:default;
+}
+.feature-card:hover{
+  border-color:var(--border-hover);
+  transform:translateY(-3px);
+  box-shadow:0 12px 24px -4px rgba(0,0,0,0.4),0 4px 8px -2px rgba(0,0,0,0.3);
+}
+.feature-icon-wrap{
+  width:44px;height:44px;border-radius:12px;
+  background:var(--accent-bg);
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:20px;
+  transition:background .2s;
+}
+.feature-card:hover .feature-icon-wrap{background:rgba(232,97,60,0.18)}
+.feature-title{font-size:17px;font-weight:600;margin-bottom:10px;letter-spacing:-.3px}
+.feature-desc{font-size:14px;color:var(--text-muted);line-height:1.65}
 
-/* ===== Modal ===== */
-.modal-backdrop{
-  position:fixed;inset:0;z-index:1000;
-  background:rgba(0,0,0,0.4);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);
-  display:none;align-items:center;justify-content:center;padding:20px;
+/* ===== Footer ===== */
+footer{
+  border-top:1px solid var(--border);
+  padding:40px 0;
 }
-.modal-backdrop.open{display:flex}
-.modal{
-  background:var(--surface);border-radius:var(--radius-lg);
-  width:100%;max-height:90vh;overflow-y:auto;
-  box-shadow:var(--shadow-lg);animation:modalIn .2s ease;
-  border:1px solid var(--border-light);
-}
-.modal.modal-md{max-width:560px}
-.modal.modal-lg{max-width:780px}
-.modal.modal-xl{max-width:960px}
-.modal-header{
+.footer-inner{
   display:flex;align-items:center;justify-content:space-between;
-  padding:20px 24px 0;border-bottom:1px solid var(--border-light);padding-bottom:16px;
-  position:sticky;top:0;background:var(--surface);z-index:10;border-radius:var(--radius-lg) var(--radius-lg) 0 0;
+  flex-wrap:wrap;gap:24px;
 }
-.modal-header h3{font-size:16px;font-weight:700;color:var(--text)}
-.modal-close{
-  width:28px;height:28px;border-radius:50%;border:none;background:var(--surface2);
-  color:var(--text-secondary);cursor:pointer;font-size:16px;
-  display:flex;align-items:center;justify-content:center;transition:all .2s;
+.footer-brand{display:flex;align-items:center;gap:10px}
+.footer-brand-info{margin-top:0}
+.footer-brand-name{font-size:16px;font-weight:600}
+.footer-brand-sub{font-size:13px;color:var(--text-faint);margin-top:3px}
+.footer-links{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.footer-link{
+  display:flex;align-items:center;gap:6px;
+  padding:7px 13px;border-radius:6px;
+  font-size:14px;color:var(--text-muted);
+  transition:all .2s ease;
 }
-.modal-close:hover{background:var(--border-light);color:var(--text)}
-.modal-body{padding:20px 24px}
-.modal-footer{
-  padding:16px 24px 20px;display:flex;gap:10px;justify-content:flex-end;
-  border-top:1px solid var(--border-light);
-}
-@keyframes modalIn{from{opacity:0;transform:scale(.96) translateY(-8px)}to{opacity:1;transform:scale(1) translateY(0)}}
-
-/* ===== Toast ===== */
-.toast-container{
-  position:fixed;top:70px;right:20px;z-index:2000;
-  display:flex;flex-direction:column;gap:8px;pointer-events:none;
-}
-.toast{
-  background:var(--surface);border:1px solid var(--border-light);
-  border-radius:var(--radius-sm);padding:12px 16px;
-  box-shadow:var(--shadow-lg);display:flex;align-items:center;gap:10px;
-  min-width:280px;max-width:400px;pointer-events:all;
-  animation:toastIn .3s ease;
-}
-.toast.removing{animation:toastOut .3s ease forwards}
-.toast-icon{font-size:18px;flex-shrink:0}
-.toast-msg{font-size:14px;color:var(--text);flex:1}
-.toast.success{border-left:3px solid var(--success)}
-.toast.error{border-left:3px solid var(--danger)}
-.toast.info{border-left:3px solid var(--primary)}
-@keyframes toastIn{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
-@keyframes toastOut{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(20px)}}
-
-/* ===== GitHub Config ===== */
-.github-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.github-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:4px}
-.code-block{
-  background:#1d1d1f;color:#e2e8f0;border-radius:var(--radius-sm);
-  padding:16px;font-family:"SF Mono","Fira Code",monospace;font-size:12px;
-  line-height:1.6;overflow:auto;max-height:400px;white-space:pre;
-}
-
-/* ===== Spinner ===== */
-.spinner{
-  width:16px;height:16px;border:2px solid rgba(255,255,255,0.3);
-  border-top-color:#fff;border-radius:50%;
-  animation:spin .7s linear infinite;flex-shrink:0;
-}
-.spinner-dark{border-color:rgba(0,0,0,0.15);border-top-color:var(--text-secondary)}
-@keyframes spin{to{transform:rotate(360deg)}}
-
-/* ===== Confirm Dialog ===== */
-.confirm-box{background:var(--surface);border-radius:var(--radius-lg);max-width:380px;width:100%;padding:28px;box-shadow:var(--shadow-lg);text-align:center;animation:modalIn .2s ease}
-.confirm-box .icon{font-size:40px;margin-bottom:12px}
-.confirm-box h3{font-size:17px;font-weight:700;margin-bottom:8px}
-.confirm-box p{font-size:14px;color:var(--text-secondary);margin-bottom:20px;line-height:1.5}
-.confirm-actions{display:flex;gap:10px;justify-content:center}
+.footer-link:hover{color:var(--text);background:rgba(255,255,255,0.05)}
 
 /* ===== Responsive ===== */
-@media(max-width:768px){
-  .form-row,.form-row-3,.github-grid{grid-template-columns:1fr}
-  .main-content{padding:16px}
-  .topbar{padding:0 16px}
-  .tab-bar{padding:0 8px;overflow-x:auto}
-  .tab-btn{padding:0 14px;font-size:13px}
-  .modal-backdrop{padding:12px}
+@media(max-width:1023px){
+  .features-grid{grid-template-columns:repeat(2,1fr)}
 }
-
-/* ===== Divider ===== */
-.divider{height:1px;background:var(--border-light);margin:20px 0}
-
-/* ===== Empty State ===== */
-.empty-state{text-align:center;padding:40px 20px;color:var(--text-secondary)}
-.empty-state .icon{font-size:48px;margin-bottom:12px}
-.empty-state p{font-size:14px}
-
-/* ===== Locale Section ===== */
-.locale-section{
-  background:var(--surface2);border-radius:var(--radius-sm);
-  padding:16px;margin-top:4px;border:1px solid var(--border-light);
+@media(max-width:767px){
+  .hero-inner{grid-template-columns:1fr;gap:48px}
+  .hero{padding-top:120px;padding-bottom:80px}
+  .hero-desc{font-size:16px}
+  .features{padding:80px 0}
+  .features-grid{grid-template-columns:1fr}
+  .footer-inner{flex-direction:column;align-items:flex-start;gap:20px}
+  .mock-window{transform:none}
+  .mock-window:hover{transform:none}
 }
-.locale-title{font-size:12px;font-weight:600;color:var(--text-secondary);letter-spacing:.5px;text-transform:uppercase;margin-bottom:12px}
-
-/* ===== Inline Flex Helpers ===== */
-.flex{display:flex}.items-center{align-items:center}.gap-8{gap:8px}.gap-12{gap:12px}.flex-1{flex:1}.justify-between{justify-content:space-between}.justify-end{justify-content:flex-end}.flex-wrap{flex-wrap:wrap}
-.mt-4{margin-top:4px}.mt-8{margin-top:8px}.mt-12{margin-top:12px}.mt-16{margin-top:16px}.mb-16{margin-bottom:16px}
-.text-sm{font-size:13px}.text-xs{font-size:12px}.text-secondary{color:var(--text-secondary)}.font-mono{font-family:"SF Mono","Fira Code",monospace;font-size:12px}
 </style>
 </head>
 <body>
 
-<!-- ===== LOGIN PAGE ===== -->
-<div id="login-page">
-  <div class="login-card">
-    <div class="login-logo">
-      <div class="icon">🛠️</div>
-      <h1>ZX AI Tools</h1>
-      <p>管理后台 · 公告系统</p>
+<!-- ===== NAVIGATION ===== -->
+<nav class="nav">
+  <div class="container">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-brand">
+        <!-- Logo SVG -->
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="32" height="32" rx="8" fill="#E8613C"/>
+          <text x="50%" y="50%" dominant-baseline="central" text-anchor="middle" fill="white" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="13" font-weight="700" letter-spacing="-0.5">ZX</text>
+        </svg>
+        <span class="nav-brand-name">ZX AI Tools</span>
+      </a>
+      <nav class="nav-links">
+        <a href="https://github.com/SUZIXI-AI/zx-ai-tools" target="_blank" rel="noopener" class="nav-link">
+          <!-- External Link Icon -->
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M6 3H3a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1h9a1 1 0 0 0 1-1v-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M9 2h5m0 0v5m0-5L8 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          GitHub
+        </a>
+      </nav>
     </div>
-    <form class="login-form" id="login-form" onsubmit="handleLogin(event)">
-      <div class="form-group">
-        <label>账号</label>
-        <input type="email" id="login-account" placeholder="请输入账号" required autocomplete="username">
+  </div>
+</nav>
+
+<!-- ===== HERO SECTION ===== -->
+<main>
+<section class="hero">
+  <div class="container">
+    <div class="hero-inner">
+
+      <!-- Left: Text -->
+      <div class="hero-text">
+        <div class="hero-badge anim anim-d1">
+          <!-- Star Icon -->
+          <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M6.5 1l1.39 3.26L11.5 4.73l-2.5 2.43.59 3.44L6.5 9l-3.09 1.6.59-3.44L1.5 4.73l3.61-.47L6.5 1z" fill="#E8613C"/>
+          </svg>
+          v0.20.19
+        </div>
+
+        <h1 class="hero-title anim anim-d2">
+          ZX AI<br><span class="accent">Tools</span>
+        </h1>
+
+        <p class="hero-desc anim anim-d3">
+          AI IDE 账号管理工具。统一管理 Cursor、Windsurf、Trae 等 AI 编程工具的多账号切换、实例管理与批量导入导出，让 AI 编程工具触手可及。
+        </p>
+
+        <div class="anim anim-d4">
+          <a href="download.html" class="btn-primary">
+            <!-- Download Icon -->
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M9 2v10m0 0l-3.5-3.5M9 12l3.5-3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M3 15h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            立即下载
+          </a>
+        </div>
       </div>
-      <div class="form-group">
-        <label>密码</label>
-        <input type="password" id="login-password" placeholder="请输入密码" required autocomplete="current-password">
-      </div>
-      <button type="submit" class="btn-login" id="login-btn">登录</button>
-      <div class="login-error" id="login-error">账号或密码错误，请重试</div>
-    </form>
-  </div>
-</div>
 
-<!-- ===== MAIN APP ===== -->
-<div id="app">
-  <!-- Topbar -->
-  <div class="topbar">
-    <div class="topbar-brand">
-      <div class="brand-icon">🛠️</div>
-      <h1>ZX AI Tools 管理后台</h1>
-    </div>
-    <div class="topbar-actions">
-      <button class="btn-logout" onclick="handleLogout()">退出登录</button>
-    </div>
-  </div>
-
-  <!-- Tab Bar -->
-  <div class="tab-bar">
-    <button class="tab-btn active" onclick="switchTab('tab-ad')" data-tab="tab-ad">📢 推广条</button>
-    <button class="tab-btn" onclick="switchTab('tab-ann')" data-tab="tab-ann">📋 公告管理</button>
-    <button class="tab-btn" onclick="switchTab('tab-github')" data-tab="tab-github">🚀 GitHub 发布</button>
-  </div>
-
-  <!-- Main Content -->
-  <div class="main-content">
-
-    <!-- ===== TAB: 推广条 ===== -->
-    <div class="tab-panel active" id="tab-ad">
-      <div class="card">
-        <div class="card-title">📢 推广条管理 <span class="badge-tag">TopRightAd</span></div>
-        <div class="form-row">
-          <div class="form-group">
-            <label>ID（自动生成）</label>
-            <input type="text" id="ad-id" readonly style="background:var(--surface2);color:var(--text-secondary);font-family:monospace;font-size:12px">
+      <!-- Right: Mock App Window -->
+      <div class="hero-visual anim anim-d3">
+        <div class="mock-window">
+          <div class="mock-titlebar">
+            <span class="mock-dot mock-dot-r"></span>
+            <span class="mock-dot mock-dot-y"></span>
+            <span class="mock-dot mock-dot-g"></span>
+            <span class="mock-titlebar-label">ZX AI Tools</span>
           </div>
-          <div class="form-group">
-            <label>优先级 <span class="required">*</span></label>
-            <input type="number" id="ad-priority" value="100" min="0" max="9999">
-          </div>
-        </div>
-        <div class="form-row">
-          <div class="form-group">
-            <label>推广文字（英文）<span class="required">*</span></label>
-            <input type="text" id="ad-text" placeholder="e.g. Try ZX AI Tools Pro now!">
-          </div>
-          <div class="form-group">
-            <label>标签文字（英文）</label>
-            <input type="text" id="ad-badge" placeholder="e.g. NEW / HOT">
-          </div>
-        </div>
-        <div class="form-row">
-          <div class="form-group">
-            <label>按钮文字（英文）<span class="required">*</span></label>
-            <input type="text" id="ad-cta-label" placeholder="e.g. Learn More">
-          </div>
-          <div class="form-group">
-            <label>跳转链接 <span class="required">*</span></label>
-            <input type="url" id="ad-cta-url" placeholder="https://example.com">
-          </div>
-        </div>
-        <div class="form-group">
-          <label>过期时间（可留空）</label>
-          <input type="datetime-local" id="ad-expires-at">
-        </div>
-
-        <div class="divider"></div>
-
-        <!-- zh-CN Locale -->
-        <div class="locale-section">
-          <div class="locale-title">🇨🇳 中文本地化（zh-CN）</div>
-          <div class="form-row">
-            <div class="form-group">
-              <label>推广文字（中文）</label>
-              <input type="text" id="ad-zh-text" placeholder="中文推广文字">
+          <div class="mock-body">
+            <div class="mock-topbar">
+              <span class="mock-tab active">Cursor</span>
+              <span class="mock-tab">Windsurf</span>
+              <span class="mock-tab">Trae</span>
+              <span class="mock-tab">Codex</span>
             </div>
-            <div class="form-group">
-              <label>标签文字（中文）</label>
-              <input type="text" id="ad-zh-badge" placeholder="如：推广 / 新品">
+            <div class="mock-cards">
+              <div class="mock-card">
+                <div class="mock-card-left">
+                  <div class="mock-card-avatar">CU</div>
+                  <div>
+                    <div class="mock-card-name">account-01@gmail.com</div>
+                    <div class="mock-card-sub">Pro Plan · 已连接</div>
+                  </div>
+                </div>
+                <span class="mock-badge mock-badge-green">使用中</span>
+              </div>
+              <div class="mock-card">
+                <div class="mock-card-left">
+                  <div class="mock-card-avatar" style="background:rgba(99,102,241,0.12);color:#818cf8">CU</div>
+                  <div>
+                    <div class="mock-card-name">account-02@gmail.com</div>
+                    <div class="mock-card-sub">Free Plan · 配额 480/500</div>
+                  </div>
+                </div>
+                <span class="mock-badge mock-badge-orange">待机</span>
+              </div>
+              <div class="mock-card">
+                <div class="mock-card-left">
+                  <div class="mock-card-avatar" style="background:rgba(34,197,94,0.1);color:#22c55e">CU</div>
+                  <div>
+                    <div class="mock-card-name">account-03@gmail.com</div>
+                    <div class="mock-card-sub">Pro Plan · 配额重置于明日</div>
+                  </div>
+                </div>
+                <span class="mock-badge mock-badge-orange">待机</span>
+              </div>
+            </div>
+            <div class="mock-quota">
+              <div class="mock-quota-title">配额概览</div>
+              <div class="mock-quota-row">
+                <span class="mock-quota-label">Premium requests</span>
+                <span class="mock-quota-val">420 / 500</span>
+              </div>
+              <div class="mock-quota-bar"><div class="mock-quota-fill" style="width:84%;background:linear-gradient(90deg,#E8613C,#f59e0b)"></div></div>
+              <div class="mock-quota-row" style="margin-bottom:0">
+                <span class="mock-quota-label">API requests</span>
+                <span class="mock-quota-val">无限制</span>
+              </div>
+              <div class="mock-quota-bar"><div class="mock-quota-fill" style="width:100%;background:var(--success)"></div></div>
             </div>
           </div>
-          <div class="form-group">
-            <label>按钮文字（中文）</label>
-            <input type="text" id="ad-zh-cta-label" placeholder="如：立即了解">
-          </div>
         </div>
       </div>
 
-      <!-- Preview -->
-      <div class="card">
-        <div class="card-title">👁️ 实时预览</div>
-        <div class="preview-box" id="ad-preview-box">
-          <div class="ad-preview-inner">
-            <div class="ad-preview-text-area">
-              <div class="ad-preview-badge" id="pv-badge">推广</div>
-              <div class="ad-preview-text" id="pv-text">推广文字将在此显示</div>
-            </div>
-            <div class="ad-preview-btn" id="pv-btn">了解更多</div>
-          </div>
-        </div>
-        <div class="mt-12 flex justify-end">
-          <button class="btn btn-primary" onclick="saveAdToState()">💾 保存推广条</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- ===== TAB: 公告管理 ===== -->
-    <div class="tab-panel" id="tab-ann">
-      <div class="card">
-        <div class="section-header">
-          <h2>📋 公告列表</h2>
-          <button class="btn btn-primary" onclick="openAnnModal(null)">➕ 添加公告</button>
-        </div>
-        <div id="ann-list-container">
-          <div class="empty-state">
-            <div class="icon">📭</div>
-            <p>暂无公告，点击"添加公告"开始创建</p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ===== TAB: GitHub 发布 ===== -->
-    <div class="tab-panel" id="tab-github">
-      <!-- GitHub Config -->
-      <div class="card">
-        <div class="card-title">⚙️ GitHub 配置</div>
-        <div class="github-grid">
-          <div class="form-group">
-            <label>用户名（owner）<span class="required">*</span></label>
-            <input type="text" id="gh-owner" placeholder="YOUR_GITHUB_USERNAME">
-          </div>
-          <div class="form-group">
-            <label>仓库名（repo）<span class="required">*</span></label>
-            <input type="text" id="gh-repo" placeholder="zx-ai-tools">
-          </div>
-        </div>
-        <div class="form-group">
-          <label>Personal Access Token <span class="required">*</span></label>
-          <input type="password" id="gh-token" placeholder="ghp_xxxxxx..." autocomplete="off">
-          <div class="form-hint">需要 repo 权限（contents read/write）</div>
-        </div>
-        <div class="form-group">
-          <label>文件路径</label>
-          <input type="text" id="gh-path" value="announcements.json">
-        </div>
-        <div class="flex justify-end">
-          <button class="btn btn-secondary" onclick="saveGithubConfig()">💾 保存配置</button>
-        </div>
-      </div>
-
-      <!-- Operations -->
-      <div class="card">
-        <div class="card-title">🚀 操作</div>
-        <div class="github-actions">
-          <button class="btn btn-secondary" id="btn-pull" onclick="pullFromGithub()">⬇️ 从 GitHub 拉取</button>
-          <button class="btn btn-primary" id="btn-push" onclick="pushToGithub()">⬆️ 发布到 GitHub</button>
-          <button class="btn btn-ghost" onclick="previewJson()">📄 预览 JSON</button>
-          <button class="btn btn-ghost" onclick="copyJson()">📋 复制 JSON</button>
-        </div>
-        <div id="gh-status" class="mt-12 text-sm text-secondary"></div>
-      </div>
-    </div>
-
-  </div><!-- /main-content -->
-</div><!-- /app -->
-
-<!-- ===== TOAST CONTAINER ===== -->
-<div class="toast-container" id="toast-container"></div>
-
-<!-- ===== CONFIRM MODAL ===== -->
-<div class="modal-backdrop" id="confirm-modal">
-  <div class="confirm-box">
-    <div class="icon" id="confirm-icon">⚠️</div>
-    <h3 id="confirm-title">确认操作</h3>
-    <p id="confirm-msg">确认执行此操作？</p>
-    <div class="confirm-actions">
-      <button class="btn btn-secondary" onclick="closeConfirm(false)">取消</button>
-      <button class="btn btn-danger" id="confirm-ok-btn" onclick="closeConfirm(true)">确认删除</button>
     </div>
   </div>
-</div>
+</section>
 
-<!-- ===== ANNOUNCEMENT MODAL ===== -->
-<div class="modal-backdrop" id="ann-modal">
-  <div class="modal modal-xl">
-    <div class="modal-header">
-      <h3 id="ann-modal-title">添加公告</h3>
-      <button class="modal-close" onclick="closeAnnModal()">✕</button>
+<!-- ===== FEATURES SECTION ===== -->
+<section class="features">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-label anim anim-d1">核心功能</div>
+      <h2 class="section-title anim anim-d2">为 AI 编程而生</h2>
+      <p class="section-desc anim anim-d3">一个界面，统一管理你所有 AI 编程工具的账号与配置。</p>
     </div>
-    <div class="modal-body">
-      <div class="form-row">
-        <div class="form-group">
-          <label>ID（自动生成）</label>
-          <input type="text" id="ann-id" readonly style="background:var(--surface2);color:var(--text-secondary);font-family:monospace;font-size:12px">
+
+    <div class="features-grid">
+
+      <!-- Card 1: Multi-platform -->
+      <div class="feature-card anim anim-d1">
+        <div class="feature-icon-wrap">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect x="3" y="13" width="18" height="8" rx="2" stroke="#E8613C" stroke-width="1.5"/>
+            <rect x="5" y="8" width="14" height="7" rx="2" stroke="#E8613C" stroke-width="1.5"/>
+            <rect x="7" y="3" width="10" height="7" rx="2" stroke="#E8613C" stroke-width="1.5"/>
+          </svg>
         </div>
-        <div class="form-group">
-          <label>类型 <span class="required">*</span></label>
-          <select id="ann-type">
-            <option value="info">ℹ️ info — 信息</option>
-            <option value="feature">✨ feature — 新功能</option>
-            <option value="warning">⚠️ warning — 警告</option>
-          </select>
-        </div>
-      </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label>标题（支持 emoji）<span class="required">*</span></label>
-          <input type="text" id="ann-title" placeholder="e.g. 🎉 New Feature Released!">
-        </div>
-        <div class="form-group">
-          <label>优先级（越大越靠前）</label>
-          <input type="number" id="ann-priority" value="100" min="0" max="9999">
-        </div>
-      </div>
-      <div class="form-group">
-        <label>摘要（一行）<span class="required">*</span></label>
-        <input type="text" id="ann-summary" placeholder="简短描述">
-      </div>
-      <div class="form-group">
-        <label>详细内容（支持 \n 换行）</label>
-        <textarea id="ann-content" rows="4" placeholder="详细内容，可以用 \n 换行&#10;多行内容示例"></textarea>
+        <h3 class="feature-title">多平台支持</h3>
+        <p class="feature-desc">支持 Cursor、Windsurf、VS Code、Trae、Kiro、Qoder 等主流 AI IDE，统一管理所有平台账号。</p>
       </div>
 
-      <div class="divider"></div>
-
-      <!-- Action Button -->
-      <div class="card-title" style="font-size:13px;margin-bottom:12px">🔘 操作按钮（可选）</div>
-      <div class="form-row">
-        <div class="form-group">
-          <label>按钮文字</label>
-          <input type="text" id="ann-action-label" placeholder="e.g. 了解更多">
+      <!-- Card 2: Multi-account -->
+      <div class="feature-card anim anim-d2">
+        <div class="feature-icon-wrap">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <circle cx="8" cy="8" r="3" stroke="#E8613C" stroke-width="1.5"/>
+            <path d="M3 19c0-3.314 2.239-5 5-5h.5" stroke="#E8613C" stroke-width="1.5" stroke-linecap="round"/>
+            <circle cx="16" cy="8" r="3" stroke="#E8613C" stroke-width="1.5"/>
+            <path d="M13.5 14H16c2.761 0 5 1.686 5 5" stroke="#E8613C" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M12 14v4m0 0l-2-2m2 2l2-2" stroke="#E8613C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
         </div>
-        <div class="form-group">
-          <label>跳转链接</label>
-          <input type="url" id="ann-action-target" placeholder="https://example.com">
-        </div>
+        <h3 class="feature-title">多账号切换</h3>
+        <p class="feature-desc">每个平台支持多个账号，一键切换无需反复登录，告别手动修改配置文件。</p>
       </div>
 
-      <div class="divider"></div>
+      <!-- Card 3: Import/Export -->
+      <div class="feature-card anim anim-d3">
+        <div class="feature-icon-wrap">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M3 7a2 2 0 0 1 2-2h3.17a2 2 0 0 1 1.42.59l1.82 1.82A2 2 0 0 0 12.83 8H19a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z" stroke="#E8613C" stroke-width="1.5" stroke-linejoin="round"/>
+            <path d="M12 11v6m0 0l-2.5-2.5M12 17l2.5-2.5" stroke="#E8613C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <h3 class="feature-title">批量导入导出</h3>
+        <p class="feature-desc">支持从 Antigravity Cockpit 插件批量导入账号数据，也可导出备份随时恢复。</p>
+      </div>
 
-      <!-- Toggles -->
-      <div class="card-title" style="font-size:13px;margin-bottom:0">🎛️ 显示设置</div>
-      <div class="toggle-row">
+      <!-- Card 4: Instance Management -->
+      <div class="feature-card anim anim-d4">
+        <div class="feature-icon-wrap">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect x="3" y="3" width="8" height="8" rx="2" stroke="#E8613C" stroke-width="1.5"/>
+            <rect x="13" y="3" width="8" height="8" rx="2" stroke="#E8613C" stroke-width="1.5"/>
+            <rect x="3" y="13" width="8" height="8" rx="2" stroke="#E8613C" stroke-width="1.5"/>
+            <rect x="13" y="13" width="8" height="8" rx="2" stroke="#E8613C" stroke-width="1.5"/>
+          </svg>
+        </div>
+        <h3 class="feature-title">实例管理</h3>
+        <p class="feature-desc">为每个平台管理多个独立实例，隔离配置与数据，多项目并行互不干扰。</p>
+      </div>
+
+      <!-- Card 5: i18n -->
+      <div class="feature-card anim anim-d5">
+        <div class="feature-icon-wrap">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <circle cx="12" cy="12" r="9" stroke="#E8613C" stroke-width="1.5"/>
+            <ellipse cx="12" cy="12" rx="4" ry="9" stroke="#E8613C" stroke-width="1.5"/>
+            <path d="M3 12h18" stroke="#E8613C" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M5.5 7.5h13M5.5 16.5h13" stroke="#E8613C" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <h3 class="feature-title">多语言界面</h3>
+        <p class="feature-desc">内置 17 种语言支持，自动检测系统语言，也可在设置中手动切换。</p>
+      </div>
+
+      <!-- Card 6: Auto Update -->
+      <div class="feature-card anim anim-d6">
+        <div class="feature-icon-wrap">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.77 1.05 6.4 2.72L21 8" stroke="#E8613C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M21 3v5h-5" stroke="#E8613C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <h3 class="feature-title">自动更新</h3>
+        <p class="feature-desc">内置自动更新检测，新版本发布后第一时间提醒，一键完成升级。</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+</main>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <svg width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="32" height="32" rx="8" fill="#E8613C"/>
+          <text x="50%" y="50%" dominant-baseline="central" text-anchor="middle" fill="white" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="13" font-weight="700" letter-spacing="-0.5">ZX</text>
+        </svg>
         <div>
-          <div class="toggle-label">弹窗显示（popup）</div>
-          <div class="toggle-desc">启用后在应用内以模态弹窗展示</div>
-        </div>
-        <label class="toggle">
-          <input type="checkbox" id="ann-popup" onchange="this.nextElementSibling.nextElementSibling && null">
-          <div class="toggle-track"></div>
-          <div class="toggle-thumb"></div>
-        </label>
-      </div>
-      <div class="toggle-row">
-        <div>
-          <div class="toggle-label">只显示一次（showOnce）</div>
-          <div class="toggle-desc">用户关闭后不再显示</div>
-        </div>
-        <label class="toggle">
-          <input type="checkbox" id="ann-show-once" checked>
-          <div class="toggle-track"></div>
-          <div class="toggle-thumb"></div>
-        </label>
-      </div>
-
-      <div class="form-group mt-12">
-        <label>过期时间（可留空）</label>
-        <input type="datetime-local" id="ann-expires-at">
-      </div>
-
-      <div class="divider"></div>
-
-      <!-- zh-CN Locale -->
-      <div class="locale-section">
-        <div class="locale-title">🇨🇳 中文本地化（zh-CN）</div>
-        <div class="form-group">
-          <label>标题（中文）</label>
-          <input type="text" id="ann-zh-title" placeholder="中文标题">
-        </div>
-        <div class="form-group">
-          <label>摘要（中文）</label>
-          <input type="text" id="ann-zh-summary" placeholder="中文摘要">
-        </div>
-        <div class="form-group">
-          <label>详细内容（中文）</label>
-          <textarea id="ann-zh-content" rows="3" placeholder="中文详细内容"></textarea>
-        </div>
-        <div class="form-group">
-          <label>按钮文字（中文）</label>
-          <input type="text" id="ann-zh-action-label" placeholder="如：了解更多">
+          <div class="footer-brand-name">ZX AI Tools</div>
+          <div class="footer-brand-sub">开源免费</div>
         </div>
       </div>
-
-      <!-- Preview inside modal -->
-      <div class="divider"></div>
-      <div class="card-title" style="font-size:13px;margin-bottom:12px">👁️ 公告预览</div>
-      <div style="background:linear-gradient(135deg,#1a1a2e,#16213e);border-radius:10px;padding:20px;display:flex;justify-content:center">
-        <div class="ann-preview-popup" id="ann-live-preview">
-          <div class="ann-preview-header">
-            <div class="ann-preview-icon" id="pv-ann-icon" style="background:rgba(0,122,255,0.2)">ℹ️</div>
-            <div class="ann-preview-title" id="pv-ann-title">公告标题</div>
-          </div>
-          <div class="ann-preview-summary" id="pv-ann-summary">摘要内容</div>
-          <div class="ann-preview-content" id="pv-ann-content"></div>
-          <button class="ann-preview-action" id="pv-ann-action" style="display:none">操作按钮</button>
-        </div>
+      <div class="footer-links">
+        <a href="https://github.com/SUZIXI-AI/zx-ai-tools" target="_blank" rel="noopener" class="footer-link">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M6 3H3a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1h9a1 1 0 0 0 1-1v-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M9 2h5m0 0v5m0-5L8 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          GitHub
+        </a>
+        <a href="download.html" class="footer-link">下载</a>
+        <a href="admin.html" class="footer-link">管理后台</a>
       </div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-secondary" onclick="closeAnnModal()">取消</button>
-      <button class="btn btn-primary" onclick="saveAnnouncement()">💾 保存公告</button>
     </div>
   </div>
-</div>
+</footer>
 
-<!-- ===== JSON PREVIEW MODAL ===== -->
-<div class="modal-backdrop" id="json-modal">
-  <div class="modal modal-lg">
-    <div class="modal-header">
-      <h3>📄 JSON 预览</h3>
-      <button class="modal-close" onclick="closeModal('json-modal')">✕</button>
-    </div>
-    <div class="modal-body">
-      <pre class="code-block" id="json-preview-content"></pre>
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-secondary" onclick="closeModal('json-modal')">关闭</button>
-      <button class="btn btn-primary" onclick="copyJson()">📋 复制 JSON</button>
-    </div>
-  </div>
-</div>
-
-<!-- ===== ANN PREVIEW MODAL ===== -->
-<div class="modal-backdrop" id="ann-preview-modal">
-  <div class="modal modal-md">
-    <div class="modal-header">
-      <h3>👁️ 公告效果预览</h3>
-      <button class="modal-close" onclick="closeModal('ann-preview-modal')">✕</button>
-    </div>
-    <div class="modal-body">
-      <div style="background:linear-gradient(135deg,#1a1a2e,#16213e);border-radius:10px;padding:20px;display:flex;justify-content:center">
-        <div class="ann-preview-popup" id="ann-solo-preview"></div>
-      </div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-secondary" onclick="closeModal('ann-preview-modal')">关闭</button>
-    </div>
-  </div>
-</div>
-
-<script>
-// ============================================================
-// CONSTANTS
-// ============================================================
-const CRED_HASH = '67cc50b8c76dd0bace63dba7ef5a7779ab343ebcb17a1d177523dcd20a3ca756';
-const LS = {
-  TOKEN:     'zxai_admin_token',
-  TOKEN_EXP: 'zxai_admin_token_exp',
-  GH_OWNER:  'zxai_admin_gh_owner',
-  GH_REPO:   'zxai_admin_gh_repo',
-  GH_TOKEN:  'zxai_admin_gh_token',
-  GH_PATH:   'zxai_admin_gh_path',
-  DATA:      'zxai_admin_data',
-};
-const TOKEN_TTL = 7 * 24 * 60 * 60 * 1000; // 7 days ms
-
-// ============================================================
-// STATE
-// ============================================================
-let state = {
-  version: '1.0',
-  topRightAd: null,
-  announcements: [],
-};
-let ghFileSha = null; // SHA of the file on GitHub for PUT
-let editingAnnIndex = null; // null = new, number = edit
-
-// ============================================================
-// UTILS — SHA-256
-// ============================================================
-async function sha256(str) {
-  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
-  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
-}
-
-// ============================================================
-// UTILS — UUID
-// ============================================================
-function uid() {
-  return crypto.randomUUID();
-}
-
-// ============================================================
-// UTILS — Toast
-// ============================================================
-function toast(msg, type = 'info') {
-  const icons = { success: '✅', error: '❌', info: 'ℹ️' };
-  const el = document.createElement('div');
-  el.className = `toast ${type}`;
-  el.innerHTML = `<span class="toast-icon">${icons[type]||'ℹ️'}</span><span class="toast-msg">${msg}</span>`;
-  const container = document.getElementById('toast-container');
-  container.appendChild(el);
-  setTimeout(() => {
-    el.classList.add('removing');
-    el.addEventListener('animationend', () => el.remove());
-  }, 3000);
-}
-
-// ============================================================
-// UTILS — Confirm Dialog
-// ============================================================
-let _confirmResolve = null;
-function confirm(title, msg, btnLabel = '确认删除') {
-  document.getElementById('confirm-title').textContent = title;
-  document.getElementById('confirm-msg').textContent = msg;
-  document.getElementById('confirm-ok-btn').textContent = btnLabel;
-  document.getElementById('confirm-modal').classList.add('open');
-  return new Promise(r => { _confirmResolve = r; });
-}
-function closeConfirm(ok) {
-  document.getElementById('confirm-modal').classList.remove('open');
-  if (_confirmResolve) { _confirmResolve(ok); _confirmResolve = null; }
-}
-
-// ============================================================
-// UTILS — Modal helpers
-// ============================================================
-function openModal(id) { document.getElementById(id).classList.add('open'); }
-function closeModal(id) { document.getElementById(id).classList.remove('open'); }
-
-// ============================================================
-// UTILS — setLoading
-// ============================================================
-function setLoading(btnId, loading, text = '') {
-  const btn = document.getElementById(btnId);
-  if (!btn) return;
-  btn.disabled = loading;
-  if (loading) {
-    btn.dataset.origHtml = btn.innerHTML;
-    btn.innerHTML = `<div class="spinner"></div>${text || '请稍候…'}`;
-  } else {
-    btn.innerHTML = btn.dataset.origHtml || btn.innerHTML;
-  }
-}
-
-// ============================================================
-// AUTH — Login
-// ============================================================
-async function handleLogin(e) {
-  e.preventDefault();
-  const account  = document.getElementById('login-account').value.trim();
-  const password = document.getElementById('login-password').value;
-  const errEl    = document.getElementById('login-error');
-  const btn      = document.getElementById('login-btn');
-
-  btn.disabled = true;
-  btn.innerHTML = '<div class="spinner" style="border-color:rgba(255,255,255,.3);border-top-color:#fff"></div>验证中…';
-  errEl.style.display = 'none';
-
-  const input = `${account}:${password}`;
-  const hash  = await sha256(input);
-
-  if (hash === CRED_HASH) {
-    const token    = await sha256(Date.now() + Math.random().toString());
-    const expireAt = Date.now() + TOKEN_TTL;
-    localStorage.setItem(LS.TOKEN, token);
-    localStorage.setItem(LS.TOKEN_EXP, expireAt.toString());
-    showApp();
-  } else {
-    errEl.style.display = 'block';
-    btn.disabled = false;
-    btn.textContent = '登录';
-  }
-}
-
-function handleLogout() {
-  localStorage.removeItem(LS.TOKEN);
-  localStorage.removeItem(LS.TOKEN_EXP);
-  document.getElementById('app').style.display = 'none';
-  document.getElementById('login-page').style.display = 'flex';
-  document.getElementById('login-password').value = '';
-}
-
-function checkAuth() {
-  const token = localStorage.getItem(LS.TOKEN);
-  const exp   = parseInt(localStorage.getItem(LS.TOKEN_EXP) || '0', 10);
-  return token && Date.now() < exp;
-}
-
-// ============================================================
-// APP INIT
-// ============================================================
-function showApp() {
-  document.getElementById('login-page').style.display = 'none';
-  document.getElementById('app').style.display = 'flex';
-  loadState();
-  loadGithubConfig();
-  renderAdForm();
-  renderAnnList();
-  bindAdPreview();
-}
-
-function loadState() {
-  try {
-    const raw = localStorage.getItem(LS.DATA);
-    if (raw) {
-      const parsed = JSON.parse(raw);
-      state = { version: '1.0', topRightAd: null, announcements: [], ...parsed };
-    }
-  } catch(e) {}
-}
-
-function saveState() {
-  localStorage.setItem(LS.DATA, JSON.stringify(state));
-}
-
-// ============================================================
-// TAB SWITCHING
-// ============================================================
-function switchTab(tabId) {
-  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById(tabId).classList.add('active');
-  document.querySelector(`[data-tab="${tabId}"]`).classList.add('active');
-}
-
-// ============================================================
-// STATE → JSON
-// ============================================================
-function buildJson() {
-  return JSON.stringify(state, null, 2);
-}
-
-// ============================================================
-// AD FORM
-// ============================================================
-function renderAdForm() {
-  const ad = state.topRightAd || {};
-  document.getElementById('ad-id').value         = ad.id || uid();
-  document.getElementById('ad-priority').value   = ad.priority ?? 100;
-  document.getElementById('ad-text').value       = ad.text || '';
-  document.getElementById('ad-badge').value      = ad.badge || '';
-  document.getElementById('ad-cta-label').value  = ad.ctaLabel || '';
-  document.getElementById('ad-cta-url').value    = ad.ctaUrl || '';
-  if (ad.expiresAt) {
-    document.getElementById('ad-expires-at').value = ad.expiresAt.replace('Z','').slice(0,16);
-  }
-  const zh = (ad.locales && ad.locales['zh-CN']) || {};
-  document.getElementById('ad-zh-text').value     = zh.text || '';
-  document.getElementById('ad-zh-badge').value    = zh.badge || '';
-  document.getElementById('ad-zh-cta-label').value= zh.ctaLabel || '';
-  updateAdPreview();
-}
-
-function bindAdPreview() {
-  ['ad-text','ad-badge','ad-cta-label','ad-zh-text','ad-zh-badge','ad-zh-cta-label'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.addEventListener('input', updateAdPreview);
-  });
-}
-
-function updateAdPreview() {
-  const zhText   = document.getElementById('ad-zh-text').value.trim();
-  const zhBadge  = document.getElementById('ad-zh-badge').value.trim();
-  const zhBtn    = document.getElementById('ad-zh-cta-label').value.trim();
-  const enText   = document.getElementById('ad-text').value.trim();
-  const enBadge  = document.getElementById('ad-badge').value.trim();
-  const enBtn    = document.getElementById('ad-cta-label').value.trim();
-
-  document.getElementById('pv-text').textContent  = zhText || enText || '推广文字';
-  document.getElementById('pv-badge').textContent = zhBadge || enBadge || '';
-  document.getElementById('pv-badge').style.display = (zhBadge || enBadge) ? 'inline-block' : 'none';
-  document.getElementById('pv-btn').textContent   = zhBtn || enBtn || '了解更多';
-}
-
-function saveAdToState() {
-  const expiresInput = document.getElementById('ad-expires-at').value;
-  state.topRightAd = {
-    id:       document.getElementById('ad-id').value,
-    priority: parseInt(document.getElementById('ad-priority').value, 10) || 100,
-    text:     document.getElementById('ad-text').value.trim(),
-    badge:    document.getElementById('ad-badge').value.trim(),
-    ctaLabel: document.getElementById('ad-cta-label').value.trim(),
-    ctaUrl:   document.getElementById('ad-cta-url').value.trim(),
-    targetVersions: '*',
-    targetLanguages: ['*'],
-    createdAt:  (state.topRightAd && state.topRightAd.createdAt) || new Date().toISOString(),
-    expiresAt:  expiresInput ? new Date(expiresInput).toISOString() : null,
-    locales: {
-      'zh-CN': {
-        text:     document.getElementById('ad-zh-text').value.trim(),
-        badge:    document.getElementById('ad-zh-badge').value.trim(),
-        ctaLabel: document.getElementById('ad-zh-cta-label').value.trim(),
-      }
-    }
-  };
-  saveState();
-  toast('推广条已保存！', 'success');
-}
-</script>
-
-<script>
-// ============================================================
-// ANNOUNCEMENT LIST RENDER
-// ============================================================
-function renderAnnList() {
-  const container = document.getElementById('ann-list-container');
-  const list = state.announcements || [];
-  if (!list.length) {
-    container.innerHTML = `<div class="empty-state"><div class="icon">📭</div><p>暂无公告，点击"添加公告"开始创建</p></div>`;
-    return;
-  }
-  container.innerHTML = `<div class="ann-list">${list.map((ann, i) => renderAnnCard(ann, i, list.length)).join('')}</div>`;
-}
-
-const TYPE_META = {
-  info:    { icon: 'ℹ️',  label: 'info',    cls: 'type-info',    bg: 'rgba(0,122,255,0.2)' },
-  feature: { icon: '✨', label: 'feature', cls: 'type-feature', bg: 'rgba(52,199,89,0.2)'  },
-  warning: { icon: '⚠️', label: 'warning', cls: 'type-warning', bg: 'rgba(255,149,0,0.2)'  },
-};
-
-function renderAnnCard(ann, i, total) {
-  const meta = TYPE_META[ann.type] || TYPE_META.info;
-  const popupBadge  = ann.popup    ? '<span class="popup-badge">弹窗</span>' : '';
-  const onceBadge   = ann.showOnce ? '<span class="once-badge">仅一次</span>' : '';
-  const expBadge    = ann.expiresAt ? `<span class="priority-badge">过期 ${ann.expiresAt.slice(0,10)}</span>` : '';
-  return `
-  <div class="ann-card" id="ann-card-${i}">
-    <div class="ann-card-left">
-      <div class="ann-card-header">
-        <span class="type-badge ${meta.cls}">${meta.icon} ${meta.label}</span>
-        <span class="ann-card-title">${escHtml(ann.title || '(无标题)')}</span>
-        <span class="priority-badge">优先级 ${ann.priority ?? 100}</span>
-      </div>
-      <div class="ann-card-summary">${escHtml(ann.summary || '')}</div>
-      <div class="ann-card-meta">${popupBadge}${onceBadge}${expBadge}</div>
-    </div>
-    <div class="ann-card-actions">
-      <button class="btn-icon" title="上移" onclick="moveAnn(${i},-1)" ${i===0?'disabled':''}>↑</button>
-      <button class="btn-icon" title="下移" onclick="moveAnn(${i},1)"  ${i===total-1?'disabled':''}>↓</button>
-      <button class="btn btn-sm btn-ghost" onclick="previewAnn(${i})">👁️</button>
-      <button class="btn btn-sm btn-secondary" onclick="openAnnModal(${i})">✏️ 编辑</button>
-      <button class="btn btn-sm btn-danger" onclick="deleteAnn(${i})">🗑️</button>
-    </div>
-  </div>`;
-}
-
-function escHtml(s) {
-  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-
-// ============================================================
-// ANNOUNCEMENT CRUD
-// ============================================================
-function openAnnModal(index) {
-  editingAnnIndex = index;
-  document.getElementById('ann-modal-title').textContent = index === null ? '添加公告' : '编辑公告';
-
-  let ann = {};
-  if (index !== null && index >= 0) {
-    ann = state.announcements[index] || {};
-  }
-
-  document.getElementById('ann-id').value           = ann.id || uid();
-  document.getElementById('ann-type').value         = ann.type || 'info';
-  document.getElementById('ann-title').value        = ann.title || '';
-  document.getElementById('ann-priority').value     = ann.priority ?? 100;
-  document.getElementById('ann-summary').value      = ann.summary || '';
-  document.getElementById('ann-content').value      = ann.content || '';
-  document.getElementById('ann-action-label').value = (ann.action && ann.action.label) || '';
-  document.getElementById('ann-action-target').value= (ann.action && ann.action.target) || '';
-  document.getElementById('ann-popup').checked      = !!ann.popup;
-  document.getElementById('ann-show-once').checked  = ann.showOnce !== false;
-
-  if (ann.expiresAt) {
-    document.getElementById('ann-expires-at').value = ann.expiresAt.replace('Z','').slice(0,16);
-  } else {
-    document.getElementById('ann-expires-at').value = '';
-  }
-
-  const zh = (ann.locales && ann.locales['zh-CN']) || {};
-  document.getElementById('ann-zh-title').value        = zh.title || '';
-  document.getElementById('ann-zh-summary').value      = zh.summary || '';
-  document.getElementById('ann-zh-content').value      = zh.content || '';
-  document.getElementById('ann-zh-action-label').value = zh.actionLabel || '';
-
-  updateAnnPreview();
-  openModal('ann-modal');
-
-  // Bind live preview
-  ['ann-type','ann-title','ann-summary','ann-content','ann-action-label',
-   'ann-zh-title','ann-zh-summary','ann-zh-content','ann-zh-action-label'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) {
-      el.oninput = updateAnnPreview;
-      el.onchange = updateAnnPreview;
-    }
-  });
-}
-
-function updateAnnPreview() {
-  const type    = document.getElementById('ann-type').value;
-  const title   = document.getElementById('ann-zh-title').value.trim() || document.getElementById('ann-title').value.trim() || '公告标题';
-  const summary = document.getElementById('ann-zh-summary').value.trim() || document.getElementById('ann-summary').value.trim() || '';
-  const content = document.getElementById('ann-zh-content').value.trim() || document.getElementById('ann-content').value.trim() || '';
-  const label   = document.getElementById('ann-zh-action-label').value.trim() || document.getElementById('ann-action-label').value.trim() || '';
-
-  const meta = TYPE_META[type] || TYPE_META.info;
-  document.getElementById('pv-ann-icon').textContent = meta.icon;
-  document.getElementById('pv-ann-icon').style.background = meta.bg;
-  document.getElementById('pv-ann-title').textContent = title;
-  document.getElementById('pv-ann-summary').textContent = summary;
-  document.getElementById('pv-ann-content').textContent = content.replace(/\\n/g, '\n');
-  const actionEl = document.getElementById('pv-ann-action');
-  if (label) {
-    actionEl.textContent = label;
-    actionEl.style.display = 'block';
-  } else {
-    actionEl.style.display = 'none';
-  }
-}
-
-function closeAnnModal() {
-  closeModal('ann-modal');
-  editingAnnIndex = null;
-}
-
-function saveAnnouncement() {
-  const title = document.getElementById('ann-title').value.trim();
-  const summary = document.getElementById('ann-summary').value.trim();
-  if (!title) { toast('请填写公告标题', 'error'); return; }
-  if (!summary) { toast('请填写公告摘要', 'error'); return; }
-
-  const expiresInput = document.getElementById('ann-expires-at').value;
-  const actionLabel  = document.getElementById('ann-action-label').value.trim();
-  const actionTarget = document.getElementById('ann-action-target').value.trim();
-
-  const ann = {
-    id:        document.getElementById('ann-id').value,
-    type:      document.getElementById('ann-type').value,
-    priority:  parseInt(document.getElementById('ann-priority').value, 10) || 100,
-    title,
-    summary,
-    content:   document.getElementById('ann-content').value.trim(),
-    action:    (actionLabel || actionTarget) ? { type: 'url', target: actionTarget, label: actionLabel } : undefined,
-    targetVersions:  '*',
-    targetLanguages: ['*'],
-    showOnce:  document.getElementById('ann-show-once').checked,
-    popup:     document.getElementById('ann-popup').checked,
-    createdAt: (editingAnnIndex !== null && state.announcements[editingAnnIndex]
-               ? state.announcements[editingAnnIndex].createdAt
-               : new Date().toISOString()),
-    expiresAt: expiresInput ? new Date(expiresInput).toISOString() : null,
-    locales: {
-      'zh-CN': {
-        title:       document.getElementById('ann-zh-title').value.trim(),
-        summary:     document.getElementById('ann-zh-summary').value.trim(),
-        content:     document.getElementById('ann-zh-content').value.trim(),
-        actionLabel: document.getElementById('ann-zh-action-label').value.trim(),
-      }
-    }
-  };
-  if (!ann.action) delete ann.action;
-
-  if (editingAnnIndex === null) {
-    state.announcements.unshift(ann);
-  } else {
-    state.announcements[editingAnnIndex] = ann;
-  }
-
-  state.announcements.sort((a,b) => (b.priority||0) - (a.priority||0));
-  saveState();
-  renderAnnList();
-  closeAnnModal();
-  toast(editingAnnIndex === null ? '公告已添加！' : '公告已更新！', 'success');
-}
-
-async function deleteAnn(i) {
-  const ann = state.announcements[i];
-  const ok = await confirm('删除公告', `确认删除公告「${ann.title}」？此操作不可撤销。`);
-  if (!ok) return;
-  state.announcements.splice(i, 1);
-  saveState();
-  renderAnnList();
-  toast('公告已删除', 'success');
-}
-
-function moveAnn(i, dir) {
-  const list = state.announcements;
-  const j = i + dir;
-  if (j < 0 || j >= list.length) return;
-  [list[i], list[j]] = [list[j], list[i]];
-  saveState();
-  renderAnnList();
-}
-
-function previewAnn(i) {
-  const ann = state.announcements[i];
-  const zh  = (ann.locales && ann.locales['zh-CN']) || {};
-  const meta = TYPE_META[ann.type] || TYPE_META.info;
-  const title   = zh.title   || ann.title;
-  const summary = zh.summary || ann.summary || '';
-  const content = zh.content || ann.content || '';
-  const label   = zh.actionLabel || (ann.action && ann.action.label) || '';
-
-  const html = `
-    <div class="ann-preview-header">
-      <div class="ann-preview-icon" style="background:${meta.bg}">${meta.icon}</div>
-      <div class="ann-preview-title">${escHtml(title)}</div>
-    </div>
-    <div class="ann-preview-summary">${escHtml(summary)}</div>
-    <div class="ann-preview-content">${escHtml(content.replace(/\\n/g,'\n'))}</div>
-    ${label ? `<button class="ann-preview-action">${escHtml(label)}</button>` : ''}
-  `;
-  document.getElementById('ann-solo-preview').innerHTML = html;
-  openModal('ann-preview-modal');
-}
-</script>
-
-<script>
-// ============================================================
-// GITHUB CONFIG
-// ============================================================
-function loadGithubConfig() {
-  document.getElementById('gh-owner').value = localStorage.getItem(LS.GH_OWNER) || '';
-  document.getElementById('gh-repo').value  = localStorage.getItem(LS.GH_REPO)  || '';
-  document.getElementById('gh-token').value = localStorage.getItem(LS.GH_TOKEN) || '';
-  document.getElementById('gh-path').value  = localStorage.getItem(LS.GH_PATH)  || 'announcements.json';
-}
-
-function saveGithubConfig() {
-  localStorage.setItem(LS.GH_OWNER, document.getElementById('gh-owner').value.trim());
-  localStorage.setItem(LS.GH_REPO,  document.getElementById('gh-repo').value.trim());
-  localStorage.setItem(LS.GH_TOKEN, document.getElementById('gh-token').value.trim());
-  localStorage.setItem(LS.GH_PATH,  document.getElementById('gh-path').value.trim() || 'announcements.json');
-  toast('GitHub 配置已保存', 'success');
-}
-
-function getGithubConfig() {
-  const owner = document.getElementById('gh-owner').value.trim();
-  const repo  = document.getElementById('gh-repo').value.trim();
-  const token = document.getElementById('gh-token').value.trim();
-  const path  = document.getElementById('gh-path').value.trim() || 'announcements.json';
-  if (!owner || !repo || !token) {
-    toast('请先填写完整 GitHub 配置（用户名、仓库名、Token）', 'error');
-    return null;
-  }
-  return { owner, repo, token, path };
-}
-
-function setGhStatus(msg, type = 'info') {
-  const el = document.getElementById('gh-status');
-  const colors = { info: 'var(--text-secondary)', success: 'var(--success)', error: 'var(--danger)' };
-  el.textContent = msg;
-  el.style.color = colors[type] || colors.info;
-}
-
-// ============================================================
-// GITHUB — PULL
-// ============================================================
-async function pullFromGithub() {
-  const cfg = getGithubConfig();
-  if (!cfg) return;
-
-  setLoading('btn-pull', true, '拉取中…');
-  setGhStatus('正在从 GitHub 拉取…');
-
-  try {
-    const url = `https://api.github.com/repos/${cfg.owner}/${cfg.repo}/contents/${cfg.path}`;
-    const res = await fetch(url, {
-      headers: {
-        'Authorization': `token ${cfg.token}`,
-        'Accept': 'application/vnd.github+json',
-        'X-GitHub-Api-Version': '2022-11-28',
-      }
-    });
-
-    if (!res.ok) {
-      const err = await res.json().catch(() => ({}));
-      throw new Error(err.message || `HTTP ${res.status}`);
-    }
-
-    const data = await res.json();
-    ghFileSha = data.sha;
-    const content = JSON.parse(atob(data.content.replace(/\n/g, '')));
-
-    state = { version: '1.0', topRightAd: null, announcements: [], ...content };
-    saveState();
-    renderAdForm();
-    renderAnnList();
-
-    setGhStatus(`✅ 拉取成功（SHA: ${ghFileSha.slice(0,8)}…）`, 'success');
-    toast('从 GitHub 拉取成功！', 'success');
-  } catch(e) {
-    setGhStatus(`❌ 拉取失败：${e.message}`, 'error');
-    toast(`拉取失败：${e.message}`, 'error');
-  } finally {
-    setLoading('btn-pull', false);
-  }
-}
-
-// ============================================================
-// GITHUB — PUSH
-// ============================================================
-async function pushToGithub() {
-  const cfg = getGithubConfig();
-  if (!cfg) return;
-
-  setLoading('btn-push', true, '发布中…');
-  setGhStatus('正在发布到 GitHub…');
-
-  try {
-    // First get current sha if we don't have one
-    if (!ghFileSha) {
-      const headUrl = `https://api.github.com/repos/${cfg.owner}/${cfg.repo}/contents/${cfg.path}`;
-      const headRes = await fetch(headUrl, {
-        headers: {
-          'Authorization': `token ${cfg.token}`,
-          'Accept': 'application/vnd.github+json',
-          'X-GitHub-Api-Version': '2022-11-28',
-        }
-      });
-      if (headRes.ok) {
-        const headData = await headRes.json();
-        ghFileSha = headData.sha;
-      }
-    }
-
-    const jsonContent = buildJson();
-    const encoded = btoa(unescape(encodeURIComponent(jsonContent)));
-
-    const body = {
-      message: `chore: update announcements.json [${new Date().toISOString().slice(0,16)}]`,
-      content: encoded,
-    };
-    if (ghFileSha) body.sha = ghFileSha;
-
-    const url = `https://api.github.com/repos/${cfg.owner}/${cfg.repo}/contents/${cfg.path}`;
-    const res = await fetch(url, {
-      method: 'PUT',
-      headers: {
-        'Authorization': `token ${cfg.token}`,
-        'Accept': 'application/vnd.github+json',
-        'X-GitHub-Api-Version': '2022-11-28',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(body),
-    });
-
-    if (!res.ok) {
-      const err = await res.json().catch(() => ({}));
-      throw new Error(err.message || `HTTP ${res.status}`);
-    }
-
-    const result = await res.json();
-    ghFileSha = result.content && result.content.sha;
-
-    setGhStatus(`✅ 发布成功！SHA: ${(ghFileSha||'').slice(0,8)}…`, 'success');
-    toast('发布到 GitHub 成功！🎉', 'success');
-  } catch(e) {
-    setGhStatus(`❌ 发布失败：${e.message}`, 'error');
-    toast(`发布失败：${e.message}`, 'error');
-  } finally {
-    setLoading('btn-push', false);
-  }
-}
-
-// ============================================================
-// JSON PREVIEW / COPY
-// ============================================================
-function previewJson() {
-  document.getElementById('json-preview-content').textContent = buildJson();
-  openModal('json-modal');
-}
-
-async function copyJson() {
-  try {
-    await navigator.clipboard.writeText(buildJson());
-    toast('JSON 已复制到剪贴板', 'success');
-  } catch(e) {
-    toast('复制失败，请手动复制', 'error');
-  }
-}
-
-// ============================================================
-// ENTRY POINT
-// ============================================================
-window.addEventListener('DOMContentLoaded', () => {
-  if (checkAuth()) {
-    showApp();
-  } else {
-    document.getElementById('login-page').style.display = 'flex';
-    document.getElementById('app').style.display = 'none';
-  }
-
-  // Close modals on backdrop click
-  ['ann-modal','json-modal','ann-preview-modal'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.addEventListener('click', e => { if (e.target === el) closeModal(id); });
-  });
-  const confirmModal = document.getElementById('confirm-modal');
-  if (confirmModal) confirmModal.addEventListener('click', e => { if (e.target === confirmModal) closeConfirm(false); });
-
-  // Keyboard: Escape closes modals
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') {
-      ['ann-modal','json-modal','ann-preview-modal'].forEach(closeModal);
-      closeConfirm(false);
-    }
-  });
-});
-</script>
 </body>
 </html>
