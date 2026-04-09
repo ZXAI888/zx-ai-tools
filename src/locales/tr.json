@@ -643,7 +643,7 @@
       "firewallHint": "URL erişilemiyorsa sistem güvenlik duvarı ayarlarını kontrol edin.",
       "proxyTitle": "Genel Proxy",
       "proxyEnabled": "Genel proxyyi etkinleştir",
-      "proxyEnabledDesc": "Cockpit tarafından başlatılan yönetilen platform süreçlerine proxy ortam değişkenleri enjekte eder.",
+      "proxyEnabledDesc": "ZX AI Tools tarafından başlatılan yönetilen platform süreçlerine proxy ortam değişkenleri enjekte eder.",
       "proxyUrl": "Proxy URL",
       "proxyUrlDesc": "Örnek: http://127.0.0.1:7890 veya socks5://127.0.0.1:7890",
       "proxyUrlPlaceholder": "örn. http://127.0.0.1:7890",

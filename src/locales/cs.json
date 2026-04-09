@@ -643,7 +643,7 @@
       "firewallHint": "Pokud URL není dostupná, zkontrolujte nastavení systémového firewallu.",
       "proxyTitle": "Globální proxy",
       "proxyEnabled": "Povolit globální proxy",
-      "proxyEnabledDesc": "Vloží proxy proměnné prostředí do spravovaných procesů platforem spuštěných aplikací Cockpit.",
+      "proxyEnabledDesc": "Vloží proxy proměnné prostředí do spravovaných procesů platforem spuštěných aplikací ZX AI Tools.",
       "proxyUrl": "URL proxy",
       "proxyUrlDesc": "Příklad: http://127.0.0.1:7890 nebo socks5://127.0.0.1:7890",
       "proxyUrlPlaceholder": "např. http://127.0.0.1:7890",

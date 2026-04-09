@@ -643,7 +643,7 @@
       "firewallHint": "Jeśli URL jest niedostępny, sprawdź ustawienia zapory systemowej.",
       "proxyTitle": "Globalny serwer proxy",
       "proxyEnabled": "Włącz globalny serwer proxy",
-      "proxyEnabledDesc": "Wstrzykuje zmienne środowiskowe proxy do zarządzanych procesów platform uruchamianych przez Cockpit.",
+      "proxyEnabledDesc": "Wstrzykuje zmienne środowiskowe proxy do zarządzanych procesów platform uruchamianych przez ZX AI Tools.",
       "proxyUrl": "Adres URL proxy",
       "proxyUrlDesc": "Przykład: http://127.0.0.1:7890 lub socks5://127.0.0.1:7890",
       "proxyUrlPlaceholder": "np. http://127.0.0.1:7890",

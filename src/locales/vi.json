@@ -643,7 +643,7 @@
       "firewallHint": "Nếu URL không truy cập được, hãy kiểm tra cài đặt tường lửa của hệ thống.",
       "proxyTitle": "Proxy toàn cục",
       "proxyEnabled": "Bật proxy toàn cục",
-      "proxyEnabledDesc": "Chèn biến môi trường proxy vào các tiến trình nền tảng được Cockpit quản lý khi khởi chạy.",
+      "proxyEnabledDesc": "Chèn biến môi trường proxy vào các tiến trình nền tảng được ZX AI Tools quản lý khi khởi chạy.",
       "proxyUrl": "URL proxy",
       "proxyUrlDesc": "Ví dụ: http://127.0.0.1:7890 hoặc socks5://127.0.0.1:7890",
       "proxyUrlPlaceholder": "ví dụ: http://127.0.0.1:7890",

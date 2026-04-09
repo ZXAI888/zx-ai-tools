@@ -689,7 +689,7 @@
       "firewallHint": "If the URL is unreachable, check your system firewall settings.",
       "proxyTitle": "Global Proxy",
       "proxyEnabled": "Enable Global Proxy",
-      "proxyEnabledDesc": "Inject proxy environment variables into managed platform processes launched by Cockpit.",
+      "proxyEnabledDesc": "Inject proxy environment variables into managed platform processes launched by ZX AI Tools.",
       "proxyUrl": "Proxy URL",
       "proxyUrlDesc": "Example: http://127.0.0.1:7890 or socks5://127.0.0.1:7890",
       "proxyUrlPlaceholder": "http://127.0.0.1:7890",

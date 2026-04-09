@@ -689,7 +689,7 @@
       "firewallHint": "如果访问不了，请检查系统防火墙设置。",
       "proxyTitle": "全局代理",
       "proxyEnabled": "启用全局代理",
-      "proxyEnabledDesc": "对 Cockpit 启动的受管平台进程统一注入代理环境变量",
+      "proxyEnabledDesc": "对 ZX AI Tools 启动的受管平台进程统一注入代理环境变量",
       "proxyUrl": "代理地址",
       "proxyUrlDesc": "示例：http://127.0.0.1:7890 或 socks5://127.0.0.1:7890",
       "proxyUrlPlaceholder": "例如：http://127.0.0.1:7890",

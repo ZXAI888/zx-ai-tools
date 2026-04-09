@@ -643,7 +643,7 @@
       "firewallHint": "Se l’URL non è raggiungibile, controlla le impostazioni del firewall di sistema.",
       "proxyTitle": "Proxy globale",
       "proxyEnabled": "Abilita proxy globale",
-      "proxyEnabledDesc": "Inietta le variabili d'ambiente proxy nei processi di piattaforma gestiti avviati da Cockpit.",
+      "proxyEnabledDesc": "Inietta le variabili d'ambiente proxy nei processi di piattaforma gestiti avviati da ZX AI Tools.",
       "proxyUrl": "URL proxy",
       "proxyUrlDesc": "Esempio: http://127.0.0.1:7890 oppure socks5://127.0.0.1:7890",
       "proxyUrlPlaceholder": "es. http://127.0.0.1:7890",

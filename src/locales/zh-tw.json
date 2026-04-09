@@ -643,7 +643,7 @@
       "firewallHint": "若網址無法存取，請檢查系統防火牆設定。",
       "proxyTitle": "全域代理",
       "proxyEnabled": "啟用全域代理",
-      "proxyEnabledDesc": "為 Cockpit 啟動的受管平台程序統一注入代理環境變數",
+      "proxyEnabledDesc": "為 ZX AI Tools 啟動的受管平台程序統一注入代理環境變數",
       "proxyUrl": "代理位址",
       "proxyUrlDesc": "範例：http://127.0.0.1:7890 或 socks5://127.0.0.1:7890",
       "proxyUrlPlaceholder": "例如：http://127.0.0.1:7890",

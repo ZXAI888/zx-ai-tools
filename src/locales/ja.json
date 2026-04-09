@@ -643,7 +643,7 @@
       "firewallHint": "URL にアクセスできない場合は、システムのファイアウォール設定を確認してください。",
       "proxyTitle": "グローバルプロキシ",
       "proxyEnabled": "グローバルプロキシを有効化",
-      "proxyEnabledDesc": "Cockpit が起動する管理対象プラットフォームのプロセスへ、プロキシ環境変数を注入します。",
+      "proxyEnabledDesc": "ZX AI Tools が起動する管理対象プラットフォームのプロセスへ、プロキシ環境変数を注入します。",
       "proxyUrl": "プロキシ URL",
       "proxyUrlDesc": "例: http://127.0.0.1:7890 または socks5://127.0.0.1:7890",
       "proxyUrlPlaceholder": "例: http://127.0.0.1:7890",
