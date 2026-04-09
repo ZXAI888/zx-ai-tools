@@ -423,7 +423,7 @@ fn write_api_base_url_to_config_toml(
     fs::write(&config_path, doc.to_string()).map_err(|e| format!("写入 config.toml 失败: {}", e))
 }
 
-/// 旧版数据目录（~/Library/Application Support/com.antigravity.cockpit-tools/）
+/// 旧版数据目录（~/Library/Application Support/com.antigravity.cockpit-tools/）（迁移用，保留原路径）
 fn get_old_codex_data_dir() -> PathBuf {
     dirs::data_local_dir()
         .unwrap_or_else(|| dirs::home_dir().expect("无法获取用户目录"))

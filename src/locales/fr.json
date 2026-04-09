@@ -439,7 +439,7 @@
   },
   "settings": {
     "title": "Paramètres de l'application",
-    "subtitle": "Personnalisez votre expérience Cockpit Tools.",
+    "subtitle": "Personnalisez votre expérience ZX AI Tools.",
     "tabs": {
       "general": "Général",
       "network": "Réseau",
@@ -589,7 +589,7 @@
       "sideNavLayoutClassic": "Disposition classique",
       "antigravityDualSwitchNoRestart": "Bascule double sans redémarrage",
       "antigravityDualSwitchNoRestartDesc": "Lors du changement de compte, les données locales sont écrites et la bascule fluide de l’extension est exécutée dans un seul flux, sans redémarrer Antigravity.",
-      "appAutoLaunch": "Lancer Cockpit Tools à la connexion",
+      "appAutoLaunch": "Lancer ZX AI Tools à la connexion",
       "appAutoLaunchDesc": "Démarrer automatiquement l'application après la connexion au système",
       "startupWakeupDisabled": "Désactivé",
       "startupWakeupImmediate": "Réveiller immédiatement",
@@ -653,7 +653,7 @@
       "proxyUrlRequired": "L'URL du proxy ne peut pas être vide lorsque le proxy global est activé."
     },
     "about": {
-      "appName": "Cockpit Tools",
+      "appName": "ZX AI Tools",
       "slogan": "Solution professionnelle de gestion de comptes",
       "author": "Auteur",
       "wechat": "WeChat",
@@ -2870,7 +2870,7 @@
       "backToCurrent": "Retour",
       "switchToThisAccount": "Passer",
       "openDetails": "Ouvrir les détails",
-      "openCockpitTools": "Ouvrir Cockpit Tools"
+      "openZXAITools": "Ouvrir ZX AI Tools"
     },
     "empty": {
       "title": "Aucun compte",

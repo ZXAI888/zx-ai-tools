@@ -1,11 +1,11 @@
-# Cockpit Tools
+# ZX AI Tools
 
 English · [简体中文](README.md)
 
-[![GitHub stars](https://img.shields.io/github/stars/jlcodes99/cockpit-tools?style=flat&color=gold)](https://github.com/jlcodes99/cockpit-tools)
-[![GitHub downloads](https://img.shields.io/github/downloads/jlcodes99/cockpit-tools/total?style=flat&color=blue)](https://github.com/jlcodes99/cockpit-tools/releases)
-[![GitHub release](https://img.shields.io/github/v/release/jlcodes99/cockpit-tools?style=flat)](https://github.com/jlcodes99/cockpit-tools/releases)
-[![GitHub issues](https://img.shields.io/github/issues/jlcodes99/cockpit-tools)](https://github.com/jlcodes99/cockpit-tools/issues)
+[![GitHub stars](https://img.shields.io/github/stars/SUZIXI-AI/zx-ai-tools?style=flat&color=gold)](https://github.com/SUZIXI-AI/zx-ai-tools)
+[![GitHub downloads](https://img.shields.io/github/downloads/SUZIXI-AI/zx-ai-tools/total?style=flat&color=blue)](https://github.com/SUZIXI-AI/zx-ai-tools/releases)
+[![GitHub release](https://img.shields.io/github/v/release/SUZIXI-AI/zx-ai-tools?style=flat)](https://github.com/SUZIXI-AI/zx-ai-tools/releases)
+[![GitHub issues](https://img.shields.io/github/issues/SUZIXI-AI/zx-ai-tools)](https://github.com/SUZIXI-AI/zx-ai-tools/issues)
 
 A **universal AI IDE account management tool**, currently supporting **Antigravity**, **Codex**, **GitHub Copilot**, **Windsurf**, **Kiro**, **Cursor**, **Gemini Cli**, **CodeBuddy**, **CodeBuddy CN**, **Qoder**, **Trae**, and **Zed**, with multi-instance parallel workflows.
 
@@ -289,7 +289,7 @@ Notes:
 
 ### Option A: Manual Download (Recommended)
 
-Go to [GitHub Releases](https://github.com/jlcodes99/cockpit-tools/releases) to download the package for your system:
+Go to [GitHub Releases](https://github.com/SUZIXI-AI/zx-ai-tools/releases) to download the package for your system:
 
 *   **macOS**: `.dmg` (Apple Silicon & Intel)
 *   **Windows**: `.msi` (Recommended) or `.exe`
@@ -300,27 +300,27 @@ Go to [GitHub Releases](https://github.com/jlcodes99/cockpit-tools/releases) to 
 > Homebrew is required.
 
 ```bash
-brew tap jlcodes99/cockpit-tools https://github.com/jlcodes99/cockpit-tools
-brew install --cask cockpit-tools
+brew tap SUZIXI-AI/zx-ai-tools https://github.com/SUZIXI-AI/zx-ai-tools
+brew install --cask zx-ai-tools
 ```
 
 If you hit the macOS "App is damaged" warning, you can also install with `--no-quarantine`:
 
 ```bash
-brew install --cask --no-quarantine cockpit-tools
+brew install --cask --no-quarantine zx-ai-tools
 ```
 
-If Homebrew says the app already exists (e.g. `already an App at '/Applications/Cockpit Tools.app'`), remove the old app and install again:
+If Homebrew says the app already exists (e.g. `already an App at '/Applications/ZX AI Tools.app'`), remove the old app and install again:
 
 ```bash
-rm -rf "/Applications/Cockpit Tools.app"
-brew install --cask cockpit-tools
+rm -rf "/Applications/ZX AI Tools.app"
+brew install --cask zx-ai-tools
 ```
 
 Or force overwrite the existing app:
 
 ```bash
-brew install --cask --force cockpit-tools
+brew install --cask --force zx-ai-tools
 ```
 
 ### Option C: Arch Linux (AUR)
@@ -329,10 +329,10 @@ Install via an AUR helper such as `yay` or `paru`:
 
 ```bash
 # Source-built package
-yay -S cockpit-tools
+yay -S zx-ai-tools
 
 # Prebuilt binary package
-yay -S cockpit-tools-bin
+yay -S zx-ai-tools-bin
 ```
 
 ### 🛠️ Troubleshooting
@@ -343,7 +343,7 @@ Due to macOS security mechanisms, apps not downloaded from the App Store may tri
 1.  **Command Line Fix** (Recommended):
     Open Terminal and run the following command:
     ```bash
-    sudo xattr -rd com.apple.quarantine "/Applications/Cockpit Tools.app"
+    sudo xattr -rd com.apple.quarantine "/Applications/ZX AI Tools.app"
     ```
     > **Note**: If you changed the app name, please adjust the path in the command accordingly.
 
@@ -381,7 +381,7 @@ npm run tauri build
 
 ## Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=jlcodes99/cockpit-tools&type=Date)](https://star-history.com/#jlcodes99/cockpit-tools&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=SUZIXI-AI/zx-ai-tools&type=Date)](https://star-history.com/#SUZIXI-AI/zx-ai-tools&Date)
 
 ---
 

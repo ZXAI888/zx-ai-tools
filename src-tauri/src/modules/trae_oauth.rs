@@ -762,7 +762,7 @@ fn escape_html(raw: &str) -> String {
 }
 
 fn callback_success_html() -> &'static str {
-    r#"<!doctype html><html><head><meta charset="utf-8"><title>Trae Login</title></head><body><h2>Trae 登录回调已完成</h2><p>可以返回 Cockpit Tools。</p></body></html>"#
+    r#"<!doctype html><html><head><meta charset="utf-8"><title>Trae Login</title></head><body><h2>Trae 登录回调已完成</h2><p>可以返回 ZX AI Tools。</p></body></html>"#
 }
 
 fn callback_pending_html() -> &'static str {
@@ -1084,7 +1084,7 @@ async fn request_login_guidance(login_trace_id: &str) -> Result<String, String> 
             .post(endpoint)
             .header("Accept", "application/json")
             .header("Content-Type", "application/json")
-            .header("User-Agent", "Trae/1.0.0 antigravity-cockpit-tools")
+            .header("User-Agent", "Trae/1.0.0 zx-ai-tools")
             .json(&body);
 
         let response = match request.send().await {

@@ -439,7 +439,7 @@
   },
   "settings": {
     "title": "Настройки приложения",
-    "subtitle": "Настройте работу Cockpit Tools под себя.",
+    "subtitle": "Настройте работу ZX AI Tools под себя.",
     "tabs": {
       "general": "Общие",
       "network": "Сеть",
@@ -589,7 +589,7 @@
       "sideNavLayoutClassic": "Классический макет",
       "antigravityDualSwitchNoRestart": "Двойное переключение без перезапуска",
       "antigravityDualSwitchNoRestartDesc": "При переключении аккаунта локальная запись данных и плавное переключение через расширение выполняются в одном потоке без перезапуска Antigravity.",
-      "appAutoLaunch": "Запускать Cockpit Tools при входе в систему",
+      "appAutoLaunch": "Запускать ZX AI Tools при входе в систему",
       "appAutoLaunchDesc": "Автоматически запускать приложение после входа в систему",
       "startupWakeupDisabled": "Отключено",
       "startupWakeupImmediate": "Разбудить сразу",
@@ -653,7 +653,7 @@
       "proxyUrlRequired": "URL прокси не может быть пустым, когда глобальный прокси включён."
     },
     "about": {
-      "appName": "Cockpit Tools",
+      "appName": "ZX AI Tools",
       "slogan": "Профессиональное решение для управления аккаунтами",
       "author": "Автор",
       "wechat": "Вичат",
@@ -2870,7 +2870,7 @@
       "backToCurrent": "Назад",
       "switchToThisAccount": "Сменить",
       "openDetails": "Открыть подробности",
-      "openCockpitTools": "Открыть Cockpit Tools"
+      "openZXAITools": "Открыть ZX AI Tools"
     },
     "empty": {
       "title": "Нет аккаунтов",

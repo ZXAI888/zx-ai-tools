@@ -4531,7 +4531,7 @@ export function SettingsPage() {
         {/* === Network Tab === */}
         {activeTab === 'network' && (
           <>
-            <div className="group-title">Antigravity Cockpit API</div>
+            <div className="group-title">ZX AI Tools API</div>
             <div className="settings-group">
               <div className="settings-row">
                 <div className="row-label">
@@ -4853,32 +4853,7 @@ export function SettingsPage() {
               </p>
             </div>
 
-            <div className="credits-list">
-              <button className="credit-item" onClick={() => openLink('https://github.com/jlcodes99')}>
-                <div className="credit-icon"><User size={24} /></div>
-                <h3>{t('settings.about.author')}</h3>
-                <p>jlcodes99</p>
-              </button>
-              
-              
-              <button className="credit-item" onClick={() => openLink('https://github.com/jlcodes99/cockpit-tools')}>
-                <div className="credit-icon" style={{ color: '#0f172a' }}><Github size={24} /></div>
-                <h3>{t('settings.about.github')}</h3>
-                <p>cockpit-tools</p>
-              </button>
-
-              <button className="credit-item" onClick={() => openLink('https://github.com/jlcodes99/cockpit-tools/blob/main/docs/DONATE.md')}>
-                <div className="credit-icon" style={{ color: '#ef4444' }}><Heart size={24} /></div>
-                <h3>{t('settings.about.sponsor')}</h3>
-                <p>{t('settings.about.sponsorDesc', 'Donate')}</p>
-              </button>
-
-              <button className="credit-item" onClick={() => openLink('https://github.com/jlcodes99/cockpit-tools/issues')}>
-                <div className="credit-icon" style={{ color: '#3b82f6' }}><MessageSquare size={24} /></div>
-                <h3>{t('settings.about.feedback', '意见反馈')}</h3>
-                <p>{t('settings.about.feedbackDesc', 'Issues')}</p>
-              </button>
-            </div>
+            {/* 原作者信息已移除 */}
           </div>
         )}
         </div>

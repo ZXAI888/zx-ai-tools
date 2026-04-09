@@ -7,8 +7,11 @@ use std::path::{Path, PathBuf};
 use super::config;
 use super::logger;
 
+// TODO: 替换为你自己的公告 JSON 托管地址
+// 例如你的 GitHub: https://raw.githubusercontent.com/你的用户名/你的仓库/main/announcements.json
+// 或者你自己的服务器: https://你的域名/api/announcements.json
 const ANNOUNCEMENT_URL: &str =
-    "https://raw.githubusercontent.com/jlcodes99/cockpit-tools/main/announcements.json";
+    "https://raw.githubusercontent.com/SUZIXI-AI/zx-ai-tools/main/announcements.json";
 const ANNOUNCEMENT_CACHE_FILE: &str = "announcement_cache.json";
 const ANNOUNCEMENT_READ_IDS_FILE: &str = "announcement_read_ids.json";
 const ANNOUNCEMENT_LOCAL_OVERRIDE_FILE: &str = "announcements.local.json";
@@ -533,7 +536,7 @@ async fn fetch_remote_announcements() -> Result<AnnouncementResponse, String> {
     logger::log_info("[Announcement] 从远端拉取公告");
 
     let client = reqwest::Client::builder()
-        .user_agent("Cockpit-Tools")
+        .user_agent("ZX-AI-Tools")
         .timeout(std::time::Duration::from_secs(10))
         .build()
         .map_err(|e| format!("创建公告 HTTP 客户端失败: {}", e))?;

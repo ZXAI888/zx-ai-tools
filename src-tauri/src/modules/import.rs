@@ -42,6 +42,7 @@ const EXTENSION_SECRET_STORAGE_KEYS: [&str; 2] = [
     "antigravity.autoTrigger.credential",
 ];
 const EXTENSION_SECRET_STORAGE_EXTENSION_IDS: [&str; 2] = [
+    // 保留原扩展 ID 用于迁移读取（不修改）
     "jlcodes.antigravity-cockpit",
     "jlcodes99.antigravity-cockpit",
 ];

@@ -65,7 +65,7 @@ fn resolve_provider_and_page(value: &str) -> Option<(&'static str, &'static str)
 }
 
 fn is_supported_scheme(scheme: &str) -> bool {
-    matches!(scheme, "cockpit-tools" | "cockpittools")
+    matches!(scheme, "zx-ai-tools" | "zxaitools" | "cockpit-tools" | "cockpittools")
 }
 
 fn is_import_action(url: &Url) -> bool {
@@ -210,7 +210,7 @@ mod tests {
 
     #[test]
     fn parse_basic_import_link() {
-        let raw = "cockpit-tools://import?provider=codex&token=abc123";
+        let raw = "zx-ai-tools://import?provider=codex&token=abc123";
         let payload = parse_external_import_url(raw).expect("payload");
         assert_eq!(payload.provider_id, "codex");
         assert_eq!(payload.page, "codex");
@@ -221,7 +221,7 @@ mod tests {
     #[test]
     fn parse_alias_and_boolean() {
         let raw =
-            "cockpit-tools://provider-import?platform=codebuddy-cn&payload=%7B%7D&auto_import=true";
+            "zx-ai-tools://provider-import?platform=codebuddy-cn&payload=%7B%7D&auto_import=true";
         let payload = parse_external_import_url(raw).expect("payload");
         assert_eq!(payload.provider_id, "codebuddy_cn");
         assert_eq!(payload.page, "codebuddy-cn");
@@ -231,7 +231,7 @@ mod tests {
 
     #[test]
     fn parse_antigravity_overview_alias() {
-        let raw = "cockpittools://account-import?page=overview&token=1%2F%2F0gTokenDemo";
+        let raw = "zxaitools://account-import?page=overview&token=1%2F%2F0gTokenDemo";
         let payload = parse_external_import_url(raw).expect("payload");
         assert_eq!(payload.provider_id, "antigravity");
         assert_eq!(payload.page, "overview");

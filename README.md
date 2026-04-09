@@ -1,11 +1,11 @@
-# Cockpit Tools
+# ZX AI Tools
 
 [English](README.en.md) · 简体中文
 
-[![GitHub stars](https://img.shields.io/github/stars/jlcodes99/cockpit-tools?style=flat&color=gold)](https://github.com/jlcodes99/cockpit-tools)
-[![GitHub downloads](https://img.shields.io/github/downloads/jlcodes99/cockpit-tools/total?style=flat&color=blue)](https://github.com/jlcodes99/cockpit-tools/releases)
-[![GitHub release](https://img.shields.io/github/v/release/jlcodes99/cockpit-tools?style=flat)](https://github.com/jlcodes99/cockpit-tools/releases)
-[![GitHub issues](https://img.shields.io/github/issues/jlcodes99/cockpit-tools)](https://github.com/jlcodes99/cockpit-tools/issues)
+[![GitHub stars](https://img.shields.io/github/stars/SUZIXI-AI/zx-ai-tools?style=flat&color=gold)](https://github.com/SUZIXI-AI/zx-ai-tools)
+[![GitHub downloads](https://img.shields.io/github/downloads/SUZIXI-AI/zx-ai-tools/total?style=flat&color=blue)](https://github.com/SUZIXI-AI/zx-ai-tools/releases)
+[![GitHub release](https://img.shields.io/github/v/release/SUZIXI-AI/zx-ai-tools?style=flat)](https://github.com/SUZIXI-AI/zx-ai-tools/releases)
+[![GitHub issues](https://img.shields.io/github/issues/SUZIXI-AI/zx-ai-tools)](https://github.com/SUZIXI-AI/zx-ai-tools/issues)
 
 一款**通用的 AI IDE 账号管理工具**，目前支持 **Antigravity**、**Codex**、**GitHub Copilot**、**Windsurf**、**Kiro**、**Cursor**、**Gemini Cli**、**CodeBuddy**、**CodeBuddy CN**、**Qoder**、**Trae** 和 **Zed**，并支持多账号多实例并行运行。
 
@@ -291,7 +291,7 @@ Codex 同样支持多账号多实例并行运行。比如同时打开两个 Code
 
 ### 选项 A: 手动下载 (推荐)
 
-前往 [GitHub Releases](https://github.com/jlcodes99/cockpit-tools/releases) 下载对应系统的安装包：
+前往 [GitHub Releases](https://github.com/SUZIXI-AI/zx-ai-tools/releases) 下载对应系统的安装包：
 
 *   **macOS**: `.dmg` (Apple Silicon & Intel)
 *   **Windows**: `.msi` (推荐) 或 `.exe`
@@ -302,27 +302,27 @@ Codex 同样支持多账号多实例并行运行。比如同时打开两个 Code
 > 需要先安装 Homebrew。
 
 ```bash
-brew tap jlcodes99/cockpit-tools https://github.com/jlcodes99/cockpit-tools
-brew install --cask cockpit-tools
+brew tap SUZIXI-AI/zx-ai-tools https://github.com/SUZIXI-AI/zx-ai-tools
+brew install --cask zx-ai-tools
 ```
 
 如果遇到 macOS “应用已损坏”或无法打开，也可以使用 `--no-quarantine` 安装：
 
 ```bash
-brew install --cask --no-quarantine cockpit-tools
+brew install --cask --no-quarantine zx-ai-tools
 ```
 
-如果提示已存在应用（例如：`already an App at '/Applications/Cockpit Tools.app'`），请先删除旧版本再安装：
+如果提示已存在应用（例如：`already an App at '/Applications/ZX AI Tools.app'`），请先删除旧版本再安装：
 
 ```bash
-rm -rf "/Applications/Cockpit Tools.app"
-brew install --cask cockpit-tools
+rm -rf "/Applications/ZX AI Tools.app"
+brew install --cask zx-ai-tools
 ```
 
 或者直接强制覆盖安装：
 
 ```bash
-brew install --cask --force cockpit-tools
+brew install --cask --force zx-ai-tools
 ```
 
 ### 选项 C: Arch Linux (AUR)
@@ -331,10 +331,10 @@ brew install --cask --force cockpit-tools
 
 ```bash
 # 源码构建包
-yay -S cockpit-tools
+yay -S zx-ai-tools
 
 # 预编译二进制包
-yay -S cockpit-tools-bin
+yay -S zx-ai-tools-bin
 ```
 
 ### 🛠️ 常见问题排查 (Troubleshooting)
@@ -345,7 +345,7 @@ yay -S cockpit-tools-bin
 1.  **命令行修复** (推荐):
     打开终端，执行以下命令：
     ```bash
-    sudo xattr -rd com.apple.quarantine "/Applications/Cockpit Tools.app"
+    sudo xattr -rd com.apple.quarantine "/Applications/ZX AI Tools.app"
     ```
     > **注意**: 如果您修改了应用名称，请在命令中相应调整路径。
 
@@ -383,7 +383,7 @@ npm run tauri build
 
 ## Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=jlcodes99/cockpit-tools&type=Date)](https://star-history.com/#jlcodes99/cockpit-tools&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=SUZIXI-AI/zx-ai-tools&type=Date)](https://star-history.com/#SUZIXI-AI/zx-ai-tools&Date)
 
 ---
 
