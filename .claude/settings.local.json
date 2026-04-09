@@ -3,7 +3,8 @@
     "allow": [
       "mcp__desktop-commander__list_directory",
       "mcp__desktop-commander__start_search",
-      "mcp__desktop-commander__get_more_search_results"
+      "mcp__desktop-commander__get_more_search_results",
+      "Bash(dir \"D:\\\\AI Cokpit 二开\\\\Casks\" /b)"
     ]
   }
 }
