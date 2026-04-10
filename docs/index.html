@@ -4,7 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ZX AI Tools — AI IDE 账号管理工具</title>
-<meta name="description" content="ZX AI Tools — 统一管理 Cursor、Windsurf、Trae 等 AI 编程工具的多账号切换、实例管理与批量导入导出。">
+<meta name="description" content="ZX AI Tools — 统一管理 Codex、Gemini Ultra、Cursor、Windsurf 等 AI 编程平台的多账号登录、一键切换与批量导入导出。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -16,7 +19,7 @@
 --success:#34d399;--warn:#eab308;
 }
 html{scroll-behavior:smooth;scroll-padding-top:80px}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans SC",system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+body{font-family:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans SC",system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased}
 a{color:inherit;text-decoration:none}
 .container{max-width:1140px;margin:0 auto;padding:0 24px}
 
@@ -35,11 +38,11 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;height:64px;background:rgba
 #hero::before{content:'';position:absolute;top:-120px;left:-10%;width:600px;height:600px;background:radial-gradient(circle,rgba(56,189,248,0.07) 0%,transparent 70%);pointer-events:none}
 #hero::after{content:'';position:absolute;bottom:-80px;right:10%;width:400px;height:400px;background:radial-gradient(circle,rgba(99,102,241,0.05) 0%,transparent 70%);pointer-events:none}
 .hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
-.hero-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 16px;background:var(--accent-dark);border:1px solid var(--accent-border);border-radius:100px;font-size:13px;color:var(--accent);margin-bottom:28px;font-weight:500}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 16px;background:var(--accent-dark);border:1px solid var(--accent-border);border-radius:100px;font-size:13px;color:var(--accent);margin-bottom:24px;font-weight:500}
 .hero-badge-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);animation:pulse 2s ease infinite}
 @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(0.8)}}
-.hero-title{font-size:72px;font-weight:700;line-height:1.05;letter-spacing:-2px;margin-bottom:24px}
-.hero-title span{color:var(--accent)}
+.hero-title{font-size:72px;font-weight:800;line-height:1.05;letter-spacing:-2px;margin-bottom:24px;color:#f1f5f9}
+.hero-title span{color:var(--accent);text-shadow:0 0 40px rgba(56,189,248,0.15)}
 .hero-desc{font-size:17px;color:var(--text-muted);max-width:460px;margin-bottom:40px;line-height:1.75}
 .btn-dl{display:inline-flex;align-items:center;gap:8px;padding:13px 28px;background:var(--accent);color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;transition:all .25s;text-decoration:none;letter-spacing:-0.2px}
 .btn-dl:hover{background:var(--accent-hover);transform:translateY(-1px);box-shadow:0 8px 32px rgba(56,189,248,0.22)}
@@ -138,7 +141,7 @@ footer{border-top:1px solid var(--border);padding:36px 0}
 .modal-btn:hover{background:var(--accent-hover)}
 .gear-btn{background:none;border:none;cursor:pointer;color:var(--text-faint);font-size:14px;opacity:0.5;transition:opacity .2s;padding:0;line-height:1}
 .gear-btn:hover{opacity:0.8}
-.hero-logo-icon{width:80px;height:80px;margin-bottom:20px}
+
 </style>
 </head>
 <body>
@@ -161,10 +164,10 @@ ZX AI Tools
 <section id="hero">
 <div class="container"><div class="hero-grid">
 <div class="reveal">
-<svg class="hero-logo-icon" viewBox="0 0 2049 2049" fill="#ffffff"><path d="M1430.5 1431.3 c-3.3 -0.8 -6.2 -4.1 -15.7 -18.3 -5.1 -7.4 -10.6 -15.5 -12.3 -18 -1.7 -2.5 -6.1 -8.8 -9.7 -14 -3.6 -5.2 -10.2 -14.9 -14.8 -21.5 -4.6 -6.6 -14.7 -21.4 -22.5 -33 -15.9 -23.5 -35.3 -51.7 -38.2 -55.5 -1.1 -1.4 -9.8 -14.2 -19.5 -28.5 -9.6 -14.3 -20.4 -30.3 -24 -35.5 -3.5 -5.2 -12.7 -18.7 -20.3 -30 -15.3 -22.6 -25.6 -37.8 -35.1 -51.5 -3.5 -4.9 -11.1 -16.2 -17.1 -25 -5.9 -8.7 -18.2 -26.7 -27.2 -40 -9.1 -13.2 -21.6 -31.6 -27.9 -41 -6.3 -9.3 -19.2 -28.4 -28.6 -42.2 -9.4 -13.9 -22.5 -33.3 -29.1 -43 -30.4 -44.9 -37.4 -55.2 -41 -60.3 -2.2 -3 -8.5 -12.2 -14.1 -20.5 -5.5 -8.2 -12.1 -17.8 -14.5 -21.3 l-4.5 -6.3 -202.6 0 -202.7 -0.1 -3.1 -5.1 c-2.9 -4.7 -19.5 -31.5 -35.5 -57.2 -20.1 -32.3 -32.2 -51.6 -40.3 -63.9 -5 -7.7 -8.9 -14.3 -8.7 -14.6 0.4 -0.6 601.5 -0.7 611.6 -0.1 2 0.1 3.4 1.4 6.1 5.3 1.8 2.9 9.4 14.1 16.8 24.8 7.3 10.7 16.1 23.6 19.5 28.5 27.6 40.7 50.3 73.9 65.1 95.5 9.6 14 21.8 31.9 27 39.8 5.3 7.8 10.2 14.2 10.9 14.2 0.8 0 1.7 -1 2 -2.2 0.4 -1.1 4.7 -8 9.5 -15.2 4.8 -7.2 16.7 -25.2 26.4 -40.1 9.8 -14.8 23.7 -36 31 -47 7.3 -11 14.5 -22 16 -24.5 1.4 -2.5 4.4 -7 6.5 -10 2.1 -3 14.1 -21 26.6 -40 12.5 -19 24.1 -36.3 25.7 -38.5 3.2 -4.5 12.3 -18.2 21.7 -32.7 3.5 -5.4 6.9 -9.8 7.5 -9.8 1.2 0 9.8 11.7 11.1 15.1 0.3 0.9 -0.8 3.3 -2.8 6 -3.6 4.7 -15.3 21.1 -23.2 32.4 -2.7 3.9 -8.7 12.4 -13.5 19 -4.8 6.6 -15.4 21.4 -23.6 32.9 -8.2 11.5 -18.7 26.2 -23.4 32.7 -8.7 12 -33.8 46.9 -42.6 59.3 -25.8 36.2 -38.6 54.4 -43.1 61.6 -1.9 3 -4.4 6.5 -5.5 7.7 l-2 2.2 4.3 5.7 c2.4 3.2 4.9 5.9 5.4 6.1 0.6 0.1 5.8 -7.5 11.7 -17 5.8 -9.4 13.1 -20.8 16.2 -25.2 3.1 -4.4 11.4 -16.8 18.5 -27.5 7 -10.7 18.6 -28.2 25.7 -38.8 7.1 -10.7 17 -25.8 21.9 -33.6 8.6 -13.6 18 -27.9 30.8 -47.1 34.3 -51.3 48 -71.5 48.5 -71.5 0.7 0 8.8 12.4 10.6 16.1 0.7 1.4 -0.1 3.1 -3.5 7.6 -2.4 3.1 -6.4 8.7 -8.9 12.4 -2.5 3.6 -6.6 9.5 -9.2 13 -2.6 3.5 -9.2 12.7 -14.7 20.4 -5.6 7.7 -17.2 23.8 -25.8 35.9 -8.7 12 -20.5 28.7 -26.3 37.1 -5.8 8.3 -14.5 20.7 -19.5 27.4 -4.9 6.7 -9.7 13.2 -10.5 14.4 -0.8 1.3 -4.2 6 -7.5 10.6 -3.3 4.6 -6.9 9.6 -8 11.1 -2.4 3.4 -24.7 35 -33.5 47.5 -3.4 5 -7.6 10.5 -9.2 12.3 -1.6 1.9 -2.5 3.8 -2.1 4.5 3 5.2 8.5 12.7 9.1 12.3 0.4 -0.2 5.7 -8.1 11.7 -17.6 6.1 -9.4 18.5 -28.5 27.6 -42.3 9.1 -13.9 22.7 -34.6 30.3 -46.2 7.6 -11.5 16.1 -24.4 19 -28.6 2.8 -4.1 8.5 -12.7 12.6 -19 16.2 -24.9 46.9 -71.4 58.9 -89.2 12.1 -18.2 12.6 -18.8 14.1 -16.7 3.7 5.3 9 14.5 9 15.5 0 0.6 -2.3 4.3 -5 8.1 -2.8 3.8 -7.8 11 -11.2 15.9 -3.3 5 -7.3 10.6 -8.8 12.5 -1.5 1.9 -5.5 7.6 -8.8 12.5 -9.2 13.6 -18.2 26.3 -35.1 49.7 -8.5 11.7 -19.7 27.4 -24.9 34.8 -5.2 7.4 -13.2 18.4 -17.7 24.5 -4.5 6 -11.8 16.2 -16.1 22.5 -4.3 6.4 -10.5 15.2 -13.7 19.5 -7.6 10.5 -20.2 28.4 -29.3 41.6 l-7.3 10.6 4 5.9 c2.2 3.2 4.3 6 4.7 6.1 0.8 0.3 9.9 -12.5 17.5 -24.5 13.2 -20.8 20.9 -32.8 44.4 -68.4 13.8 -21.1 29.8 -45.5 35.6 -54.3 12.7 -19.5 35.1 -53.6 54.2 -82.5 7.8 -11.8 15.5 -23.6 17.1 -26.2 1.6 -2.7 3.1 -4.8 3.4 -4.8 0.4 0 3.2 3.9 6.3 8.6 6.6 9.9 6.9 7.8 -2.8 20.9 -5.1 6.9 -15.6 21.7 -18.5 25.9 -0.7 1.1 -6.8 9.7 -13.5 19 -6.6 9.3 -15.4 21.7 -19.5 27.7 -9.6 13.8 -34.9 49.2 -43 60.2 -1.4 1.9 -6.5 9.2 -11.4 16.3 -5 7.1 -11.5 16.3 -14.6 20.4 -3.1 4.1 -10.2 14 -15.7 22 -5.5 8 -15.1 21.7 -21.3 30.5 -6.2 8.8 -11.5 16.5 -11.7 17.2 -0.6 1.5 6.8 12.3 8.4 12.3 0.6 0 3.7 -3.7 6.8 -8.3 9.3 -13.6 38 -58 41.5 -64.3 1.9 -3.3 5.7 -9 8.5 -12.9 2.8 -3.8 7.3 -10.6 10 -15 2.7 -4.4 10.8 -16.9 18 -27.7 7.1 -10.9 17.3 -26.4 22.6 -34.5 5.3 -8.2 21.1 -32.2 35.2 -53.5 14 -21.2 26 -39.6 26.6 -40.7 0.7 -1.2 1.6 -2.1 2 -2.1 1.1 0 11.1 16 11.1 17.6 0 0.6 -2.2 4 -4.8 7.5 -2.7 3.5 -7.2 9.8 -10 13.9 -2.8 4.1 -8.5 12.2 -12.6 18 -4.2 5.8 -10.2 14.4 -13.5 19.2 -3.3 4.8 -8.4 11.8 -11.3 15.5 -6.4 8.2 -14.5 19.5 -26 36.3 -10.2 15 -19.5 28.2 -31.7 45 -18.2 25.2 -41.8 58.6 -48.5 69 -2.7 4.1 -8 11.9 -11.8 17.2 l-6.9 9.7 4.3 6.5 c2.4 3.6 4.8 6.4 5.3 6.3 0.6 -0.2 2.4 -2.5 4 -5.1 3 -4.7 13.3 -20.8 30.8 -48.1 4.9 -7.7 12 -18.5 15.7 -24 3.7 -5.5 9.7 -14.9 13.5 -21 3.7 -6 9.1 -14.6 12 -19 2.9 -4.4 8.7 -13.4 13 -20 9.9 -15.3 40.5 -61.7 66.9 -101.8 7.6 -11.4 14.2 -20.5 14.7 -20.1 1.4 0.8 9.9 15.6 9.9 17.2 0 0.8 -6.9 10.9 -15.3 22.6 -14 19.2 -27.5 38.3 -55.2 77.8 -5.5 7.8 -14.5 20.5 -20 28.1 -11.6 16.1 -17.1 23.9 -35.6 50.7 -7.5 10.7 -18 25.8 -23.4 33.5 -5.4 7.7 -13.3 19 -17.6 25.2 -4.4 6.2 -7.9 11.8 -7.9 12.4 0 1.8 8 12.1 9.1 11.7 0.5 -0.2 2.4 -2.7 4.2 -5.6 1.7 -2.9 7.1 -11 11.8 -18 4.8 -7 13.1 -19.7 18.6 -28.2 5.5 -8.5 15.1 -23.4 21.3 -33 6.1 -9.6 13.7 -21.1 16.7 -25.5 3 -4.4 6 -9 6.6 -10.2 1.9 -3.6 18.3 -29 30 -46.6 6 -8.9 12.1 -18.1 13.5 -20.5 15 -24 45 -69.2 46 -69.2 1.1 0 8.2 16.2 8.2 18.7 0 1.2 -1.1 3.4 -2.4 5 -1.3 1.5 -9.5 12.9 -18.2 25.3 -22.1 31.2 -25.8 36.6 -30.1 43.5 -2 3.3 -5.9 9 -8.7 12.7 -2.8 3.6 -7.3 9.9 -10.1 13.8 -2.7 4 -9.4 13.4 -14.8 20.9 -5.3 7.5 -12.6 17.9 -16.2 23.1 -3.6 5.2 -12 17.5 -18.8 27.2 -6.7 9.7 -15.3 22.2 -19.2 27.8 -3.8 5.6 -8.6 12.4 -10.5 15.1 -1.9 2.7 -5.5 7.8 -8 11.4 -2.5 3.6 -6.9 9.9 -9.8 14 -6.3 8.7 -7 6.2 7.3 26.5 5.7 8 13.8 19.7 18.1 26.1 4.4 6.3 15.6 22.7 24.9 36.3 25.7 37.4 52.5 76.5 63.1 92.1 5.2 7.7 13.2 19.4 17.7 26 26 37.7 35.7 52.5 35.7 54.3 0 3.9 -22.3 47.9 -33.7 66.7 -13.3 21.7 -35.4 50 -53.8 68.6 -13.6 13.8 -17.1 15.9 -24 14.2z"/><path d="M519 1370.1 c0 -0.5 10.2 -16.1 22.7 -34.7 32.9 -49.2 77.9 -116.2 86.1 -128.4 6.6 -9.8 39.1 -58.8 61.1 -92 5.3 -7.9 16.3 -24.4 24.4 -36.5 8.1 -12.1 34.5 -51.6 58.5 -87.7 l43.7 -65.7 92.7 -0.1 92.7 0 -8.4 12.3 c-4.6 6.7 -26.6 39.4 -48.9 72.7 -22.3 33.3 -46.4 69.3 -53.5 80 -16.2 24.1 -17.5 26.2 -57.7 86.5 -18 27 -32.9 49.6 -33.1 50.3 -0.4 0.9 25 1.2 124.8 1.2 69 0 125.9 -0.4 126.4 -0.8 0.6 -0.4 1.9 -2 3.1 -3.7 21.6 -31.1 35.9 -51.7 40.9 -59 12.4 -18.2 38.6 -56.1 40.3 -58.3 l1.7 -2.3 5.2 7.8 c5.2 8 27.9 40.5 59.8 85.8 9.9 14.1 20.4 28.9 23.3 33 2.8 4.2 5.2 7.9 5.2 8.5 0 0.5 -2.1 3.7 -4.8 7.2 -2.6 3.5 -8.7 12.2 -13.5 19.3 -4.8 7.2 -11.6 17.1 -15 22 -3.5 5 -10.3 14.9 -15.2 22 -4.9 7.2 -12.1 17.5 -16 23 -3.9 5.5 -11.3 16.4 -16.5 24.3 l-9.4 14.2 -310.3 0 c-179 0 -310.3 -0.4 -310.3 -0.9z"/></svg>
+
 <div class="hero-badge"><span class="hero-badge-dot"></span>v0.20.19</div>
 <h1 class="hero-title">ZX AI<br><span>Tools</span></h1>
-<p class="hero-desc">AI IDE 账号管理工具。统一管理 Cursor、Windsurf、Trae 等 AI 编程工具的多账号切换、实例管理与批量导入导出，让 AI 编程工具触手可及。</p>
+<p class="hero-desc">AI IDE 全方位管理工具。统一管理 Codex、Google Gemini Ultra、Cursor、Windsurf 等主流 AI 编程平台的多账号登录、一键切换与批量导入导出。</p>
 <a href="#download" class="btn-dl">
 <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
 立即下载
@@ -181,26 +184,26 @@ ZX AI Tools
 <div class="mock-av" style="background:#34d399">C</div>
 <div class="mock-info">
 <div class="mock-name">alice@codex.dev</div>
-<div class="mock-sub">GPT Codex · 当前账号</div>
+<div class="mock-sub">Codex Pro · 当前账号</div>
 <div class="mock-bar-track"><div class="mock-bar-fill" style="width:75%;background:linear-gradient(90deg,#38bdf8,#818cf8)"></div></div>
 </div>
 <div class="mock-tag" style="color:#34d399;background:rgba(52,211,153,0.1)">活跃</div>
 </div>
 <div class="mock-row">
-<div class="mock-av" style="background:rgba(99,102,241,0.3);color:#818cf8">A</div>
+<div class="mock-av" style="background:rgba(251,146,60,0.3);color:#fb923c">G</div>
 <div class="mock-info">
-<div class="mock-name">bob@antigravity.ai</div>
-<div class="mock-sub">Antigravity · 备用</div>
-<div class="mock-bar-track"><div class="mock-bar-fill" style="width:45%;background:linear-gradient(90deg,#818cf8,#a78bfa)"></div></div>
+<div class="mock-name">bob@gemini.ai</div>
+<div class="mock-sub">Gemini Ultra · 备用</div>
+<div class="mock-bar-track"><div class="mock-bar-fill" style="width:50%;background:linear-gradient(90deg,#fb923c,#f59e0b)"></div></div>
 </div>
 <div class="mock-tag" style="color:#38bdf8;background:rgba(56,189,248,0.1)">备用</div>
 </div>
 <div class="mock-row">
-<div class="mock-av" style="background:rgba(251,146,60,0.3);color:#fb923c">G</div>
+<div class="mock-av" style="background:rgba(99,102,241,0.3);color:#818cf8">W</div>
 <div class="mock-info">
-<div class="mock-name">carol@gemini.dev</div>
-<div class="mock-sub">Gemini CLI · 测试</div>
-<div class="mock-bar-track"><div class="mock-bar-fill" style="width:90%;background:linear-gradient(90deg,#34d399,#6ee7b7)"></div></div>
+<div class="mock-name">carol@windsurf.dev</div>
+<div class="mock-sub">Windsurf · 测试</div>
+<div class="mock-bar-track"><div class="mock-bar-fill" style="width:90%;background:linear-gradient(90deg,#34d399,#a3e635)"></div></div>
 </div>
 <div class="mock-tag" style="color:#34d399;background:rgba(52,211,153,0.1)">充足</div>
 </div>
@@ -222,32 +225,32 @@ ZX AI Tools
 <div class="feat-card">
 <div class="feat-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
 <div class="feat-title">多平台支持</div>
-<div class="feat-desc">支持 Cursor、Windsurf、GitHub Copilot、Trae、Kiro 等主流 AI IDE，一站式管理所有账号。</div>
+<div class="feat-desc">支持 Codex、Gemini Ultra、Cursor、Windsurf、Trae、Kiro 等主流 AI IDE，统一管理所有平台账号。</div>
 </div>
 <div class="feat-card">
 <div class="feat-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg></div>
 <div class="feat-title">多账号切换</div>
-<div class="feat-desc">快速切换当前账号，支持批量刷新配额，实时查看模型配额与重置时间。</div>
+<div class="feat-desc">每个平台支持多个账号登录，一键切换无需反复登录，告别手动修改配置文件。</div>
 </div>
 <div class="feat-card">
 <div class="feat-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
 <div class="feat-title">批量导入导出</div>
-<div class="feat-desc">支持 JSON 格式批量导入导出账号，轻松在设备间迁移或备份账号数据。</div>
+<div class="feat-desc">支持批量导入账号数据，也可一键导出备份随时恢复，安全无忧。</div>
 </div>
 <div class="feat-card">
 <div class="feat-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></div>
 <div class="feat-title">实例管理</div>
-<div class="feat-desc">管理设备指纹与多开实例，支持账号有效性验证，处理 403 等异常场景。</div>
+<div class="feat-desc">为每个平台管理多个独立实例，隔离配置与数据，多项目并行互不干扰。</div>
 </div>
 <div class="feat-card">
 <div class="feat-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10A15.3 15.3 0 0112 2z"/></svg></div>
 <div class="feat-title">多语言界面</div>
-<div class="feat-desc">支持中文、英文、日语、韩语等 17 种语言，适合全球用户使用。</div>
+<div class="feat-desc">内置 17 种语言支持，自动检测系统语言，也可在设置中手动切换。</div>
 </div>
 <div class="feat-card">
 <div class="feat-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg></div>
-<div class="feat-title">应用内更新</div>
-<div class="feat-desc">支持应用内检测并下载新版本，可开启后台静默自动更新，始终保持最新。</div>
+<div class="feat-title">自动更新</div>
+<div class="feat-desc">内置自动更新检测，新版本发布后第一时间提醒，一键完成升级。</div>
 </div>
 </div>
 </div>
@@ -327,12 +330,7 @@ ZX AI Tools
 </a>
 </div>
 </div>
-<div class="dl-more reveal">
-<a href="https://github.com/ZXAI888/zx-ai-tools/releases" target="_blank">
-查看所有历史版本
-<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-</a>
-</div>
+
 </div>
 </section>
 
