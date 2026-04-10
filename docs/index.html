@@ -8,430 +8,342 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#0b1120;
-  --bg-light:#111827;
-  --surface:#1e293b;
-  --border:#334155;
-  --border-hover:#475569;
-  --accent:#38bdf8;
-  --accent-hover:#0ea5e9;
-  --accent-dark:#0284c7;
-  --accent-bg:rgba(56,189,248,0.10);
-  --accent-bg-light:rgba(56,189,248,0.06);
-  --accent-border:rgba(56,189,248,0.15);
-  --accent-border-hover:rgba(56,189,248,0.3);
-  --text:#f1f5f9;
-  --text-muted:#94a3b8;
-  --text-faint:#64748b;
-  --success:#22c55e;
-  --warn:#eab308;
+--bg:#0b1120;--bg-light:#111827;--surface:#1e293b;--surface-hover:#252d3d;
+--border:#1e2130;--border-hover:#2a3040;
+--accent:#38bdf8;--accent-hover:#0ea5e9;--accent-dark:rgba(56,189,248,0.12);
+--accent-border:rgba(56,189,248,0.15);--accent-border-hover:rgba(56,189,248,0.3);
+--text:#e8e9ed;--text-muted:#6b7280;--text-faint:#4b5563;
+--success:#34d399;--warn:#eab308;
 }
 html{scroll-behavior:smooth;scroll-padding-top:80px}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans SC",system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans SC",system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased}
 a{color:inherit;text-decoration:none}
-.container{max-width:1200px;margin:0 auto;padding:0 24px}
+.container{max-width:1140px;margin:0 auto;padding:0 24px}
 
-/* ─── NAV ─── */
-nav{position:fixed;top:0;left:0;right:0;z-index:1000;height:64px;background:rgba(11,17,32,0.85);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
+/* ═══ NAV ═══ */
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;height:64px;background:rgba(11,17,32,0.82);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid var(--border)}
 .nav-inner{display:flex;align-items:center;justify-content:space-between;height:64px}
-.nav-logo{display:flex;align-items:center;gap:10px;font-size:18px;font-weight:600;color:var(--text)}
-.nav-logo svg{flex-shrink:0}
-.nav-links{display:flex;align-items:center;gap:28px}
-.nav-links a{font-size:14px;color:var(--text-muted);transition:color .2s}
+.nav-logo{display:flex;align-items:center;gap:10px;font-size:17px;font-weight:600;color:var(--text);letter-spacing:-0.2px}
+.nav-links{display:flex;align-items:center;gap:32px}
+.nav-links a{font-size:14px;color:var(--text-muted);transition:color .25s;position:relative}
 .nav-links a:hover,.nav-links a.active{color:var(--text)}
-.nav-links .nav-gh{display:flex;align-items:center;gap:4px}
-.nav-links .nav-admin{color:var(--accent)}
-@media(max-width:768px){
-  .nav-links .nav-feat,.nav-links .nav-admin{display:none}
-}
+.nav-links a.active::after{content:'';position:absolute;bottom:-4px;left:0;right:0;height:2px;background:var(--accent);border-radius:1px}
+@media(max-width:768px){.nav-links .hide-mobile{display:none}}
 
-/* ─── HERO ─── */
-#hero{padding:140px 0 100px;position:relative;overflow:hidden}
-#hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 20% 30%,rgba(56,189,248,0.08),transparent 60%);pointer-events:none}
-.hero-inner{display:grid;grid-template-columns:55% 45%;gap:48px;align-items:center}
-.hero-badge{display:inline-flex;align-items:center;gap:6px;padding:5px 14px;background:rgba(56,189,248,0.12);border:1px solid rgba(56,189,248,0.25);border-radius:100px;font-size:13px;color:var(--accent);margin-bottom:24px}
-.hero-title{font-size:64px;font-weight:700;line-height:1.1;margin-bottom:20px;letter-spacing:-1px}
+/* ═══ HERO ═══ */
+#hero{padding:150px 0 110px;position:relative;overflow:hidden}
+#hero::before{content:'';position:absolute;top:-120px;left:-10%;width:600px;height:600px;background:radial-gradient(circle,rgba(56,189,248,0.07) 0%,transparent 70%);pointer-events:none}
+#hero::after{content:'';position:absolute;bottom:-80px;right:10%;width:400px;height:400px;background:radial-gradient(circle,rgba(99,102,241,0.05) 0%,transparent 70%);pointer-events:none}
+.hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 16px;background:var(--accent-dark);border:1px solid var(--accent-border);border-radius:100px;font-size:13px;color:var(--accent);margin-bottom:28px;font-weight:500}
+.hero-badge-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);animation:pulse 2s ease infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(0.8)}}
+.hero-title{font-size:72px;font-weight:700;line-height:1.05;letter-spacing:-2px;margin-bottom:24px}
 .hero-title span{color:var(--accent)}
-.hero-desc{font-size:18px;color:var(--text-muted);max-width:500px;margin-bottom:36px;line-height:1.7}
-.btn-primary{display:inline-flex;align-items:center;gap:8px;padding:14px 32px;background:linear-gradient(135deg,#38bdf8,#0ea5e9);color:#fff;border:none;border-radius:8px;font-size:16px;font-weight:600;cursor:pointer;transition:all .2s;text-decoration:none}
-.btn-primary:hover{background:linear-gradient(135deg,#0ea5e9,#0284c7);transform:translateY(-1px);box-shadow:0 8px 24px rgba(56,189,248,0.25)}
+.hero-desc{font-size:17px;color:var(--text-muted);max-width:460px;margin-bottom:40px;line-height:1.75}
+.btn-dl{display:inline-flex;align-items:center;gap:8px;padding:13px 28px;background:var(--accent);color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;transition:all .25s;text-decoration:none;letter-spacing:-0.2px}
+.btn-dl:hover{background:var(--accent-hover);transform:translateY(-1px);box-shadow:0 8px 32px rgba(56,189,248,0.22)}
 
-/* Mock window */
-.hero-window{background:var(--surface);border-radius:16px;border:1px solid var(--border);overflow:hidden;box-shadow:0 32px 64px rgba(0,0,0,0.4)}
-.win-titlebar{background:#162032;padding:12px 16px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--border)}
-.win-dot{width:12px;height:12px;border-radius:50%}
-.win-dot.r{background:#ff5f57}
-.win-dot.y{background:#ffbd2e}
-.win-dot.g{background:#28c840}
-.win-title-text{flex:1;text-align:center;font-size:12px;color:var(--text-faint)}
-.win-body{padding:16px;display:flex;flex-direction:column;gap:10px}
-.win-card{background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:10px;padding:12px 14px;display:flex;align-items:center;gap:12px}
-.win-avatar{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;flex-shrink:0}
-.win-info{flex:1;min-width:0}
-.win-name{font-size:13px;font-weight:600;color:var(--text)}
-.win-email{font-size:11px;color:var(--text-faint);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.win-bar-wrap{margin-top:6px;display:flex;align-items:center;gap:6px}
-.win-bar-bg{flex:1;height:4px;background:rgba(255,255,255,0.08);border-radius:4px;overflow:hidden}
-.win-bar-fill{height:100%;background:linear-gradient(90deg,#38bdf8,#818cf8);border-radius:4px}
-.win-bar-label{font-size:10px;color:var(--text-faint);white-space:nowrap}
-.win-tag{font-size:10px;padding:2px 7px;border-radius:4px;background:var(--accent-bg);color:var(--accent);border:1px solid var(--accent-border);white-space:nowrap}
-
+/* 3D Mock */
+.hero-mock-wrap{perspective:1200px}
+.hero-mock{background:var(--surface);border-radius:16px;border:1px solid var(--border);overflow:hidden;transform:rotateY(-8deg) rotateX(4deg);transition:transform .5s ease;box-shadow:0 40px 80px rgba(0,0,0,0.45),0 0 0 1px rgba(255,255,255,0.03) inset}
+.hero-mock:hover{transform:rotateY(-3deg) rotateX(2deg)}
+.mock-bar{background:#0f1729;padding:10px 14px;display:flex;align-items:center;gap:7px;border-bottom:1px solid var(--border)}
+.mock-dot{width:10px;height:10px;border-radius:50%}
+.mock-dot-r{background:#ff5f57}.mock-dot-y{background:#febc2e}.mock-dot-g{background:#28c840}
+.mock-bar-title{flex:1;text-align:center;font-size:11px;color:var(--text-faint);letter-spacing:0.3px}
+.mock-body{padding:14px;display:flex;flex-direction:column;gap:8px}
+.mock-row{display:flex;align-items:center;gap:11px;padding:11px 13px;background:rgba(255,255,255,0.025);border-radius:10px;border:1px solid rgba(255,255,255,0.04)}
+.mock-av{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;flex-shrink:0}
+.mock-info{flex:1;min-width:0}
+.mock-name{font-size:12.5px;font-weight:600;color:var(--text)}
+.mock-sub{font-size:10.5px;color:var(--text-faint);margin-top:1px}
+.mock-bar-track{margin-top:5px;height:3px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden}
+.mock-bar-fill{height:100%;border-radius:3px}
+.mock-tag{font-size:9.5px;padding:2px 8px;border-radius:5px;font-weight:600;white-space:nowrap;letter-spacing:0.2px}
 @media(max-width:768px){
-  .hero-inner{grid-template-columns:1fr;gap:32px}
-  .hero-title{font-size:40px}
-  .hero-desc{font-size:16px}
-  .hero-window{display:none}
+.hero-grid{grid-template-columns:1fr;gap:40px;text-align:center}
+.hero-title{font-size:44px;letter-spacing:-1px}
+.hero-desc{margin:0 auto 36px;font-size:16px}
+.hero-mock-wrap{display:none}
 }
 
-/* ─── SECTION COMMON ─── */
-.section-header{text-align:center;margin-bottom:64px}
-.section-label{display:inline-block;font-size:13px;font-weight:600;letter-spacing:2px;color:var(--accent);text-transform:uppercase;margin-bottom:12px}
-.section-title{font-size:40px;font-weight:700;color:var(--text);margin-bottom:16px;letter-spacing:-0.5px}
-.section-desc{font-size:16px;color:var(--text-muted)}
-@media(max-width:768px){
-  .section-title{font-size:24px}
-}
-
-/* Scroll animations */
-.fade-up{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease}
-.fade-up.visible{opacity:1;transform:translateY(0)}
-
-/* ─── FEATURES ─── */
+/* ═══ FEATURES ═══ */
 #features{padding:100px 0;background:var(--bg-light)}
-.features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
-.feat-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:32px;transition:all .25s}
-.feat-card:hover{border-color:var(--border-hover);transform:translateY(-2px);box-shadow:0 12px 32px rgba(0,0,0,0.3)}
-.feat-icon{width:48px;height:48px;background:var(--accent-bg);border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:20px;color:var(--accent)}
-.feat-title{font-size:17px;font-weight:600;color:var(--text);margin-bottom:8px}
-.feat-desc{font-size:14px;color:var(--text-muted);line-height:1.65}
-@media(max-width:768px){.features-grid{grid-template-columns:1fr}}
-@media(min-width:540px) and (max-width:768px){.features-grid{grid-template-columns:repeat(2,1fr)}}
+.sec-head{text-align:center;margin-bottom:60px}
+.sec-label{display:inline-block;font-size:12px;font-weight:600;letter-spacing:3px;color:var(--accent);text-transform:uppercase;margin-bottom:14px}
+.sec-title{font-size:44px;font-weight:700;letter-spacing:-1px;margin-bottom:14px}
+.sec-desc{font-size:15px;color:var(--text-muted)}
+@media(max-width:768px){.sec-title{font-size:28px}}
 
-/* ─── DOWNLOAD ─── */
-#download{padding:100px 0;background:var(--bg)}
-.download-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-bottom:24px}
-.dl-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:32px;display:flex;flex-direction:column}
-.dl-card-head{display:flex;align-items:center;gap:12px;margin-bottom:8px}
-.dl-platform{font-size:22px;font-weight:700;color:var(--text)}
-.dl-sub{font-size:13px;color:var(--text-faint);margin-bottom:20px}
-.dl-item{display:flex;align-items:center;gap:8px;padding:12px 16px;background:var(--accent-bg-light);border:1px solid var(--accent-border);border-radius:8px;margin-bottom:8px;transition:all .2s;text-decoration:none}
-.dl-item:hover{background:var(--accent-bg);border-color:var(--accent-border-hover)}
-.dl-item-name{flex:1;font-size:14px;font-weight:500;color:var(--text)}
-.dl-item-size{font-size:13px;color:var(--text-faint);white-space:nowrap;margin-left:4px}
-.dl-warn{background:rgba(234,179,8,0.06);border:1px solid rgba(234,179,8,0.2);border-radius:12px;padding:16px 20px;font-size:13px;color:#d4a800;line-height:1.65;display:flex;gap:10px;margin-top:8px}
-.dl-warn-icon{flex-shrink:0;margin-top:2px}
-.dl-warn code{background:rgba(234,179,8,0.12);border-radius:4px;padding:2px 8px;font-family:monospace;display:inline-block;margin-top:6px;color:#fbbf24}
-.dl-more{text-align:center;margin-top:32px}
-.dl-more a{display:inline-flex;align-items:center;gap:6px;color:var(--text-muted);font-size:14px;transition:color .2s}
+/* Gap-divider feature grid */
+.feat-grid-wrap{background:var(--border);border-radius:20px;overflow:hidden;display:grid;grid-template-columns:repeat(3,1fr);gap:1px}
+.feat-card{background:var(--surface);padding:36px 32px;transition:background .25s}
+.feat-card:hover{background:var(--surface-hover)}
+.feat-icon{width:44px;height:44px;background:var(--accent-dark);border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:20px;color:var(--accent)}
+.feat-title{font-size:16px;font-weight:600;margin-bottom:8px;letter-spacing:-0.2px}
+.feat-desc{font-size:13.5px;color:var(--text-muted);line-height:1.7}
+@media(max-width:900px){.feat-grid-wrap{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.feat-grid-wrap{grid-template-columns:1fr}}
+
+/* ═══ DOWNLOAD ═══ */
+#download{padding:100px 0;background:var(--bg);position:relative}
+#download::after{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:600px;height:300px;background:radial-gradient(ellipse,rgba(56,189,248,0.04),transparent 70%);filter:blur(20px);pointer-events:none}
+.dl-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-bottom:20px}
+.dl-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:28px;display:flex;flex-direction:column;transition:border-color .25s}
+.dl-card:hover{border-color:var(--border-hover)}
+.dl-head{display:flex;align-items:center;gap:12px;margin-bottom:6px}
+.dl-head svg{flex-shrink:0}
+.dl-plat{font-size:20px;font-weight:700;letter-spacing:-0.3px}
+.dl-sub{font-size:12px;color:var(--text-faint);margin-bottom:16px}
+/* Gradient-border download item */
+.dl-item{position:relative;display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:10px;margin-bottom:6px;background:linear-gradient(135deg,rgba(56,189,248,0.06),rgba(99,102,241,0.04));transition:all .2s;text-decoration:none;overflow:hidden}
+.dl-item::before{content:'';position:absolute;inset:0;border-radius:10px;padding:1px;background:linear-gradient(135deg,rgba(56,189,248,0.18),rgba(99,102,241,0.10));-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
+.dl-item:hover{background:linear-gradient(135deg,rgba(56,189,248,0.10),rgba(99,102,241,0.07))}
+.dl-item-name{flex:1;font-size:13.5px;font-weight:500;color:var(--text)}
+.dl-item-size{font-size:12px;color:var(--text-faint);white-space:nowrap}
+.dl-warn{background:rgba(234,179,8,0.06);border:1px solid rgba(234,179,8,0.15);border-radius:12px;padding:14px 16px;font-size:12.5px;color:#c9a400;line-height:1.7;display:flex;gap:10px;margin-top:12px}
+.dl-warn code{background:rgba(234,179,8,0.10);border-radius:4px;padding:2px 8px;font-family:ui-monospace,SFMono-Regular,monospace;display:inline-block;margin-top:4px;color:#eab308;font-size:12px}
+.dl-more{text-align:center;margin-top:36px}
+.dl-more a{display:inline-flex;align-items:center;gap:6px;color:var(--text-muted);font-size:13px;transition:color .2s}
 .dl-more a:hover{color:var(--accent)}
-@media(max-width:768px){.download-grid{grid-template-columns:1fr}}
-@media(min-width:540px) and (max-width:768px){.download-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:900px){.dl-grid{grid-template-columns:1fr}}
 
-/* ─── FOOTER ─── */
-footer{border-top:1px solid var(--border);padding:40px 0}
+/* ═══ FOOTER ═══ */
+footer{border-top:1px solid var(--border);padding:36px 0}
 .footer-inner{display:flex;align-items:center;justify-content:space-between}
-.footer-logo{display:flex;align-items:center;gap:8px}
-.footer-logo-name{font-size:16px;font-weight:600;color:var(--text)}
-.footer-logo-sub{font-size:13px;color:var(--text-faint);margin-top:2px}
-.footer-links{display:flex;align-items:center;gap:24px}
-.footer-links a{display:flex;align-items:center;gap:6px;font-size:14px;color:var(--text-muted);transition:color .2s}
+.footer-left{display:flex;align-items:center;gap:10px}
+.footer-name{font-size:15px;font-weight:600}
+.footer-sub{font-size:12px;color:var(--text-faint);margin-top:1px}
+.footer-links{display:flex;gap:24px}
+.footer-links a{display:flex;align-items:center;gap:5px;font-size:13px;color:var(--text-muted);transition:color .2s}
 .footer-links a:hover{color:var(--text)}
-@media(max-width:600px){
-  .footer-inner{flex-direction:column;gap:20px;text-align:center}
-}
+@media(max-width:600px){.footer-inner{flex-direction:column;gap:20px;text-align:center}}
+
+/* Scroll anim */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .6s ease-out,transform .6s ease-out}
+.reveal.visible{opacity:1;transform:translateY(0)}
 </style>
 </head>
 <body>
 
-<!-- ═══════════════ NAV ═══════════════ -->
+<!-- NAV -->
 <nav>
-  <div class="container">
-    <div class="nav-inner">
-      <a class="nav-logo" href="#hero">
-        <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-          <rect width="32" height="32" rx="8" fill="#38bdf8"/>
-          <text x="16" y="22" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="13" font-weight="700" fill="#fff">ZX</text>
-        </svg>
-        ZX AI Tools
-      </a>
-      <div class="nav-links">
-        <a href="#features" class="nav-feat" id="nav-feat">功能</a>
-        <a href="#download" id="nav-dl">下载</a>
-        <a href="https://github.com/ZXAI888/zx-ai-tools" target="_blank" class="nav-gh">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.604-3.369-1.34-3.369-1.34-.454-1.155-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.336-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>
-          GitHub
-        </a>
-        <a href="admin.html" target="_blank" class="nav-admin">管理后台</a>
-      </div>
-    </div>
-  </div>
+<div class="container"><div class="nav-inner">
+<a class="nav-logo" href="#hero">
+<svg width="30" height="30" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#38bdf8"/><text x="16" y="21.5" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="12.5" font-weight="800" fill="#fff">ZX</text></svg>
+ZX AI Tools
+</a>
+<div class="nav-links">
+<a href="#features" id="nav-feat" class="hide-mobile">功能</a>
+<a href="#download" id="nav-dl">下载</a>
+<a href="https://github.com/ZXAI888/zx-ai-tools" target="_blank" rel="noopener">GitHub</a>
+<a href="admin.html" target="_blank" class="hide-mobile" style="color:var(--accent)">管理后台</a>
+</div>
+</div></div>
 </nav>
 
-<!-- ═══════════════ HERO ═══════════════ -->
+<!-- HERO -->
 <section id="hero">
-  <div class="container">
-    <div class="hero-inner">
-      <div class="fade-up">
-        <div class="hero-badge">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          v0.20.19
-        </div>
-        <h1 class="hero-title">ZX AI<br><span>Tools</span></h1>
-        <p class="hero-desc">AI IDE 账号管理工具。统一管理 Cursor、Windsurf、Trae 等 AI 编程工具的多账号切换、实例管理与批量导入导出，让 AI 编程工具触手可及。</p>
-        <a href="#download" class="btn-primary">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          立即下载
-        </a>
-      </div>
-
-      <div class="hero-window fade-up" style="transition-delay:.15s">
-        <div class="win-titlebar">
-          <div class="win-dot r"></div>
-          <div class="win-dot y"></div>
-          <div class="win-dot g"></div>
-          <span class="win-title-text">ZX AI Tools</span>
-        </div>
-        <div class="win-body">
-          <div class="win-card">
-            <div class="win-avatar" style="background:linear-gradient(135deg,#38bdf8,#0ea5e9)">A</div>
-            <div class="win-info">
-              <div class="win-name">alice@example.com</div>
-              <div class="win-email">Cursor Pro · 当前账号</div>
-              <div class="win-bar-wrap">
-                <div class="win-bar-bg"><div class="win-bar-fill" style="width:72%"></div></div>
-                <span class="win-bar-label">72% 剩余</span>
-              </div>
-            </div>
-            <div class="win-tag">活跃</div>
-          </div>
-          <div class="win-card">
-            <div class="win-avatar" style="background:linear-gradient(135deg,#818cf8,#6366f1)">B</div>
-            <div class="win-info">
-              <div class="win-name">bob@example.com</div>
-              <div class="win-email">Windsurf · 备用账号</div>
-              <div class="win-bar-wrap">
-                <div class="win-bar-bg"><div class="win-bar-fill" style="width:38%"></div></div>
-                <span class="win-bar-label">38% 剩余</span>
-              </div>
-            </div>
-            <div class="win-tag" style="color:#818cf8;background:rgba(129,140,248,0.1);border-color:rgba(129,140,248,0.2)">备用</div>
-          </div>
-          <div class="win-card">
-            <div class="win-avatar" style="background:linear-gradient(135deg,#22c55e,#16a34a)">C</div>
-            <div class="win-info">
-              <div class="win-name">carol@example.com</div>
-              <div class="win-email">Trae · 测试账号</div>
-              <div class="win-bar-wrap">
-                <div class="win-bar-bg"><div class="win-bar-fill" style="width:95%"></div></div>
-                <span class="win-bar-label">95% 剩余</span>
-              </div>
-            </div>
-            <div class="win-tag" style="color:#22c55e;background:rgba(34,197,94,0.1);border-color:rgba(34,197,94,0.2)">充足</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+<div class="container"><div class="hero-grid">
+<div class="reveal">
+<div class="hero-badge"><span class="hero-badge-dot"></span>v0.20.19</div>
+<h1 class="hero-title">ZX AI<br><span>Tools</span></h1>
+<p class="hero-desc">AI IDE 账号管理工具。统一管理 Cursor、Windsurf、Trae 等 AI 编程工具的多账号切换、实例管理与批量导入导出，让 AI 编程工具触手可及。</p>
+<a href="#download" class="btn-dl">
+<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+立即下载
+</a>
+</div>
+<div class="hero-mock-wrap reveal" style="transition-delay:.12s">
+<div class="hero-mock">
+<div class="mock-bar">
+<div class="mock-dot mock-dot-r"></div><div class="mock-dot mock-dot-y"></div><div class="mock-dot mock-dot-g"></div>
+<span class="mock-bar-title">ZX AI Tools</span>
+</div>
+<div class="mock-body">
+<div class="mock-row">
+<div class="mock-av" style="background:linear-gradient(135deg,#38bdf8,#0ea5e9)">A</div>
+<div class="mock-info">
+<div class="mock-name">alice@cursor.com</div>
+<div class="mock-sub">Cursor Pro · 当前账号</div>
+<div class="mock-bar-track"><div class="mock-bar-fill" style="width:72%;background:linear-gradient(90deg,#38bdf8,#818cf8)"></div></div>
+</div>
+<div class="mock-tag" style="color:#34d399;background:rgba(52,211,153,0.1)">活跃</div>
+</div>
+<div class="mock-row">
+<div class="mock-av" style="background:linear-gradient(135deg,#818cf8,#6366f1)">B</div>
+<div class="mock-info">
+<div class="mock-name">bob@windsurf.ai</div>
+<div class="mock-sub">Windsurf · 备用</div>
+<div class="mock-bar-track"><div class="mock-bar-fill" style="width:38%;background:linear-gradient(90deg,#818cf8,#a78bfa)"></div></div>
+</div>
+<div class="mock-tag" style="color:#818cf8;background:rgba(129,140,248,0.1)">备用</div>
+</div>
+<div class="mock-row">
+<div class="mock-av" style="background:linear-gradient(135deg,#34d399,#10b981)">C</div>
+<div class="mock-info">
+<div class="mock-name">carol@trae.dev</div>
+<div class="mock-sub">Trae · 测试</div>
+<div class="mock-bar-track"><div class="mock-bar-fill" style="width:95%;background:linear-gradient(90deg,#34d399,#6ee7b7)"></div></div>
+</div>
+<div class="mock-tag" style="color:#34d399;background:rgba(52,211,153,0.1)">充足</div>
+</div>
+</div>
+</div>
+</div>
+</div></div>
 </section>
 
-<!-- ═══════════════ FEATURES ═══════════════ -->
+<!-- FEATURES -->
 <section id="features">
-  <div class="container">
-    <div class="section-header fade-up">
-      <span class="section-label">核心功能</span>
-      <h2 class="section-title">为 AI 编程而生</h2>
-      <p class="section-desc">一个界面，统一管理你所有 AI 编程工具的账号与配置。</p>
-    </div>
-    <div class="features-grid">
-      <div class="feat-card fade-up">
-        <div class="feat-icon">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><rect x="5" y="6" width="14" height="8" rx="1" opacity=".5"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-        </div>
-        <div class="feat-title">多平台支持</div>
-        <div class="feat-desc">支持 Cursor、Windsurf、GitHub Copilot、Trae、Kiro 等主流 AI IDE，一站式管理所有账号。</div>
-      </div>
-      <div class="feat-card fade-up" style="transition-delay:.05s">
-        <div class="feat-icon">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="3"/><circle cx="15" cy="7" r="3" opacity=".6"/><path d="M3 20c0-4 2.7-7 6-7"/><path d="M21 20c0-4-2.7-7-6-7"/><path d="M9 13c3.3 0 6 3 6 7H3c0-4 2.7-7 6-7z"/></svg>
-        </div>
-        <div class="feat-title">多账号切换</div>
-        <div class="feat-desc">快速切换当前账号，支持批量刷新配额，实时查看模型配额与重置时间。</div>
-      </div>
-      <div class="feat-card fade-up" style="transition-delay:.1s">
-        <div class="feat-icon">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/><polyline points="16 13 12 17 8 13"/><line x1="12" y1="17" x2="12" y2="9"/></svg>
-        </div>
-        <div class="feat-title">批量导入导出</div>
-        <div class="feat-desc">支持 JSON 格式批量导入导出账号，轻松在设备间迁移或备份账号数据。</div>
-      </div>
-      <div class="feat-card fade-up" style="transition-delay:.05s">
-        <div class="feat-icon">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5" opacity=".6"/><rect x="3" y="13" width="8" height="8" rx="1.5" opacity=".6"/><rect x="13" y="13" width="8" height="8" rx="1.5" opacity=".4"/></svg>
-        </div>
-        <div class="feat-title">实例管理</div>
-        <div class="feat-desc">管理设备指纹与多开实例，支持账号有效性验证，处理 403 等异常场景。</div>
-      </div>
-      <div class="feat-card fade-up" style="transition-delay:.1s">
-        <div class="feat-icon">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
-        </div>
-        <div class="feat-title">多语言界面</div>
-        <div class="feat-desc">支持中文、英文、日语、韩语等 17 种语言，适合全球用户使用。</div>
-      </div>
-      <div class="feat-card fade-up" style="transition-delay:.15s">
-        <div class="feat-icon">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
-        </div>
-        <div class="feat-title">应用内更新</div>
-        <div class="feat-desc">支持应用内检测并下载新版本，可开启后台静默自动更新，始终保持最新。</div>
-      </div>
-    </div>
-  </div>
+<div class="container">
+<div class="sec-head reveal">
+<div class="sec-label">核心功能</div>
+<h2 class="sec-title">为 AI 编程而生</h2>
+<p class="sec-desc">一个界面，统一管理你所有 AI 编程工具的账号与配置。</p>
+</div>
+<div class="feat-grid-wrap reveal" style="transition-delay:.1s">
+<div class="feat-card">
+<div class="feat-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
+<div class="feat-title">多平台支持</div>
+<div class="feat-desc">支持 Cursor、Windsurf、GitHub Copilot、Trae、Kiro 等主流 AI IDE，一站式管理所有账号。</div>
+</div>
+<div class="feat-card">
+<div class="feat-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg></div>
+<div class="feat-title">多账号切换</div>
+<div class="feat-desc">快速切换当前账号，支持批量刷新配额，实时查看模型配额与重置时间。</div>
+</div>
+<div class="feat-card">
+<div class="feat-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
+<div class="feat-title">批量导入导出</div>
+<div class="feat-desc">支持 JSON 格式批量导入导出账号，轻松在设备间迁移或备份账号数据。</div>
+</div>
+<div class="feat-card">
+<div class="feat-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></div>
+<div class="feat-title">实例管理</div>
+<div class="feat-desc">管理设备指纹与多开实例，支持账号有效性验证，处理 403 等异常场景。</div>
+</div>
+<div class="feat-card">
+<div class="feat-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10A15.3 15.3 0 0112 2z"/></svg></div>
+<div class="feat-title">多语言界面</div>
+<div class="feat-desc">支持中文、英文、日语、韩语等 17 种语言，适合全球用户使用。</div>
+</div>
+<div class="feat-card">
+<div class="feat-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg></div>
+<div class="feat-title">应用内更新</div>
+<div class="feat-desc">支持应用内检测并下载新版本，可开启后台静默自动更新，始终保持最新。</div>
+</div>
+</div>
+</div>
 </section>
 
-<!-- ═══════════════ DOWNLOAD ═══════════════ -->
+<!-- DOWNLOAD -->
 <section id="download">
-  <div class="container">
-    <div class="section-header fade-up">
-      <span class="section-label">免费下载</span>
-      <h2 class="section-title">下载 ZX AI Tools</h2>
-      <p class="section-desc">选择你的操作系统，即刻开始。</p>
-    </div>
-
-    <div class="download-grid">
-      <!-- Windows -->
-      <div class="dl-card fade-up">
-        <div class="dl-card-head">
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-13.051-1.949"/></svg>
-          <span class="dl-platform">Windows</span>
-        </div>
-        <div class="dl-sub">Windows 10 / 11 (64-bit)</div>
-        <a class="dl-item" href="https://github.com/ZXAI888/zx-ai-tools/releases/latest/download/ZX.AI.Tools_0.20.19_x64-setup.exe">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          <span class="dl-item-name">Windows 安装版 (.exe)</span>
-          <span class="dl-item-size">~8 MB</span>
-        </a>
-        <a class="dl-item" href="https://github.com/ZXAI888/zx-ai-tools/releases/latest/download/ZX.AI.Tools_0.20.19_x64_en-US.msi">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          <span class="dl-item-name">Windows 安装版 (.msi)</span>
-          <span class="dl-item-size">~8 MB</span>
-        </a>
-      </div>
-
-      <!-- macOS -->
-      <div class="dl-card fade-up" style="transition-delay:.06s">
-        <div class="dl-card-head">
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.029 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></svg>
-          <span class="dl-platform">macOS</span>
-        </div>
-        <div class="dl-sub">macOS 10.15+ (Intel & Apple Silicon)</div>
-        <a class="dl-item" href="https://github.com/ZXAI888/zx-ai-tools/releases/latest/download/ZX.AI.Tools_0.20.19_universal.dmg">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          <span class="dl-item-name">macOS 通用版 (.dmg)</span>
-          <span class="dl-item-size">~17 MB</span>
-        </a>
-        <div class="dl-warn" style="margin-top:16px">
-          <svg class="dl-warn-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-          <div>如遇"已损坏"提示，请在终端执行：<br><code>xattr -cr "/Applications/ZX AI Tools.app"</code></div>
-        </div>
-      </div>
-
-      <!-- Linux -->
-      <div class="dl-card fade-up" style="transition-delay:.12s">
-        <div class="dl-card-head">
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><path d="M12.504 0c-.155 0-.315.008-.480.021-4.226.333-3.105 4.807-3.17 6.298-.076 1.092-.3 1.953-1.05 3.02-.885 1.051-2.127 2.75-2.716 4.521-.278.832-.41 1.684-.287 2.489a.424.424 0 00-.11.135c-.26.268-.45.6-.663.839-.199.199-.485.267-.797.4-.313.136-.658.269-.864.68-.12.263-.149.571-.598.527.222.286.509.437.832.556.328.12.65.099.843.01.13-.023.145-.03.19-.026.205.055.37.195.562.34.374.28.739.543 1.365.543h.218c-.002.001-.004.003-.004.006-.004.015.01.023.01.023v.012c.002.002.004.003.004.006 0 .004.002.012.004.018.006.02.018.037.022.055.024.094.036.203.046.295.01.086.01.17.004.22-.034.246-.088.549-.14.815-.054.257-.09.515-.085.736 0 .016.003.031.003.047.003.04.004.078.01.116.01.073.025.145.044.214.062.19.15.413.268.608.111.191.259.38.436.548.354.34.843.614 1.449.765.297.072.6.108.908.108.29 0 .581-.036.862-.1.316-.075.6-.207.857-.365.24-.157.448-.338.619-.55.168-.214.298-.465.38-.768.203-.026.404-.054.6-.087.19-.034.376-.075.556-.118.29-.076.58-.152.849-.278.27-.13.534-.304.784-.52.143-.128.227-.3.254-.486.006-.048.01-.097.01-.145 0-.051-.005-.1-.013-.148a.79.79 0 00-.07-.205c-.003-.006-.005-.013-.009-.019-.042-.074-.101-.134-.17-.177a.578.578 0 00-.22-.088c-.084-.02-.172-.025-.254-.016-.011.001-.021.003-.03.004-.079.01-.154.029-.224.061a.685.685 0 00-.18.115.58.58 0 00-.129.16c-.013.024-.022.049-.03.074-.018.059-.023.12-.02.177.003.048.015.093.03.134.015.04.036.077.06.11.017.025.035.047.055.067.02.019.04.036.063.05.017.012.035.022.054.03.019.008.038.013.057.016.02.003.04.004.059.004.019 0 .038-.001.057-.004.017-.003.034-.007.05-.013.017-.006.032-.014.046-.024a.42.42 0 00.071-.066c.017-.023.031-.049.041-.076.01-.028.015-.057.015-.086 0-.03-.005-.059-.014-.086-.009-.027-.023-.052-.04-.075a.378.378 0 00-.07-.066.38.38 0 00-.096-.046.378.378 0 00-.112-.017.376.376 0 00-.113.018.41.41 0 00-.096.047.373.373 0 00-.07.067.39.39 0 00-.04.074c-.009.027-.014.056-.014.086 0 .029.005.058.014.085.009.028.023.053.04.076.018.023.042.044.07.06.028.017.06.03.094.038-.008.025-.022.047-.038.067a.356.356 0 01-.065.058.381.381 0 01-.082.037.432.432 0 01-.095.02.453.453 0 01-.099.003.445.445 0 01-.096-.017.408.408 0 01-.085-.035.382.382 0 01-.07-.054.376.376 0 01-.054-.07.395.395 0 01-.035-.086.443.443 0 01-.012-.099.44.44 0 01.014-.1.41.41 0 01.04-.09.376.376 0 01.057-.073.388.388 0 01.076-.055.414.414 0 01.09-.034.447.447 0 01.099-.012c.028 0 .056.003.083.008.027.005.054.012.08.022.025.01.048.022.07.036.022.015.042.031.06.05.017.019.033.04.046.062.012.022.022.045.028.069.007.023.01.047.01.071 0 .026-.003.05-.01.074-.006.024-.016.046-.028.068-.013.02-.028.04-.046.057a.432.432 0 01-.061.045c-.023.013-.047.024-.073.031-.025.007-.052.011-.08.011-.028 0-.055-.004-.08-.011-.025-.007-.049-.017-.072-.03-.021-.013-.041-.028-.059-.045a.335.335 0 01-.045-.06.403.403 0 01-.029-.07.399.399 0 01-.01-.074c0-.025.003-.05.01-.073.006-.024.016-.046.029-.067.012-.02.028-.04.045-.057z"/></svg>
-          <span class="dl-platform">Linux</span>
-        </div>
-        <div class="dl-sub">x86_64 和 ARM64 架构</div>
-        <a class="dl-item" href="https://github.com/ZXAI888/zx-ai-tools/releases/latest/download/ZX.AI.Tools_0.20.19_aarch64.AppImage">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          <span class="dl-item-name">Linux ARM64 (.AppImage)</span>
-          <span class="dl-item-size">~82 MB</span>
-        </a>
-        <a class="dl-item" href="https://github.com/ZXAI888/zx-ai-tools/releases/latest/download/ZX.AI.Tools_0.20.19_arm64.deb">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          <span class="dl-item-name">Linux ARM64 (.deb)</span>
-          <span class="dl-item-size">~8 MB</span>
-        </a>
-        <a class="dl-item" href="https://github.com/ZXAI888/zx-ai-tools/releases/latest/download/ZX.AI.Tools_0.20.19-1.aarch64.rpm">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          <span class="dl-item-name">Linux ARM64 (.rpm)</span>
-          <span class="dl-item-size">~8 MB</span>
-        </a>
-        <a class="dl-item" href="https://github.com/ZXAI888/zx-ai-tools/releases/latest/download/ZX.AI.Tools_0.20.19_amd64.AppImage">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          <span class="dl-item-name">Linux x86_64 (.AppImage)</span>
-          <span class="dl-item-size">~84 MB</span>
-        </a>
-        <a class="dl-item" href="https://github.com/ZXAI888/zx-ai-tools/releases/latest/download/ZX.AI.Tools_0.20.19_amd64.deb">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          <span class="dl-item-name">Linux x86_64 (.deb)</span>
-          <span class="dl-item-size">~8 MB</span>
-        </a>
-        <a class="dl-item" href="https://github.com/ZXAI888/zx-ai-tools/releases/latest/download/ZX.AI.Tools_0.20.19-1.x86_64.rpm">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          <span class="dl-item-name">Linux x86_64 (.rpm)</span>
-          <span class="dl-item-size">~8 MB</span>
-        </a>
-      </div>
-    </div>
-
-    <div class="dl-more fade-up">
-      <a href="https://github.com/ZXAI888/zx-ai-tools/releases" target="_blank">
-        查看所有历史版本
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-      </a>
-    </div>
-  </div>
+<div class="container">
+<div class="sec-head reveal">
+<div class="sec-label">免费下载</div>
+<h2 class="sec-title" style="font-size:48px">下载 ZX AI Tools</h2>
+<p class="sec-desc">选择你的操作系统，即刻开始。</p>
+</div>
+<div class="dl-grid">
+<!-- Windows -->
+<div class="dl-card reveal">
+<div class="dl-head">
+<svg width="28" height="28" viewBox="0 0 24 24" fill="var(--text)"><path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-13.051-1.949"/></svg>
+<span class="dl-plat">Windows</span>
+</div>
+<div class="dl-sub">Windows 10 / 11 (64-bit)</div>
+<a class="dl-item" href="https://github.com/ZXAI888/zx-ai-tools/releases/latest/download/ZX.AI.Tools_0.20.19_x64-setup.exe">
+<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+<span class="dl-item-name">Windows 安装版 (.exe)</span><span class="dl-item-size">~8 MB</span>
+</a>
+<a class="dl-item" href="https://github.com/ZXAI888/zx-ai-tools/releases/latest/download/ZX.AI.Tools_0.20.19_x64_en-US.msi">
+<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+<span class="dl-item-name">Windows 安装版 (.msi)</span><span class="dl-item-size">~8 MB</span>
+</a>
+</div>
+<!-- macOS -->
+<div class="dl-card reveal" style="transition-delay:.06s">
+<div class="dl-head">
+<svg width="28" height="28" viewBox="0 0 24 24" fill="var(--text)"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+<span class="dl-plat">macOS</span>
+</div>
+<div class="dl-sub">macOS 10.15+ (Intel &amp; Apple Silicon)</div>
+<a class="dl-item" href="https://github.com/ZXAI888/zx-ai-tools/releases/latest/download/ZX.AI.Tools_0.20.19_universal.dmg">
+<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+<span class="dl-item-name">macOS 通用版 (.dmg)</span><span class="dl-item-size">~17 MB</span>
+</a>
+<div class="dl-warn">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:1px"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+<div>如遇"已损坏"提示，请在终端执行：<br><code>xattr -cr "/Applications/ZX AI Tools.app"</code></div>
+</div>
+</div>
+<!-- Linux -->
+<div class="dl-card reveal" style="transition-delay:.12s">
+<div class="dl-head">
+<svg width="28" height="28" viewBox="0 0 24 24" fill="var(--text)"><path d="M12.5 2C10 2 8.5 4 8.5 6.5c0 1.5.5 2.5 1 3.5-1.5 1-3 3-3 5.5 0 0-.5 1-1.5 1.5S3 18 3 19.5s1.5 2 3 2 2.5-1 2.5-1h7s1 1 2.5 1 3-.5 3-2-1.5-1.5-2.5-2-1.5-1.5-1.5-1.5c0-2.5-1.5-4.5-3-5.5.5-1 1-2 1-3.5C15.5 4 14 2 12.5 2zm0 2c1 0 1.5 1.5 1.5 2.5s-.5 2-1 2.5h-1c-.5-.5-1-1.5-1-2.5S11 4 12.5 4z"/></svg>
+<span class="dl-plat">Linux</span>
+</div>
+<div class="dl-sub">x86_64 和 ARM64 架构</div>
+<a class="dl-item" href="https://github.com/ZXAI888/zx-ai-tools/releases/latest/download/ZX.AI.Tools_0.20.19_aarch64.AppImage">
+<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+<span class="dl-item-name">ARM64 (.AppImage)</span><span class="dl-item-size">~82 MB</span>
+</a>
+<a class="dl-item" href="https://github.com/ZXAI888/zx-ai-tools/releases/latest/download/ZX.AI.Tools_0.20.19_arm64.deb">
+<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+<span class="dl-item-name">ARM64 (.deb)</span><span class="dl-item-size">~8 MB</span>
+</a>
+<a class="dl-item" href="https://github.com/ZXAI888/zx-ai-tools/releases/latest/download/ZX.AI.Tools_0.20.19-1.aarch64.rpm">
+<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+<span class="dl-item-name">ARM64 (.rpm)</span><span class="dl-item-size">~8 MB</span>
+</a>
+<a class="dl-item" href="https://github.com/ZXAI888/zx-ai-tools/releases/latest/download/ZX.AI.Tools_0.20.19_amd64.AppImage">
+<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+<span class="dl-item-name">x86_64 (.AppImage)</span><span class="dl-item-size">~84 MB</span>
+</a>
+<a class="dl-item" href="https://github.com/ZXAI888/zx-ai-tools/releases/latest/download/ZX.AI.Tools_0.20.19_amd64.deb">
+<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+<span class="dl-item-name">x86_64 (.deb)</span><span class="dl-item-size">~8 MB</span>
+</a>
+<a class="dl-item" href="https://github.com/ZXAI888/zx-ai-tools/releases/latest/download/ZX.AI.Tools_0.20.19-1.x86_64.rpm">
+<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+<span class="dl-item-name">x86_64 (.rpm)</span><span class="dl-item-size">~8 MB</span>
+</a>
+</div>
+</div>
+<div class="dl-more reveal">
+<a href="https://github.com/ZXAI888/zx-ai-tools/releases" target="_blank">
+查看所有历史版本
+<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+</a>
+</div>
+</div>
 </section>
 
-<!-- ═══════════════ FOOTER ═══════════════ -->
+<!-- FOOTER -->
 <footer>
-  <div class="container">
-    <div class="footer-inner">
-      <div class="footer-logo">
-        <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
-          <rect width="32" height="32" rx="8" fill="#38bdf8"/>
-          <text x="16" y="22" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="13" font-weight="700" fill="#fff">ZX</text>
-        </svg>
-        <div>
-          <div class="footer-logo-name">ZX AI Tools</div>
-          <div class="footer-logo-sub">开源免费</div>
-        </div>
-      </div>
-      <div class="footer-links">
-        <a href="https://github.com/ZXAI888/zx-ai-tools" target="_blank">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.604-3.369-1.34-3.369-1.34-.454-1.155-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.336-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>
-          GitHub
-        </a>
-        <a href="admin.html" target="_blank">管理后台</a>
-      </div>
-    </div>
-  </div>
+<div class="container"><div class="footer-inner">
+<div class="footer-left">
+<svg width="26" height="26" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#38bdf8"/><text x="16" y="21.5" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="12.5" font-weight="800" fill="#fff">ZX</text></svg>
+<div><div class="footer-name">ZX AI Tools</div><div class="footer-sub">开源免费</div></div>
+</div>
+<div class="footer-links">
+<a href="https://github.com/ZXAI888/zx-ai-tools" target="_blank">
+<svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.604-3.369-1.34-3.369-1.34-.454-1.155-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.336-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>
+GitHub
+</a>
+<a href="admin.html" target="_blank">管理后台</a>
+</div>
+</div></div>
 </footer>
 
 <script>
-// Fade-up animations via IntersectionObserver
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(e => {
-    if(e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
-  });
-}, { threshold: 0.1 });
-document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
-
-// Active nav highlight
-const sections = [{id:'features', nav:'nav-feat'},{id:'download', nav:'nav-dl'}];
-const navObs = new IntersectionObserver((entries) => {
-  entries.forEach(e => {
-    const map = sections.find(s => s.id === e.target.id);
-    if(!map) return;
-    const link = document.getElementById(map.nav);
-    if(!link) return;
-    if(e.isIntersecting) link.style.color='#38bdf8';
-    else link.style.color='';
-  });
-}, { rootMargin:'-40% 0px -40% 0px' });
-sections.forEach(s => { const el = document.getElementById(s.id); if(el) navObs.observe(el); });
+const obs=new IntersectionObserver(e=>{e.forEach(t=>{if(t.isIntersecting){t.target.classList.add('visible');obs.unobserve(t.target)}})},{threshold:.08});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+const secs=[{id:'features',nav:'nav-feat'},{id:'download',nav:'nav-dl'}];
+const nobs=new IntersectionObserver(e=>{e.forEach(t=>{const s=secs.find(x=>x.id===t.target.id);if(!s)return;const l=document.getElementById(s.nav);if(!l)return;l.classList.toggle('active',t.isIntersecting)})},{rootMargin:'-35% 0px -35% 0px'});
+secs.forEach(s=>{const el=document.getElementById(s.id);if(el)nobs.observe(el)});
 </script>
 </body>
 </html>
