@@ -4,529 +4,434 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ZX AI Tools — AI IDE 账号管理工具</title>
-<meta name="description" content="统一管理 Cursor、Windsurf、Trae 等 AI 编程工具的多账号切换、实例管理与批量导入导出。">
+<meta name="description" content="ZX AI Tools — 统一管理 Cursor、Windsurf、Trae 等 AI 编程工具的多账号切换、实例管理与批量导入导出。">
 <style>
-/* ===== Reset & Base ===== */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#09090b;
-  --surface:#18181b;
-  --border:#27272a;
-  --border-hover:#3f3f46;
-  --accent:#E8613C;
-  --accent-hover:#d4532e;
-  --accent-bg:rgba(232,97,60,0.1);
-  --accent-bg-light:rgba(232,97,60,0.06);
-  --text:#f4f4f5;
-  --text-muted:#a1a1aa;
-  --text-faint:#71717a;
+  --bg:#0b1120;
+  --bg-light:#111827;
+  --surface:#1e293b;
+  --border:#334155;
+  --border-hover:#475569;
+  --accent:#38bdf8;
+  --accent-hover:#0ea5e9;
+  --accent-dark:#0284c7;
+  --accent-bg:rgba(56,189,248,0.10);
+  --accent-bg-light:rgba(56,189,248,0.06);
+  --accent-border:rgba(56,189,248,0.15);
+  --accent-border-hover:rgba(56,189,248,0.3);
+  --text:#f1f5f9;
+  --text-muted:#94a3b8;
+  --text-faint:#64748b;
   --success:#22c55e;
   --warn:#eab308;
-  --radius-sm:8px;
-  --radius:16px;
-  --radius-pill:20px;
-  --shadow-card:0 4px 6px -1px rgba(0,0,0,0.3),0 2px 4px -2px rgba(0,0,0,0.3);
-  --shadow-nav:0 1px 3px rgba(0,0,0,0.5);
-  --font:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans SC",system-ui,sans-serif;
 }
-html{scroll-behavior:smooth}
-body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+html{scroll-behavior:smooth;scroll-padding-top:80px}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans SC",system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden}
 a{color:inherit;text-decoration:none}
-img{display:block;max-width:100%}
-
-/* ===== Animations ===== */
-@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-@keyframes fadeIn{from{opacity:0}to{opacity:1}}
-.anim{opacity:0;animation:fadeUp .6s ease-out forwards}
-.anim-d1{animation-delay:.1s}
-.anim-d2{animation-delay:.2s}
-.anim-d3{animation-delay:.3s}
-.anim-d4{animation-delay:.4s}
-.anim-d5{animation-delay:.5s}
-.anim-d6{animation-delay:.6s}
-.anim-d7{animation-delay:.7s}
-.anim-d8{animation-delay:.8s}
-
-/* ===== Layout Helpers ===== */
 .container{max-width:1200px;margin:0 auto;padding:0 24px}
-.flex{display:flex}.items-center{align-items:center}
-.gap-8{gap:8px}.gap-12{gap:12px}.gap-16{gap:16px}
-.justify-between{justify-content:space-between}
 
-/* ===== Navigation ===== */
-.nav{
-  position:fixed;top:0;left:0;right:0;z-index:100;
-  height:64px;
-  background:rgba(9,9,11,0.85);
-  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
-  border-bottom:1px solid var(--border);
-  box-shadow:var(--shadow-nav);
+/* ─── NAV ─── */
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;height:64px;background:rgba(11,17,32,0.85);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;height:64px}
+.nav-logo{display:flex;align-items:center;gap:10px;font-size:18px;font-weight:600;color:var(--text)}
+.nav-logo svg{flex-shrink:0}
+.nav-links{display:flex;align-items:center;gap:28px}
+.nav-links a{font-size:14px;color:var(--text-muted);transition:color .2s}
+.nav-links a:hover,.nav-links a.active{color:var(--text)}
+.nav-links .nav-gh{display:flex;align-items:center;gap:4px}
+.nav-links .nav-admin{color:var(--accent)}
+@media(max-width:768px){
+  .nav-links .nav-feat,.nav-links .nav-admin{display:none}
 }
-.nav-inner{
-  height:64px;display:flex;align-items:center;justify-content:space-between;
-}
-.nav-brand{display:flex;align-items:center;gap:10px;cursor:pointer}
-.nav-brand-name{font-size:18px;font-weight:600;color:var(--text);letter-spacing:-.3px}
-.nav-links{display:flex;align-items:center;gap:4px}
-.nav-link{
-  display:flex;align-items:center;gap:6px;
-  padding:8px 14px;border-radius:var(--radius-sm);
-  font-size:14px;color:var(--text-muted);
-  transition:all .2s ease;
-}
-.nav-link:hover{color:var(--text);background:rgba(255,255,255,0.06)}
 
-/* ===== Hero Section ===== */
-.hero{
-  padding-top:160px;padding-bottom:120px;
-  position:relative;overflow:hidden;
-}
-/* subtle grid background */
-.hero::before{
-  content:'';position:absolute;inset:0;
-  background-image:
-    linear-gradient(rgba(232,97,60,0.03) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(232,97,60,0.03) 1px,transparent 1px);
-  background-size:48px 48px;
-  pointer-events:none;
-}
-/* radial glow */
-.hero::after{
-  content:'';position:absolute;top:-200px;left:50%;transform:translateX(-50%);
-  width:800px;height:600px;border-radius:50%;
-  background:radial-gradient(ellipse,rgba(232,97,60,0.12) 0%,transparent 70%);
-  pointer-events:none;
-}
-.hero-inner{
-  display:grid;grid-template-columns:55fr 45fr;gap:64px;align-items:center;
-  position:relative;z-index:1;
-}
-.hero-badge{
-  display:inline-flex;align-items:center;gap:7px;
-  background:rgba(232,97,60,0.12);border:1px solid rgba(232,97,60,0.28);
-  border-radius:var(--radius-pill);padding:6px 14px;
-  font-size:14px;font-weight:500;color:var(--accent);
-  margin-bottom:24px;
-}
-.hero-title{
-  font-size:clamp(42px,6vw,68px);font-weight:700;line-height:1.08;
-  letter-spacing:-2px;margin-bottom:24px;
-}
-.hero-title .accent{color:var(--accent)}
-.hero-desc{
-  font-size:18px;color:var(--text-muted);line-height:1.75;
-  max-width:480px;margin-bottom:40px;
-}
-.btn-primary{
-  display:inline-flex;align-items:center;gap:10px;
-  background:var(--accent);color:#fff;
-  padding:14px 32px;border-radius:var(--radius-sm);
-  font-size:16px;font-weight:500;border:none;cursor:pointer;
-  transition:all .2s ease;box-shadow:0 4px 16px rgba(232,97,60,0.35);
-  text-decoration:none;
-}
-.btn-primary:hover{background:var(--accent-hover);transform:scale(1.02);box-shadow:0 6px 20px rgba(232,97,60,0.45)}
+/* ─── HERO ─── */
+#hero{padding:140px 0 100px;position:relative;overflow:hidden}
+#hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 20% 30%,rgba(56,189,248,0.08),transparent 60%);pointer-events:none}
+.hero-inner{display:grid;grid-template-columns:55% 45%;gap:48px;align-items:center}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;padding:5px 14px;background:rgba(56,189,248,0.12);border:1px solid rgba(56,189,248,0.25);border-radius:100px;font-size:13px;color:var(--accent);margin-bottom:24px}
+.hero-title{font-size:64px;font-weight:700;line-height:1.1;margin-bottom:20px;letter-spacing:-1px}
+.hero-title span{color:var(--accent)}
+.hero-desc{font-size:18px;color:var(--text-muted);max-width:500px;margin-bottom:36px;line-height:1.7}
+.btn-primary{display:inline-flex;align-items:center;gap:8px;padding:14px 32px;background:linear-gradient(135deg,#38bdf8,#0ea5e9);color:#fff;border:none;border-radius:8px;font-size:16px;font-weight:600;cursor:pointer;transition:all .2s;text-decoration:none}
+.btn-primary:hover{background:linear-gradient(135deg,#0ea5e9,#0284c7);transform:translateY(-1px);box-shadow:0 8px 24px rgba(56,189,248,0.25)}
 
-/* ===== Mock App Window ===== */
-.hero-visual{position:relative}
-.mock-window{
-  background:var(--surface);border:1px solid var(--border);
-  border-radius:var(--radius);overflow:hidden;
-  box-shadow:0 32px 64px -12px rgba(0,0,0,0.7),0 0 0 1px rgba(255,255,255,0.04);
-  transform:perspective(1000px) rotateY(-5deg) rotateX(2deg);
-  transition:transform .4s ease;
-}
-.mock-window:hover{transform:perspective(1000px) rotateY(-2deg) rotateX(1deg)}
-.mock-titlebar{
-  background:#1c1c1e;padding:14px 18px;
-  display:flex;align-items:center;gap:8px;
-  border-bottom:1px solid var(--border);
-}
-.mock-dot{width:12px;height:12px;border-radius:50%}
-.mock-dot-r{background:#ff5f56}
-.mock-dot-y{background:#ffbd2e}
-.mock-dot-g{background:#27c93f}
-.mock-titlebar-label{
-  margin-left:8px;font-size:13px;color:var(--text-faint);
-  flex:1;text-align:center;letter-spacing:.3px;
-}
-.mock-body{padding:20px;background:#141416;min-height:360px}
-.mock-topbar{
-  display:flex;gap:8px;margin-bottom:16px;
-  background:var(--surface);border-radius:8px;padding:10px 14px;
-  border:1px solid var(--border);
-}
-.mock-tab{
-  font-size:12px;padding:4px 12px;border-radius:4px;
-  color:var(--text-faint);cursor:pointer;
-}
-.mock-tab.active{background:var(--accent-bg);color:var(--accent);font-weight:600}
-.mock-cards{display:flex;flex-direction:column;gap:10px}
-.mock-card{
-  background:var(--surface);border:1px solid var(--border);
-  border-radius:10px;padding:14px 16px;
-  display:flex;align-items:center;justify-content:space-between;
-}
-.mock-card-left{display:flex;align-items:center;gap:10px}
-.mock-card-avatar{
-  width:32px;height:32px;border-radius:8px;
-  background:var(--accent-bg);
-  display:flex;align-items:center;justify-content:center;
-  font-size:11px;font-weight:700;color:var(--accent);letter-spacing:0;
-}
-.mock-card-name{font-size:13px;color:var(--text);font-weight:500}
-.mock-card-sub{font-size:11px;color:var(--text-faint);margin-top:2px}
-.mock-badge{
-  font-size:10px;padding:3px 8px;border-radius:4px;font-weight:600;
-}
-.mock-badge-green{background:rgba(34,197,94,0.1);color:var(--success)}
-.mock-badge-orange{background:var(--accent-bg);color:var(--accent)}
-.mock-quota{
-  margin-top:16px;background:var(--surface);border:1px solid var(--border);
-  border-radius:10px;padding:14px 16px;
-}
-.mock-quota-title{font-size:11px;color:var(--text-faint);margin-bottom:10px;font-weight:600;letter-spacing:.5px;text-transform:uppercase}
-.mock-quota-bar{height:5px;background:#27272a;border-radius:3px;margin-bottom:6px;overflow:hidden}
-.mock-quota-fill{height:100%;border-radius:3px}
-.mock-quota-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
-.mock-quota-label{font-size:11px;color:var(--text-muted)}
-.mock-quota-val{font-size:11px;color:var(--text-faint)}
+/* Mock window */
+.hero-window{background:var(--surface);border-radius:16px;border:1px solid var(--border);overflow:hidden;box-shadow:0 32px 64px rgba(0,0,0,0.4)}
+.win-titlebar{background:#162032;padding:12px 16px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--border)}
+.win-dot{width:12px;height:12px;border-radius:50%}
+.win-dot.r{background:#ff5f57}
+.win-dot.y{background:#ffbd2e}
+.win-dot.g{background:#28c840}
+.win-title-text{flex:1;text-align:center;font-size:12px;color:var(--text-faint)}
+.win-body{padding:16px;display:flex;flex-direction:column;gap:10px}
+.win-card{background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:10px;padding:12px 14px;display:flex;align-items:center;gap:12px}
+.win-avatar{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;flex-shrink:0}
+.win-info{flex:1;min-width:0}
+.win-name{font-size:13px;font-weight:600;color:var(--text)}
+.win-email{font-size:11px;color:var(--text-faint);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.win-bar-wrap{margin-top:6px;display:flex;align-items:center;gap:6px}
+.win-bar-bg{flex:1;height:4px;background:rgba(255,255,255,0.08);border-radius:4px;overflow:hidden}
+.win-bar-fill{height:100%;background:linear-gradient(90deg,#38bdf8,#818cf8);border-radius:4px}
+.win-bar-label{font-size:10px;color:var(--text-faint);white-space:nowrap}
+.win-tag{font-size:10px;padding:2px 7px;border-radius:4px;background:var(--accent-bg);color:var(--accent);border:1px solid var(--accent-border);white-space:nowrap}
 
-/* ===== Features Section ===== */
-.features{
-  padding:120px 0;
-  border-top:1px solid var(--border);
-}
-.section-label{
-  font-size:13px;font-weight:600;color:var(--accent);
-  letter-spacing:2.5px;text-transform:uppercase;margin-bottom:14px;
-}
-.section-title{
-  font-size:clamp(28px,4vw,42px);font-weight:700;
-  letter-spacing:-1px;margin-bottom:14px;
-}
-.section-desc{font-size:16px;color:var(--text-muted);line-height:1.65}
-.section-header{text-align:center;margin-bottom:64px}
-.features-grid{
-  display:grid;grid-template-columns:repeat(3,1fr);gap:24px;
-}
-.feature-card{
-  background:var(--surface);border:1px solid var(--border);
-  border-radius:var(--radius);padding:32px;
-  box-shadow:var(--shadow-card);
-  transition:all .2s ease;cursor:default;
-}
-.feature-card:hover{
-  border-color:var(--border-hover);
-  transform:translateY(-3px);
-  box-shadow:0 12px 24px -4px rgba(0,0,0,0.4),0 4px 8px -2px rgba(0,0,0,0.3);
-}
-.feature-icon-wrap{
-  width:44px;height:44px;border-radius:12px;
-  background:var(--accent-bg);
-  display:flex;align-items:center;justify-content:center;
-  margin-bottom:20px;
-  transition:background .2s;
-}
-.feature-card:hover .feature-icon-wrap{background:rgba(232,97,60,0.18)}
-.feature-title{font-size:17px;font-weight:600;margin-bottom:10px;letter-spacing:-.3px}
-.feature-desc{font-size:14px;color:var(--text-muted);line-height:1.65}
-
-/* ===== Footer ===== */
-footer{
-  border-top:1px solid var(--border);
-  padding:40px 0;
-}
-.footer-inner{
-  display:flex;align-items:center;justify-content:space-between;
-  flex-wrap:wrap;gap:24px;
-}
-.footer-brand{display:flex;align-items:center;gap:10px}
-.footer-brand-info{margin-top:0}
-.footer-brand-name{font-size:16px;font-weight:600}
-.footer-brand-sub{font-size:13px;color:var(--text-faint);margin-top:3px}
-.footer-links{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
-.footer-link{
-  display:flex;align-items:center;gap:6px;
-  padding:7px 13px;border-radius:6px;
-  font-size:14px;color:var(--text-muted);
-  transition:all .2s ease;
-}
-.footer-link:hover{color:var(--text);background:rgba(255,255,255,0.05)}
-
-/* ===== Responsive ===== */
-@media(max-width:1023px){
-  .features-grid{grid-template-columns:repeat(2,1fr)}
-}
-@media(max-width:767px){
-  .hero-inner{grid-template-columns:1fr;gap:48px}
-  .hero{padding-top:120px;padding-bottom:80px}
+@media(max-width:768px){
+  .hero-inner{grid-template-columns:1fr;gap:32px}
+  .hero-title{font-size:40px}
   .hero-desc{font-size:16px}
-  .features{padding:80px 0}
-  .features-grid{grid-template-columns:1fr}
-  .footer-inner{flex-direction:column;align-items:flex-start;gap:20px}
-  .mock-window{transform:none}
-  .mock-window:hover{transform:none}
+  .hero-window{display:none}
+}
+
+/* ─── SECTION COMMON ─── */
+.section-header{text-align:center;margin-bottom:64px}
+.section-label{display:inline-block;font-size:13px;font-weight:600;letter-spacing:2px;color:var(--accent);text-transform:uppercase;margin-bottom:12px}
+.section-title{font-size:40px;font-weight:700;color:var(--text);margin-bottom:16px;letter-spacing:-0.5px}
+.section-desc{font-size:16px;color:var(--text-muted)}
+@media(max-width:768px){
+  .section-title{font-size:24px}
+}
+
+/* Scroll animations */
+.fade-up{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease}
+.fade-up.visible{opacity:1;transform:translateY(0)}
+
+/* ─── FEATURES ─── */
+#features{padding:100px 0;background:var(--bg-light)}
+.features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.feat-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:32px;transition:all .25s}
+.feat-card:hover{border-color:var(--border-hover);transform:translateY(-2px);box-shadow:0 12px 32px rgba(0,0,0,0.3)}
+.feat-icon{width:48px;height:48px;background:var(--accent-bg);border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:20px;color:var(--accent)}
+.feat-title{font-size:17px;font-weight:600;color:var(--text);margin-bottom:8px}
+.feat-desc{font-size:14px;color:var(--text-muted);line-height:1.65}
+@media(max-width:768px){.features-grid{grid-template-columns:1fr}}
+@media(min-width:540px) and (max-width:768px){.features-grid{grid-template-columns:repeat(2,1fr)}}
+
+/* ─── DOWNLOAD ─── */
+#download{padding:100px 0;background:var(--bg)}
+.download-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-bottom:24px}
+.dl-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:32px;display:flex;flex-direction:column}
+.dl-card-head{display:flex;align-items:center;gap:12px;margin-bottom:8px}
+.dl-platform{font-size:22px;font-weight:700;color:var(--text)}
+.dl-sub{font-size:13px;color:var(--text-faint);margin-bottom:20px}
+.dl-item{display:flex;align-items:center;gap:8px;padding:12px 16px;background:var(--accent-bg-light);border:1px solid var(--accent-border);border-radius:8px;margin-bottom:8px;transition:all .2s;text-decoration:none}
+.dl-item:hover{background:var(--accent-bg);border-color:var(--accent-border-hover)}
+.dl-item-name{flex:1;font-size:14px;font-weight:500;color:var(--text)}
+.dl-item-size{font-size:13px;color:var(--text-faint);white-space:nowrap;margin-left:4px}
+.dl-warn{background:rgba(234,179,8,0.06);border:1px solid rgba(234,179,8,0.2);border-radius:12px;padding:16px 20px;font-size:13px;color:#d4a800;line-height:1.65;display:flex;gap:10px;margin-top:8px}
+.dl-warn-icon{flex-shrink:0;margin-top:2px}
+.dl-warn code{background:rgba(234,179,8,0.12);border-radius:4px;padding:2px 8px;font-family:monospace;display:inline-block;margin-top:6px;color:#fbbf24}
+.dl-more{text-align:center;margin-top:32px}
+.dl-more a{display:inline-flex;align-items:center;gap:6px;color:var(--text-muted);font-size:14px;transition:color .2s}
+.dl-more a:hover{color:var(--accent)}
+@media(max-width:768px){.download-grid{grid-template-columns:1fr}}
+@media(min-width:540px) and (max-width:768px){.download-grid{grid-template-columns:repeat(2,1fr)}}
+
+/* ─── FOOTER ─── */
+footer{border-top:1px solid var(--border);padding:40px 0}
+.footer-inner{display:flex;align-items:center;justify-content:space-between}
+.footer-logo{display:flex;align-items:center;gap:8px}
+.footer-logo-name{font-size:16px;font-weight:600;color:var(--text)}
+.footer-logo-sub{font-size:13px;color:var(--text-faint);margin-top:2px}
+.footer-links{display:flex;align-items:center;gap:24px}
+.footer-links a{display:flex;align-items:center;gap:6px;font-size:14px;color:var(--text-muted);transition:color .2s}
+.footer-links a:hover{color:var(--text)}
+@media(max-width:600px){
+  .footer-inner{flex-direction:column;gap:20px;text-align:center}
 }
 </style>
 </head>
 <body>
 
-<!-- ===== NAVIGATION ===== -->
-<nav class="nav">
+<!-- ═══════════════ NAV ═══════════════ -->
+<nav>
   <div class="container">
     <div class="nav-inner">
-      <a href="index.html" class="nav-brand">
-        <!-- Logo SVG -->
-        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect width="32" height="32" rx="8" fill="#E8613C"/>
-          <text x="50%" y="50%" dominant-baseline="central" text-anchor="middle" fill="white" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="13" font-weight="700" letter-spacing="-0.5">ZX</text>
+      <a class="nav-logo" href="#hero">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+          <rect width="32" height="32" rx="8" fill="#38bdf8"/>
+          <text x="16" y="22" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="13" font-weight="700" fill="#fff">ZX</text>
         </svg>
-        <span class="nav-brand-name">ZX AI Tools</span>
+        ZX AI Tools
       </a>
-      <nav class="nav-links">
-        <a href="https://github.com/SUZIXI-AI/zx-ai-tools" target="_blank" rel="noopener" class="nav-link">
-          <!-- External Link Icon -->
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <path d="M6 3H3a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1h9a1 1 0 0 0 1-1v-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M9 2h5m0 0v5m0-5L8 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
+      <div class="nav-links">
+        <a href="#features" class="nav-feat" id="nav-feat">功能</a>
+        <a href="#download" id="nav-dl">下载</a>
+        <a href="https://github.com/ZXAI888/zx-ai-tools" target="_blank" class="nav-gh">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.604-3.369-1.34-3.369-1.34-.454-1.155-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.336-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>
           GitHub
         </a>
-      </nav>
+        <a href="admin.html" target="_blank" class="nav-admin">管理后台</a>
+      </div>
     </div>
   </div>
 </nav>
 
-<!-- ===== HERO SECTION ===== -->
-<main>
-<section class="hero">
+<!-- ═══════════════ HERO ═══════════════ -->
+<section id="hero">
   <div class="container">
     <div class="hero-inner">
-
-      <!-- Left: Text -->
-      <div class="hero-text">
-        <div class="hero-badge anim anim-d1">
-          <!-- Star Icon -->
-          <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <path d="M6.5 1l1.39 3.26L11.5 4.73l-2.5 2.43.59 3.44L6.5 9l-3.09 1.6.59-3.44L1.5 4.73l3.61-.47L6.5 1z" fill="#E8613C"/>
-          </svg>
+      <div class="fade-up">
+        <div class="hero-badge">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
           v0.20.19
         </div>
-
-        <h1 class="hero-title anim anim-d2">
-          ZX AI<br><span class="accent">Tools</span>
-        </h1>
-
-        <p class="hero-desc anim anim-d3">
-          AI IDE 账号管理工具。统一管理 Cursor、Windsurf、Trae 等 AI 编程工具的多账号切换、实例管理与批量导入导出，让 AI 编程工具触手可及。
-        </p>
-
-        <div class="anim anim-d4">
-          <a href="download.html" class="btn-primary">
-            <!-- Download Icon -->
-            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-              <path d="M9 2v10m0 0l-3.5-3.5M9 12l3.5-3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M3 15h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            </svg>
-            立即下载
-          </a>
-        </div>
+        <h1 class="hero-title">ZX AI<br><span>Tools</span></h1>
+        <p class="hero-desc">AI IDE 账号管理工具。统一管理 Cursor、Windsurf、Trae 等 AI 编程工具的多账号切换、实例管理与批量导入导出，让 AI 编程工具触手可及。</p>
+        <a href="#download" class="btn-primary">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          立即下载
+        </a>
       </div>
 
-      <!-- Right: Mock App Window -->
-      <div class="hero-visual anim anim-d3">
-        <div class="mock-window">
-          <div class="mock-titlebar">
-            <span class="mock-dot mock-dot-r"></span>
-            <span class="mock-dot mock-dot-y"></span>
-            <span class="mock-dot mock-dot-g"></span>
-            <span class="mock-titlebar-label">ZX AI Tools</span>
+      <div class="hero-window fade-up" style="transition-delay:.15s">
+        <div class="win-titlebar">
+          <div class="win-dot r"></div>
+          <div class="win-dot y"></div>
+          <div class="win-dot g"></div>
+          <span class="win-title-text">ZX AI Tools</span>
+        </div>
+        <div class="win-body">
+          <div class="win-card">
+            <div class="win-avatar" style="background:linear-gradient(135deg,#38bdf8,#0ea5e9)">A</div>
+            <div class="win-info">
+              <div class="win-name">alice@example.com</div>
+              <div class="win-email">Cursor Pro · 当前账号</div>
+              <div class="win-bar-wrap">
+                <div class="win-bar-bg"><div class="win-bar-fill" style="width:72%"></div></div>
+                <span class="win-bar-label">72% 剩余</span>
+              </div>
+            </div>
+            <div class="win-tag">活跃</div>
           </div>
-          <div class="mock-body">
-            <div class="mock-topbar">
-              <span class="mock-tab active">Cursor</span>
-              <span class="mock-tab">Windsurf</span>
-              <span class="mock-tab">Trae</span>
-              <span class="mock-tab">Codex</span>
-            </div>
-            <div class="mock-cards">
-              <div class="mock-card">
-                <div class="mock-card-left">
-                  <div class="mock-card-avatar">CU</div>
-                  <div>
-                    <div class="mock-card-name">account-01@gmail.com</div>
-                    <div class="mock-card-sub">Pro Plan · 已连接</div>
-                  </div>
-                </div>
-                <span class="mock-badge mock-badge-green">使用中</span>
-              </div>
-              <div class="mock-card">
-                <div class="mock-card-left">
-                  <div class="mock-card-avatar" style="background:rgba(99,102,241,0.12);color:#818cf8">CU</div>
-                  <div>
-                    <div class="mock-card-name">account-02@gmail.com</div>
-                    <div class="mock-card-sub">Free Plan · 配额 480/500</div>
-                  </div>
-                </div>
-                <span class="mock-badge mock-badge-orange">待机</span>
-              </div>
-              <div class="mock-card">
-                <div class="mock-card-left">
-                  <div class="mock-card-avatar" style="background:rgba(34,197,94,0.1);color:#22c55e">CU</div>
-                  <div>
-                    <div class="mock-card-name">account-03@gmail.com</div>
-                    <div class="mock-card-sub">Pro Plan · 配额重置于明日</div>
-                  </div>
-                </div>
-                <span class="mock-badge mock-badge-orange">待机</span>
+          <div class="win-card">
+            <div class="win-avatar" style="background:linear-gradient(135deg,#818cf8,#6366f1)">B</div>
+            <div class="win-info">
+              <div class="win-name">bob@example.com</div>
+              <div class="win-email">Windsurf · 备用账号</div>
+              <div class="win-bar-wrap">
+                <div class="win-bar-bg"><div class="win-bar-fill" style="width:38%"></div></div>
+                <span class="win-bar-label">38% 剩余</span>
               </div>
             </div>
-            <div class="mock-quota">
-              <div class="mock-quota-title">配额概览</div>
-              <div class="mock-quota-row">
-                <span class="mock-quota-label">Premium requests</span>
-                <span class="mock-quota-val">420 / 500</span>
+            <div class="win-tag" style="color:#818cf8;background:rgba(129,140,248,0.1);border-color:rgba(129,140,248,0.2)">备用</div>
+          </div>
+          <div class="win-card">
+            <div class="win-avatar" style="background:linear-gradient(135deg,#22c55e,#16a34a)">C</div>
+            <div class="win-info">
+              <div class="win-name">carol@example.com</div>
+              <div class="win-email">Trae · 测试账号</div>
+              <div class="win-bar-wrap">
+                <div class="win-bar-bg"><div class="win-bar-fill" style="width:95%"></div></div>
+                <span class="win-bar-label">95% 剩余</span>
               </div>
-              <div class="mock-quota-bar"><div class="mock-quota-fill" style="width:84%;background:linear-gradient(90deg,#E8613C,#f59e0b)"></div></div>
-              <div class="mock-quota-row" style="margin-bottom:0">
-                <span class="mock-quota-label">API requests</span>
-                <span class="mock-quota-val">无限制</span>
-              </div>
-              <div class="mock-quota-bar"><div class="mock-quota-fill" style="width:100%;background:var(--success)"></div></div>
             </div>
+            <div class="win-tag" style="color:#22c55e;background:rgba(34,197,94,0.1);border-color:rgba(34,197,94,0.2)">充足</div>
           </div>
         </div>
       </div>
-
     </div>
   </div>
 </section>
 
-<!-- ===== FEATURES SECTION ===== -->
-<section class="features">
+<!-- ═══════════════ FEATURES ═══════════════ -->
+<section id="features">
   <div class="container">
-    <div class="section-header">
-      <div class="section-label anim anim-d1">核心功能</div>
-      <h2 class="section-title anim anim-d2">为 AI 编程而生</h2>
-      <p class="section-desc anim anim-d3">一个界面，统一管理你所有 AI 编程工具的账号与配置。</p>
+    <div class="section-header fade-up">
+      <span class="section-label">核心功能</span>
+      <h2 class="section-title">为 AI 编程而生</h2>
+      <p class="section-desc">一个界面，统一管理你所有 AI 编程工具的账号与配置。</p>
     </div>
-
     <div class="features-grid">
-
-      <!-- Card 1: Multi-platform -->
-      <div class="feature-card anim anim-d1">
-        <div class="feature-icon-wrap">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <rect x="3" y="13" width="18" height="8" rx="2" stroke="#E8613C" stroke-width="1.5"/>
-            <rect x="5" y="8" width="14" height="7" rx="2" stroke="#E8613C" stroke-width="1.5"/>
-            <rect x="7" y="3" width="10" height="7" rx="2" stroke="#E8613C" stroke-width="1.5"/>
-          </svg>
+      <div class="feat-card fade-up">
+        <div class="feat-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><rect x="5" y="6" width="14" height="8" rx="1" opacity=".5"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
         </div>
-        <h3 class="feature-title">多平台支持</h3>
-        <p class="feature-desc">支持 Cursor、Windsurf、VS Code、Trae、Kiro、Qoder 等主流 AI IDE，统一管理所有平台账号。</p>
+        <div class="feat-title">多平台支持</div>
+        <div class="feat-desc">支持 Cursor、Windsurf、GitHub Copilot、Trae、Kiro 等主流 AI IDE，一站式管理所有账号。</div>
       </div>
-
-      <!-- Card 2: Multi-account -->
-      <div class="feature-card anim anim-d2">
-        <div class="feature-icon-wrap">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <circle cx="8" cy="8" r="3" stroke="#E8613C" stroke-width="1.5"/>
-            <path d="M3 19c0-3.314 2.239-5 5-5h.5" stroke="#E8613C" stroke-width="1.5" stroke-linecap="round"/>
-            <circle cx="16" cy="8" r="3" stroke="#E8613C" stroke-width="1.5"/>
-            <path d="M13.5 14H16c2.761 0 5 1.686 5 5" stroke="#E8613C" stroke-width="1.5" stroke-linecap="round"/>
-            <path d="M12 14v4m0 0l-2-2m2 2l2-2" stroke="#E8613C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
+      <div class="feat-card fade-up" style="transition-delay:.05s">
+        <div class="feat-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="3"/><circle cx="15" cy="7" r="3" opacity=".6"/><path d="M3 20c0-4 2.7-7 6-7"/><path d="M21 20c0-4-2.7-7-6-7"/><path d="M9 13c3.3 0 6 3 6 7H3c0-4 2.7-7 6-7z"/></svg>
         </div>
-        <h3 class="feature-title">多账号切换</h3>
-        <p class="feature-desc">每个平台支持多个账号，一键切换无需反复登录，告别手动修改配置文件。</p>
+        <div class="feat-title">多账号切换</div>
+        <div class="feat-desc">快速切换当前账号，支持批量刷新配额，实时查看模型配额与重置时间。</div>
       </div>
-
-      <!-- Card 3: Import/Export -->
-      <div class="feature-card anim anim-d3">
-        <div class="feature-icon-wrap">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <path d="M3 7a2 2 0 0 1 2-2h3.17a2 2 0 0 1 1.42.59l1.82 1.82A2 2 0 0 0 12.83 8H19a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z" stroke="#E8613C" stroke-width="1.5" stroke-linejoin="round"/>
-            <path d="M12 11v6m0 0l-2.5-2.5M12 17l2.5-2.5" stroke="#E8613C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
+      <div class="feat-card fade-up" style="transition-delay:.1s">
+        <div class="feat-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/><polyline points="16 13 12 17 8 13"/><line x1="12" y1="17" x2="12" y2="9"/></svg>
         </div>
-        <h3 class="feature-title">批量导入导出</h3>
-        <p class="feature-desc">支持从 Antigravity Cockpit 插件批量导入账号数据，也可导出备份随时恢复。</p>
+        <div class="feat-title">批量导入导出</div>
+        <div class="feat-desc">支持 JSON 格式批量导入导出账号，轻松在设备间迁移或备份账号数据。</div>
       </div>
-
-      <!-- Card 4: Instance Management -->
-      <div class="feature-card anim anim-d4">
-        <div class="feature-icon-wrap">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <rect x="3" y="3" width="8" height="8" rx="2" stroke="#E8613C" stroke-width="1.5"/>
-            <rect x="13" y="3" width="8" height="8" rx="2" stroke="#E8613C" stroke-width="1.5"/>
-            <rect x="3" y="13" width="8" height="8" rx="2" stroke="#E8613C" stroke-width="1.5"/>
-            <rect x="13" y="13" width="8" height="8" rx="2" stroke="#E8613C" stroke-width="1.5"/>
-          </svg>
+      <div class="feat-card fade-up" style="transition-delay:.05s">
+        <div class="feat-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5" opacity=".6"/><rect x="3" y="13" width="8" height="8" rx="1.5" opacity=".6"/><rect x="13" y="13" width="8" height="8" rx="1.5" opacity=".4"/></svg>
         </div>
-        <h3 class="feature-title">实例管理</h3>
-        <p class="feature-desc">为每个平台管理多个独立实例，隔离配置与数据，多项目并行互不干扰。</p>
+        <div class="feat-title">实例管理</div>
+        <div class="feat-desc">管理设备指纹与多开实例，支持账号有效性验证，处理 403 等异常场景。</div>
       </div>
-
-      <!-- Card 5: i18n -->
-      <div class="feature-card anim anim-d5">
-        <div class="feature-icon-wrap">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <circle cx="12" cy="12" r="9" stroke="#E8613C" stroke-width="1.5"/>
-            <ellipse cx="12" cy="12" rx="4" ry="9" stroke="#E8613C" stroke-width="1.5"/>
-            <path d="M3 12h18" stroke="#E8613C" stroke-width="1.5" stroke-linecap="round"/>
-            <path d="M5.5 7.5h13M5.5 16.5h13" stroke="#E8613C" stroke-width="1.5" stroke-linecap="round"/>
-          </svg>
+      <div class="feat-card fade-up" style="transition-delay:.1s">
+        <div class="feat-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
         </div>
-        <h3 class="feature-title">多语言界面</h3>
-        <p class="feature-desc">内置 17 种语言支持，自动检测系统语言，也可在设置中手动切换。</p>
+        <div class="feat-title">多语言界面</div>
+        <div class="feat-desc">支持中文、英文、日语、韩语等 17 种语言，适合全球用户使用。</div>
       </div>
-
-      <!-- Card 6: Auto Update -->
-      <div class="feature-card anim anim-d6">
-        <div class="feature-icon-wrap">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.77 1.05 6.4 2.72L21 8" stroke="#E8613C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M21 3v5h-5" stroke="#E8613C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
+      <div class="feat-card fade-up" style="transition-delay:.15s">
+        <div class="feat-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
         </div>
-        <h3 class="feature-title">自动更新</h3>
-        <p class="feature-desc">内置自动更新检测，新版本发布后第一时间提醒，一键完成升级。</p>
+        <div class="feat-title">应用内更新</div>
+        <div class="feat-desc">支持应用内检测并下载新版本，可开启后台静默自动更新，始终保持最新。</div>
       </div>
-
     </div>
   </div>
 </section>
-</main>
 
-<!-- ===== FOOTER ===== -->
+<!-- ═══════════════ DOWNLOAD ═══════════════ -->
+<section id="download">
+  <div class="container">
+    <div class="section-header fade-up">
+      <span class="section-label">免费下载</span>
+      <h2 class="section-title">下载 ZX AI Tools</h2>
+      <p class="section-desc">选择你的操作系统，即刻开始。</p>
+    </div>
+
+    <div class="download-grid">
+      <!-- Windows -->
+      <div class="dl-card fade-up">
+        <div class="dl-card-head">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-13.051-1.949"/></svg>
+          <span class="dl-platform">Windows</span>
+        </div>
+        <div class="dl-sub">Windows 10 / 11 (64-bit)</div>
+        <a class="dl-item" href="https://github.com/ZXAI888/zx-ai-tools/releases/latest/download/ZX.AI.Tools_0.20.19_x64-setup.exe">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          <span class="dl-item-name">Windows 安装版 (.exe)</span>
+          <span class="dl-item-size">~8 MB</span>
+        </a>
+        <a class="dl-item" href="https://github.com/ZXAI888/zx-ai-tools/releases/latest/download/ZX.AI.Tools_0.20.19_x64_en-US.msi">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          <span class="dl-item-name">Windows 安装版 (.msi)</span>
+          <span class="dl-item-size">~8 MB</span>
+        </a>
+      </div>
+
+      <!-- macOS -->
+      <div class="dl-card fade-up" style="transition-delay:.06s">
+        <div class="dl-card-head">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.029 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></svg>
+          <span class="dl-platform">macOS</span>
+        </div>
+        <div class="dl-sub">macOS 10.15+ (Intel & Apple Silicon)</div>
+        <a class="dl-item" href="https://github.com/ZXAI888/zx-ai-tools/releases/latest/download/ZX.AI.Tools_0.20.19_universal.dmg">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          <span class="dl-item-name">macOS 通用版 (.dmg)</span>
+          <span class="dl-item-size">~17 MB</span>
+        </a>
+        <div class="dl-warn" style="margin-top:16px">
+          <svg class="dl-warn-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          <div>如遇"已损坏"提示，请在终端执行：<br><code>xattr -cr "/Applications/ZX AI Tools.app"</code></div>
+        </div>
+      </div>
+
+      <!-- Linux -->
+      <div class="dl-card fade-up" style="transition-delay:.12s">
+        <div class="dl-card-head">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><path d="M12.504 0c-.155 0-.315.008-.480.021-4.226.333-3.105 4.807-3.17 6.298-.076 1.092-.3 1.953-1.05 3.02-.885 1.051-2.127 2.75-2.716 4.521-.278.832-.41 1.684-.287 2.489a.424.424 0 00-.11.135c-.26.268-.45.6-.663.839-.199.199-.485.267-.797.4-.313.136-.658.269-.864.68-.12.263-.149.571-.598.527.222.286.509.437.832.556.328.12.65.099.843.01.13-.023.145-.03.19-.026.205.055.37.195.562.34.374.28.739.543 1.365.543h.218c-.002.001-.004.003-.004.006-.004.015.01.023.01.023v.012c.002.002.004.003.004.006 0 .004.002.012.004.018.006.02.018.037.022.055.024.094.036.203.046.295.01.086.01.17.004.22-.034.246-.088.549-.14.815-.054.257-.09.515-.085.736 0 .016.003.031.003.047.003.04.004.078.01.116.01.073.025.145.044.214.062.19.15.413.268.608.111.191.259.38.436.548.354.34.843.614 1.449.765.297.072.6.108.908.108.29 0 .581-.036.862-.1.316-.075.6-.207.857-.365.24-.157.448-.338.619-.55.168-.214.298-.465.38-.768.203-.026.404-.054.6-.087.19-.034.376-.075.556-.118.29-.076.58-.152.849-.278.27-.13.534-.304.784-.52.143-.128.227-.3.254-.486.006-.048.01-.097.01-.145 0-.051-.005-.1-.013-.148a.79.79 0 00-.07-.205c-.003-.006-.005-.013-.009-.019-.042-.074-.101-.134-.17-.177a.578.578 0 00-.22-.088c-.084-.02-.172-.025-.254-.016-.011.001-.021.003-.03.004-.079.01-.154.029-.224.061a.685.685 0 00-.18.115.58.58 0 00-.129.16c-.013.024-.022.049-.03.074-.018.059-.023.12-.02.177.003.048.015.093.03.134.015.04.036.077.06.11.017.025.035.047.055.067.02.019.04.036.063.05.017.012.035.022.054.03.019.008.038.013.057.016.02.003.04.004.059.004.019 0 .038-.001.057-.004.017-.003.034-.007.05-.013.017-.006.032-.014.046-.024a.42.42 0 00.071-.066c.017-.023.031-.049.041-.076.01-.028.015-.057.015-.086 0-.03-.005-.059-.014-.086-.009-.027-.023-.052-.04-.075a.378.378 0 00-.07-.066.38.38 0 00-.096-.046.378.378 0 00-.112-.017.376.376 0 00-.113.018.41.41 0 00-.096.047.373.373 0 00-.07.067.39.39 0 00-.04.074c-.009.027-.014.056-.014.086 0 .029.005.058.014.085.009.028.023.053.04.076.018.023.042.044.07.06.028.017.06.03.094.038-.008.025-.022.047-.038.067a.356.356 0 01-.065.058.381.381 0 01-.082.037.432.432 0 01-.095.02.453.453 0 01-.099.003.445.445 0 01-.096-.017.408.408 0 01-.085-.035.382.382 0 01-.07-.054.376.376 0 01-.054-.07.395.395 0 01-.035-.086.443.443 0 01-.012-.099.44.44 0 01.014-.1.41.41 0 01.04-.09.376.376 0 01.057-.073.388.388 0 01.076-.055.414.414 0 01.09-.034.447.447 0 01.099-.012c.028 0 .056.003.083.008.027.005.054.012.08.022.025.01.048.022.07.036.022.015.042.031.06.05.017.019.033.04.046.062.012.022.022.045.028.069.007.023.01.047.01.071 0 .026-.003.05-.01.074-.006.024-.016.046-.028.068-.013.02-.028.04-.046.057a.432.432 0 01-.061.045c-.023.013-.047.024-.073.031-.025.007-.052.011-.08.011-.028 0-.055-.004-.08-.011-.025-.007-.049-.017-.072-.03-.021-.013-.041-.028-.059-.045a.335.335 0 01-.045-.06.403.403 0 01-.029-.07.399.399 0 01-.01-.074c0-.025.003-.05.01-.073.006-.024.016-.046.029-.067.012-.02.028-.04.045-.057z"/></svg>
+          <span class="dl-platform">Linux</span>
+        </div>
+        <div class="dl-sub">x86_64 和 ARM64 架构</div>
+        <a class="dl-item" href="https://github.com/ZXAI888/zx-ai-tools/releases/latest/download/ZX.AI.Tools_0.20.19_aarch64.AppImage">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          <span class="dl-item-name">Linux ARM64 (.AppImage)</span>
+          <span class="dl-item-size">~82 MB</span>
+        </a>
+        <a class="dl-item" href="https://github.com/ZXAI888/zx-ai-tools/releases/latest/download/ZX.AI.Tools_0.20.19_arm64.deb">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          <span class="dl-item-name">Linux ARM64 (.deb)</span>
+          <span class="dl-item-size">~8 MB</span>
+        </a>
+        <a class="dl-item" href="https://github.com/ZXAI888/zx-ai-tools/releases/latest/download/ZX.AI.Tools_0.20.19-1.aarch64.rpm">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          <span class="dl-item-name">Linux ARM64 (.rpm)</span>
+          <span class="dl-item-size">~8 MB</span>
+        </a>
+        <a class="dl-item" href="https://github.com/ZXAI888/zx-ai-tools/releases/latest/download/ZX.AI.Tools_0.20.19_amd64.AppImage">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          <span class="dl-item-name">Linux x86_64 (.AppImage)</span>
+          <span class="dl-item-size">~84 MB</span>
+        </a>
+        <a class="dl-item" href="https://github.com/ZXAI888/zx-ai-tools/releases/latest/download/ZX.AI.Tools_0.20.19_amd64.deb">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          <span class="dl-item-name">Linux x86_64 (.deb)</span>
+          <span class="dl-item-size">~8 MB</span>
+        </a>
+        <a class="dl-item" href="https://github.com/ZXAI888/zx-ai-tools/releases/latest/download/ZX.AI.Tools_0.20.19-1.x86_64.rpm">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          <span class="dl-item-name">Linux x86_64 (.rpm)</span>
+          <span class="dl-item-size">~8 MB</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="dl-more fade-up">
+      <a href="https://github.com/ZXAI888/zx-ai-tools/releases" target="_blank">
+        查看所有历史版本
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ FOOTER ═══════════════ -->
 <footer>
   <div class="container">
     <div class="footer-inner">
-      <div class="footer-brand">
-        <svg width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect width="32" height="32" rx="8" fill="#E8613C"/>
-          <text x="50%" y="50%" dominant-baseline="central" text-anchor="middle" fill="white" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="13" font-weight="700" letter-spacing="-0.5">ZX</text>
+      <div class="footer-logo">
+        <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
+          <rect width="32" height="32" rx="8" fill="#38bdf8"/>
+          <text x="16" y="22" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="13" font-weight="700" fill="#fff">ZX</text>
         </svg>
         <div>
-          <div class="footer-brand-name">ZX AI Tools</div>
-          <div class="footer-brand-sub">开源免费</div>
+          <div class="footer-logo-name">ZX AI Tools</div>
+          <div class="footer-logo-sub">开源免费</div>
         </div>
       </div>
       <div class="footer-links">
-        <a href="https://github.com/SUZIXI-AI/zx-ai-tools" target="_blank" rel="noopener" class="footer-link">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <path d="M6 3H3a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1h9a1 1 0 0 0 1-1v-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M9 2h5m0 0v5m0-5L8 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
+        <a href="https://github.com/ZXAI888/zx-ai-tools" target="_blank">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.604-3.369-1.34-3.369-1.34-.454-1.155-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.336-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>
           GitHub
         </a>
-        <a href="download.html" class="footer-link">下载</a>
-        <a href="admin.html" class="footer-link">管理后台</a>
+        <a href="admin.html" target="_blank">管理后台</a>
       </div>
     </div>
   </div>
 </footer>
 
+<script>
+// Fade-up animations via IntersectionObserver
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if(e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+// Active nav highlight
+const sections = [{id:'features', nav:'nav-feat'},{id:'download', nav:'nav-dl'}];
+const navObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    const map = sections.find(s => s.id === e.target.id);
+    if(!map) return;
+    const link = document.getElementById(map.nav);
+    if(!link) return;
+    if(e.isIntersecting) link.style.color='#38bdf8';
+    else link.style.color='';
+  });
+}, { rootMargin:'-40% 0px -40% 0px' });
+sections.forEach(s => { const el = document.getElementById(s.id); if(el) navObs.observe(el); });
+</script>
 </body>
 </html>
