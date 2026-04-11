@@ -82,7 +82,7 @@
       }
     },
     "updater": {
-      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDE5QkI2MUYzRkJEQzcxRjcKUldUM2Nkejc4Mkc3R1pqclVZWnZ5aTFMN0h5ZEdmMjh4Sk1jVXhHRmlsRCtXWE5BRWs0MFVpOFoK",
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDM3MUMxQzA1Nzk3M0JFMDAKUldRQXZuTjVCUndjTjZrdWZLUE9wUzdOVEIwMklFUkh1YmJYNVZRYi9lV2Y1V0JvWER3SzFjM2kK",
       "endpoints": [
         "https://github.com/SUZIXI-AI/zx-ai-tools/releases/latest/download/latest.json"
       ]
