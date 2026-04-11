@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { openUrl } from '@tauri-apps/plugin-opener';
+
 import { open } from '@tauri-apps/plugin-dialog';
 import { invoke } from '@tauri-apps/api/core';
 import { getVersion } from '@tauri-apps/api/app';
@@ -48,8 +48,8 @@ import { ALL_PLATFORM_IDS, PlatformId } from '../types/platform';
 import { SettingsAccountTransferSection } from '../components/SettingsAccountTransferSection';
 import './settings/Settings.css';
 import { 
-  Github, User, Rocket, Save, FolderOpen,
-  AlertCircle, RefreshCw, Heart, MessageSquare
+  Rocket, Save, FolderOpen,
+  AlertCircle, RefreshCw
 } from 'lucide-react';
 
 
@@ -1258,9 +1258,7 @@ export function SettingsPage() {
     }
   };
 
-  const openLink = (url: string) => {
-    openUrl(url);
-  };
+
 
   const isAppPathResetDetecting = (target: AppPathTarget) => appPathResetDetectingTargets.has(target);
 
