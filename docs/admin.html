@@ -99,34 +99,73 @@ body{
 .main-wrap{flex:1;padding:24px 32px;max-width:960px;margin:0 auto;width:100%}
 
 /* ===== Tab Bar ===== */
+@keyframes tabGlow{0%,100%{box-shadow:0 2px 12px rgba(0,0,0,0.15)}50%{box-shadow:0 2px 20px rgba(99,102,241,0.3),0 0 0 1px rgba(255,255,255,0.15)}}
+.tab-bar-wrap{margin-bottom:28px}
 .tab-bar{
-  display:inline-flex;background:var(--glass-bg);backdrop-filter:var(--glass-blur);-webkit-backdrop-filter:var(--glass-blur);
-  border:1px solid var(--glass-border);border-radius:14px;padding:5px;gap:4px;margin-bottom:24px;
+  display:inline-flex;position:relative;
+  background:rgba(0,0,0,0.18);backdrop-filter:blur(24px) saturate(180%);-webkit-backdrop-filter:blur(24px) saturate(180%);
+  border:1px solid rgba(255,255,255,0.15);border-radius:16px;padding:5px;gap:3px;
+  box-shadow:0 4px 24px rgba(0,0,0,0.2),inset 0 1px 0 rgba(255,255,255,0.1);
 }
 .tab-btn{
-  padding:9px 22px;border:none;background:transparent;
-  color:rgba(255,255,255,0.7);font-size:14px;font-weight:500;border-radius:10px;
-  cursor:pointer;transition:all .3s cubic-bezier(.4,0,.2,1);font-family:var(--font);white-space:nowrap;
-  display:flex;align-items:center;gap:6px;
+  padding:10px 24px;border:none;background:transparent;
+  color:rgba(255,255,255,0.55);font-size:14px;font-weight:500;border-radius:12px;
+  cursor:pointer;transition:all .25s cubic-bezier(.4,0,.2,1);font-family:var(--font);white-space:nowrap;
+  display:flex;align-items:center;gap:8px;position:relative;letter-spacing:0.01em;
 }
-.tab-btn:hover{background:rgba(255,255,255,0.1);color:#fff}
-.tab-btn.active{background:rgba(255,255,255,0.9);color:var(--primary);font-weight:600;box-shadow:0 2px 12px rgba(0,0,0,0.15)}
+.tab-btn svg{transition:all .25s ease;opacity:.6}
+.tab-btn:hover{background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.9)}
+.tab-btn:hover svg{opacity:.9}
+.tab-btn.active{
+  background:rgba(255,255,255,0.92);color:var(--primary);font-weight:700;
+  box-shadow:0 2px 16px rgba(0,0,0,0.2),0 1px 0 rgba(255,255,255,0.5) inset;
+  animation:tabGlow 3s ease-in-out infinite;
+}
+.tab-btn.active svg{opacity:1}
+.tab-btn.active::after{
+  content:'';position:absolute;bottom:-1px;left:50%;transform:translateX(-50%);
+  width:24px;height:2px;border-radius:2px;
+  background:linear-gradient(90deg,transparent,var(--primary),transparent);
+  opacity:0;
+}
 .tab-panel{display:none}
 .tab-panel.active{display:block;animation:fadeIn .35s ease}
 
 /* ===== Tip Card ===== */
+@keyframes floatOrb{0%,100%{transform:scale(1) translate(0,0)}50%{transform:scale(1.05) translate(4px,-4px)}}
 .tip-card{
-  background:rgba(255,255,255,0.12);backdrop-filter:blur(20px) saturate(150%);-webkit-backdrop-filter:blur(20px) saturate(150%);
-  border:1px solid rgba(255,255,255,0.25);border-radius:16px;
+  position:relative;overflow:hidden;
+  background:rgba(255,255,255,0.1);backdrop-filter:blur(24px) saturate(160%);-webkit-backdrop-filter:blur(24px) saturate(160%);
+  border:1px solid rgba(255,255,255,0.2);border-radius:20px;
   padding:24px 28px;margin-bottom:20px;position:relative;overflow:hidden;
   box-shadow:0 8px 32px rgba(0,0,0,0.12),inset 0 1px 0 rgba(255,255,255,0.3);
 }
-.tip-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:linear-gradient(180deg,#fff 0%,rgba(255,255,255,0.3) 100%);border-radius:4px}
-.tip-card-title{font-size:16px;font-weight:700;color:#fff;margin-bottom:8px;display:flex;align-items:center;gap:8px}
-.tip-card-body{font-size:14px;color:rgba(255,255,255,0.85);line-height:1.8}
+.tip-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,rgba(255,255,255,0.9) 0%,rgba(255,255,255,0.2) 100%);border-radius:0 2px 2px 0}
+.tip-card-orb{
+  position:absolute;border-radius:50%;pointer-events:none;filter:blur(40px);
+}
+.tip-card-orb.orb1{width:180px;height:180px;top:-60px;right:-40px;background:rgba(255,255,255,0.08);animation:floatOrb 6s ease-in-out infinite}
+.tip-card-orb.orb2{width:120px;height:120px;bottom:-50px;right:30%;background:rgba(99,102,241,0.12);animation:floatOrb 8s ease-in-out infinite reverse}
+.tip-card-inner{position:relative;z-index:1}
+.tip-card-header{display:flex;align-items:flex-start;gap:16px;margin-bottom:14px}
+.tip-card-icon{
+  width:44px;height:44px;border-radius:12px;flex-shrink:0;
+  background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.2);
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 2px 8px rgba(0,0,0,0.1),inset 0 1px 0 rgba(255,255,255,0.2);
+}
+.tip-card-title-wrap{}
+.tip-card-title{font-size:16px;font-weight:700;color:#fff;margin-bottom:3px;letter-spacing:0.01em}
+.tip-card-subtitle{font-size:12px;color:rgba(255,255,255,0.5);font-weight:400}
+.tip-card-body{font-size:13.5px;color:rgba(255,255,255,0.8);line-height:1.85;padding-left:60px}
 .tip-card-body ul{margin:4px 0 0;padding:0;list-style:none}
-.tip-card-body ul li{position:relative;padding-left:16px;margin-bottom:2px}
-.tip-card-body ul li::before{content:'•';position:absolute;left:4px;color:rgba(255,255,255,0.5);font-weight:700}
+.tip-card-body ul li{position:relative;padding-left:18px;margin-bottom:4px}
+.tip-card-body ul li::before{
+  content:'';position:absolute;left:4px;top:8px;
+  width:5px;height:5px;border-radius:50%;
+  background:rgba(255,255,255,0.4);
+}
+.tip-card-footer{margin-top:12px;padding-left:60px;font-size:13px;color:rgba(255,255,255,0.6);padding-top:10px;border-top:1px solid rgba(255,255,255,0.08)}
 
 /* ===== Card ===== */
 .card{
@@ -342,19 +381,46 @@ body{
   </div>
 
   <div class="main-wrap">
-    <div class="tab-bar">
-      <button class="tab-btn active" onclick="switchTab('tab-ad')" data-tab="tab-ad">📢 推广条管理</button>
-      <button class="tab-btn" onclick="switchTab('tab-ann')" data-tab="tab-ann">📋 公告管理</button>
-      <button class="tab-btn" onclick="switchTab('tab-pub')" data-tab="tab-pub">🚀 发布管理</button>
+    <div class="tab-bar-wrap">
+      <div class="tab-bar">
+        <button class="tab-btn active" onclick="switchTab('tab-ad')" data-tab="tab-ad">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-6l-2 3H10l-2-3H2"/><path d="M5.45 5.11L2 12v6a2 2 0 002 2h16a2 2 0 002-2v-6l-3.45-6.89A2 2 0 0016.76 4H7.24a2 2 0 00-1.79 1.11z"/></svg>
+          推广条管理
+        </button>
+        <button class="tab-btn" onclick="switchTab('tab-ann')" data-tab="tab-ann">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 010 8h-1"/><path d="M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
+          公告管理
+        </button>
+        <button class="tab-btn" onclick="switchTab('tab-pub')" data-tab="tab-pub">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          发布管理
+        </button>
+      </div>
     </div>
 
     <!-- ===== 推广条 ===== -->
     <div class="tab-panel active" id="tab-ad">
       <div class="tip-card">
-        <div class="tip-card-title">📢 推广条是什么？</div>
-        <div class="tip-card-body">推广条显示在软件界面右上角，是一个小横幅。你可以用它来：
-          <ul><li>推广你的付费版本或新功能</li><li>显示限时优惠活动</li><li>引导用户访问特定页面</li></ul>
-          用户可以点 × 关闭，关闭后下次打开软件不再显示（直到你更新内容）。
+        <div class="tip-card-orb orb1"></div>
+        <div class="tip-card-orb orb2"></div>
+        <div class="tip-card-inner">
+          <div class="tip-card-header">
+            <div class="tip-card-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.9)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-6l-2 3H10l-2-3H2"/><path d="M5.45 5.11L2 12v6a2 2 0 002 2h16a2 2 0 002-2v-6l-3.45-6.89A2 2 0 0016.76 4H7.24a2 2 0 00-1.79 1.11z"/></svg>
+            </div>
+            <div class="tip-card-title-wrap">
+              <div class="tip-card-title">推广条是什么？</div>
+              <div class="tip-card-subtitle">TopRightAd · 显示在软件右上角</div>
+            </div>
+          </div>
+          <div class="tip-card-body">
+            <ul>
+              <li>在软件首屏右上角展示一条可关闭的横幅，吸引用户注意</li>
+              <li>适合推广付费版本、新功能或限时活动</li>
+              <li>用户点击 × 后当次关闭，下次更新内容后自动重新展示</li>
+            </ul>
+          </div>
+          <div class="tip-card-footer">💡 填写完后前往「发布管理」点击「同步发布」，内容才会生效</div>
         </div>
       </div>
       <div class="card">
@@ -393,10 +459,26 @@ body{
     <!-- ===== 公告管理 ===== -->
     <div class="tab-panel" id="tab-ann">
       <div class="tip-card">
-        <div class="tip-card-title">📋 公告通知是什么？</div>
-        <div class="tip-card-body">公告以弹窗或通知列表的形式出现在软件内。你可以用它来：
-          <ul><li>发布版本更新说明</li><li>通知重要维护信息</li><li>推送新功能介绍</li></ul>
-          支持三种样式：普通（蓝色）、新功能（绿色）、警告（橙色）。
+        <div class="tip-card-orb orb1"></div>
+        <div class="tip-card-orb orb2"></div>
+        <div class="tip-card-inner">
+          <div class="tip-card-header">
+            <div class="tip-card-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.9)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 010 8h-1"/><path d="M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
+            </div>
+            <div class="tip-card-title-wrap">
+              <div class="tip-card-title">公告通知是什么？</div>
+              <div class="tip-card-subtitle">Announcements · 弹窗或通知列表</div>
+            </div>
+          </div>
+          <div class="tip-card-body">
+            <ul>
+              <li>以弹窗或通知列表的形式推送至用户软件内</li>
+              <li>支持三种类型：普通通知（蓝色）、新功能（绿色）、警告提示（橙色）</li>
+              <li>可设置「仅显示一次」，用户看过后不再重复弹出</li>
+            </ul>
+          </div>
+          <div class="tip-card-footer">💡 多条公告按优先级排序，数字越大越靠前展示</div>
         </div>
       </div>
       <div class="card">
@@ -408,8 +490,27 @@ body{
     <!-- ===== 发布管理 ===== -->
     <div class="tab-panel" id="tab-pub">
       <div class="tip-card">
-        <div class="tip-card-title">🚀 发布管理是什么？</div>
-        <div class="tip-card-body">编辑完推广条或公告后，需要点击「同步发布」才能生效。<br>发布后用户下次打开软件时会自动获取最新内容，无需用户手动更新软件。<br>配置只需填写一次，保存后下次直接使用。</div>
+        <div class="tip-card-orb orb1"></div>
+        <div class="tip-card-orb orb2"></div>
+        <div class="tip-card-inner">
+          <div class="tip-card-header">
+            <div class="tip-card-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.9)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            </div>
+            <div class="tip-card-title-wrap">
+              <div class="tip-card-title">如何发布内容？</div>
+              <div class="tip-card-subtitle">Publish · 同步至远端 · 立即生效</div>
+            </div>
+          </div>
+          <div class="tip-card-body">
+            <ul>
+              <li>编辑好推广条或公告后，点击「同步发布」才会对用户生效</li>
+              <li>发布后用户下次启动软件时自动拉取最新内容，无需更新软件</li>
+              <li>访问令牌只需填写一次，保存后长期有效</li>
+            </ul>
+          </div>
+          <div class="tip-card-footer">⚡ 建议先「拉取远端配置」确认当前版本，再做修改后发布</div>
+        </div>
       </div>
       <div class="card">
         <div class="card-head"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg> 远程配置</div>
