@@ -99,7 +99,6 @@ body{
 .main-wrap{flex:1;padding:24px 32px;max-width:960px;margin:0 auto;width:100%}
 
 /* ===== Tab Bar ===== */
-@keyframes tabGlow{0%,100%{box-shadow:0 2px 12px rgba(0,0,0,0.15)}50%{box-shadow:0 2px 20px rgba(99,102,241,0.3),0 0 0 1px rgba(255,255,255,0.15)}}
 .tab-bar-wrap{margin-bottom:28px}
 .tab-bar{
   display:inline-flex;position:relative;
@@ -107,27 +106,27 @@ body{
   border:1px solid rgba(255,255,255,0.15);border-radius:16px;padding:5px;gap:3px;
   box-shadow:0 4px 24px rgba(0,0,0,0.2),inset 0 1px 0 rgba(255,255,255,0.1);
 }
+/* 滑动胶囊指示器 */
+.tab-indicator{
+  position:absolute;top:5px;left:5px;
+  border-radius:12px;
+  background:rgba(255,255,255,0.92);
+  box-shadow:0 2px 16px rgba(0,0,0,0.2),inset 0 1px 0 rgba(255,255,255,0.6);
+  transition:transform .4s cubic-bezier(.4,0,.2,1),width .4s cubic-bezier(.4,0,.2,1);
+  pointer-events:none;z-index:0;
+  /* height 由 JS 初始化时设置 */
+}
 .tab-btn{
   padding:10px 24px;border:none;background:transparent;
   color:rgba(255,255,255,0.55);font-size:14px;font-weight:500;border-radius:12px;
-  cursor:pointer;transition:all .25s cubic-bezier(.4,0,.2,1);font-family:var(--font);white-space:nowrap;
-  display:flex;align-items:center;gap:8px;position:relative;letter-spacing:0.01em;
+  cursor:pointer;transition:color .25s ease,opacity .25s ease;font-family:var(--font);white-space:nowrap;
+  display:flex;align-items:center;gap:8px;position:relative;z-index:1;letter-spacing:0.01em;
 }
-.tab-btn svg{transition:all .25s ease;opacity:.6}
-.tab-btn:hover{background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.9)}
-.tab-btn:hover svg{opacity:.9}
-.tab-btn.active{
-  background:rgba(255,255,255,0.92);color:var(--primary);font-weight:700;
-  box-shadow:0 2px 16px rgba(0,0,0,0.2),0 1px 0 rgba(255,255,255,0.5) inset;
-  animation:tabGlow 3s ease-in-out infinite;
-}
+.tab-btn svg{transition:opacity .25s ease;opacity:.5}
+.tab-btn:hover{color:rgba(255,255,255,0.85)}
+.tab-btn:hover svg{opacity:.8}
+.tab-btn.active{color:var(--primary);font-weight:700}
 .tab-btn.active svg{opacity:1}
-.tab-btn.active::after{
-  content:'';position:absolute;bottom:-1px;left:50%;transform:translateX(-50%);
-  width:24px;height:2px;border-radius:2px;
-  background:linear-gradient(90deg,transparent,var(--primary),transparent);
-  opacity:0;
-}
 .tab-panel{display:none}
 .tab-panel.active{display:block;animation:fadeIn .35s ease}
 
@@ -632,10 +631,45 @@ async function handleLogin(e){
 }
 function handleLogout(){localStorage.removeItem(LS.TOKEN);localStorage.removeItem(LS.TOKEN_EXP);document.getElementById('app').style.display='none';document.getElementById('login-page').style.display='flex';document.getElementById('login-password').value=''}
 function checkAuth(){const t=localStorage.getItem(LS.TOKEN),e=parseInt(localStorage.getItem(LS.TOKEN_EXP)||'0',10);return t&&Date.now()<e}
-function showApp(){document.getElementById('login-page').style.display='none';document.getElementById('app').style.display='flex';loadState();loadGithubConfig();renderAdForm();renderAnnList();bindAdPreview()}
+function showApp(){document.getElementById('login-page').style.display='none';document.getElementById('app').style.display='flex';loadState();loadGithubConfig();renderAdForm();renderAnnList();bindAdPreview();requestAnimationFrame(()=>initTabIndicator());}
 function loadState(){try{const r=localStorage.getItem(LS.DATA);if(r){state={version:'1.0',topRightAd:null,announcements:[],...JSON.parse(r)}}}catch(e){}}
 function saveState(){localStorage.setItem(LS.DATA,JSON.stringify(state))}
-function switchTab(id){document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelector(`[data-tab="${id}"]`).classList.add('active')}
+function switchTab(id){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  const btn=document.querySelector(`[data-tab="${id}"]`);
+  if(btn)btn.classList.add('active');
+  moveTabIndicator(btn);
+}
+function moveTabIndicator(btn){
+  const ind=document.getElementById('tab-indicator');
+  if(!ind||!btn)return;
+  ind.style.width=btn.offsetWidth+'px';
+  ind.style.height=btn.offsetHeight+'px';
+  ind.style.transform=`translateX(${btn.offsetLeft-5}px)`;
+}
+function initTabIndicator(){
+  const bar=document.querySelector('.tab-bar');
+  if(!bar)return;
+  const ind=document.createElement('div');
+  ind.id='tab-indicator';ind.className='tab-indicator';
+  bar.insertBefore(ind,bar.firstChild);
+  const active=bar.querySelector('.tab-btn.active');
+  if(active){
+    ind.style.width=active.offsetWidth+'px';
+    ind.style.height=active.offsetHeight+'px';
+    ind.style.transform=`translateX(${active.offsetLeft-5}px)`;
+    /* 首次无动画，延后启用 transition */
+    ind.style.transition='none';
+    requestAnimationFrame(()=>{
+      requestAnimationFrame(()=>{
+        ind.style.transition='transform .4s cubic-bezier(.4,0,.2,1),width .4s cubic-bezier(.4,0,.2,1)';
+      });
+    });
+  }
+}
+
 function buildJson(){return JSON.stringify(state,null,2)}
 
 function renderAdForm(){
