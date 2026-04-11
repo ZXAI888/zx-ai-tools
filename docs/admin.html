@@ -127,8 +127,9 @@ body{
 .tab-btn:hover svg{opacity:.8}
 .tab-btn.active{color:var(--primary);font-weight:700}
 .tab-btn.active svg{opacity:1}
-.tab-panel{display:none}
-.tab-panel.active{display:block;animation:fadeIn .35s ease}
+.tab-panel{display:none;opacity:0}
+.tab-panel.active{display:block;animation:tabFadeIn .18s ease forwards}
+@keyframes tabFadeIn{from{opacity:0}to{opacity:1}}
 
 /* ===== Tip Card ===== */
 @keyframes floatOrb{0%,100%{transform:scale(1) translate(0,0)}50%{transform:scale(1.05) translate(4px,-4px)}}
