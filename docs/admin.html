@@ -8,28 +8,34 @@
 /* ===== Reset & Base ===== */
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --bg:#f5f5f7;
-  --surface:#ffffff;
-  --surface2:#f0f0f5;
-  --border:#d1d1d6;
-  --border-light:#e5e5ea;
-  --primary:#007AFF;
-  --primary-hover:#0066d6;
-  --primary-light:rgba(0,122,255,0.1);
-  --text:#1d1d1f;
-  --text-secondary:#6e6e73;
-  --text-placeholder:#aeaeb2;
-  --danger:#ff3b30;
-  --danger-light:rgba(255,59,48,0.1);
-  --success:#34c759;
-  --success-light:rgba(52,199,89,0.1);
-  --warning:#ff9500;
-  --warning-light:rgba(255,149,0,0.1);
-  --info:#007AFF;
-  --info-light:rgba(0,122,255,0.1);
-  --shadow-sm:0 1px 3px rgba(0,0,0,0.08),0 1px 2px rgba(0,0,0,0.04);
-  --shadow:0 4px 16px rgba(0,0,0,0.08),0 1px 4px rgba(0,0,0,0.04);
-  --shadow-lg:0 8px 32px rgba(0,0,0,0.12),0 2px 8px rgba(0,0,0,0.06);
+  --bg:#0f1117;
+  --surface:#1a1d27;
+  --surface2:#21242f;
+  --border:#2a2d3a;
+  --border-light:#323545;
+  --primary:#6366f1;
+  --primary-hover:#4f46e5;
+  --primary-light:rgba(99,102,241,0.12);
+  --primary-border:rgba(99,102,241,0.25);
+  --accent:#38bdf8;
+  --accent-light:rgba(56,189,248,0.12);
+  --text:#e2e8f0;
+  --text-secondary:#64748b;
+  --text-muted:#475569;
+  --text-placeholder:#4b5563;
+  --danger:#ef4444;
+  --danger-light:rgba(239,68,68,0.12);
+  --danger-border:rgba(239,68,68,0.25);
+  --success:#22c55e;
+  --success-light:rgba(34,197,94,0.12);
+  --success-border:rgba(34,197,94,0.25);
+  --warning:#f59e0b;
+  --warning-light:rgba(245,158,11,0.12);
+  --warning-border:rgba(245,158,11,0.25);
+  --info:#6366f1;
+  --info-light:rgba(99,102,241,0.12);
+  --shadow:0 4px 6px rgba(0,0,0,0.3);
+  --shadow-lg:0 8px 32px rgba(0,0,0,0.4);
   --radius:12px;
   --radius-sm:8px;
   --radius-lg:16px;
@@ -40,44 +46,45 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 /* ===== Login Page ===== */
 #login-page{
   min-height:100vh;display:flex;align-items:center;justify-content:center;
-  background:linear-gradient(135deg,#e0e7ff 0%,#f0f9ff 50%,#fce7f3 100%);
+  background:var(--bg);position:relative;overflow:hidden;
 }
+#login-page::before{content:'';position:absolute;top:-200px;left:-100px;width:500px;height:500px;background:radial-gradient(circle,rgba(99,102,241,0.12),transparent 70%);pointer-events:none}
+#login-page::after{content:'';position:absolute;bottom:-150px;right:-50px;width:400px;height:400px;background:radial-gradient(circle,rgba(56,189,248,0.08),transparent 70%);pointer-events:none}
 .login-card{
-  background:rgba(255,255,255,0.85);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
-  border:1px solid rgba(255,255,255,0.6);border-radius:20px;
+  background:var(--surface);border:1px solid var(--border);border-radius:20px;
   padding:40px 44px;width:100%;max-width:400px;
-  box-shadow:0 8px 40px rgba(0,0,0,0.12),0 0 0 1px rgba(255,255,255,0.5);
+  box-shadow:var(--shadow-lg);position:relative;z-index:1;
 }
 .login-logo{text-align:center;margin-bottom:28px}
 .login-logo .icon{
   width:64px;height:64px;border-radius:16px;margin:0 auto 12px;
-  background:linear-gradient(135deg,#007AFF,#5856d6);
-  display:flex;align-items:center;justify-content:center;font-size:32px;
-  box-shadow:0 4px 16px rgba(0,122,255,0.3);
+  background:linear-gradient(135deg,#6366f1,#38bdf8);
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 4px 20px rgba(99,102,241,0.3);
 }
 .login-logo h1{font-size:22px;font-weight:700;color:var(--text)}
 .login-logo p{font-size:13px;color:var(--text-secondary);margin-top:4px}
 .login-form .form-group{margin-bottom:16px}
 .login-form label{display:block;font-size:13px;font-weight:500;color:var(--text-secondary);margin-bottom:6px}
 .login-form input{
-  width:100%;padding:11px 14px;
-  border:1.5px solid var(--border-light);border-radius:10px;
-  font-size:15px;color:var(--text);background:#fff;outline:none;
+  width:100%;padding:12px 14px;
+  border:1px solid var(--border);border-radius:var(--radius-sm);
+  font-size:15px;color:var(--text);background:var(--bg);outline:none;
   transition:border-color .2s,box-shadow .2s;
 }
 .login-form input:focus{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-light)}
 .login-form .btn-login{
-  width:100%;margin-top:8px;padding:13px;border:none;border-radius:10px;
-  background:linear-gradient(135deg,#007AFF,#5856d6);color:#fff;
+  width:100%;margin-top:8px;padding:13px;border:none;border-radius:var(--radius-sm);
+  background:var(--primary);color:#fff;
   font-size:15px;font-weight:600;cursor:pointer;
-  transition:opacity .2s,transform .15s;box-shadow:0 4px 16px rgba(0,122,255,0.3);
+  transition:all .2s;
 }
-.login-form .btn-login:hover{opacity:.92;transform:translateY(-1px)}
+.login-form .btn-login:hover{background:var(--primary-hover);transform:translateY(-1px);box-shadow:0 4px 16px rgba(99,102,241,0.35)}
 .login-form .btn-login:active{transform:translateY(0)}
 .login-form .btn-login:disabled{opacity:.6;cursor:not-allowed;transform:none}
 .login-error{
-  background:var(--danger-light);border:1px solid rgba(255,59,48,0.2);
-  color:var(--danger);border-radius:8px;padding:10px 14px;
+  background:var(--danger-light);border:1px solid var(--danger-border);
+  color:var(--danger);border-radius:var(--radius-sm);padding:10px 14px;
   font-size:13px;margin-top:12px;display:none;
 }
 
@@ -85,53 +92,63 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 #app{display:none;flex-direction:column;min-height:100vh}
 .topbar{
   position:sticky;top:0;z-index:100;
-  background:rgba(255,255,255,0.85);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
-  border-bottom:1px solid var(--border-light);
+  background:var(--surface);border-bottom:1px solid var(--border);
   padding:0 24px;height:56px;display:flex;align-items:center;justify-content:space-between;
 }
 .topbar-brand{display:flex;align-items:center;gap:10px}
 .topbar-brand .brand-icon{
   width:32px;height:32px;border-radius:8px;
-  background:linear-gradient(135deg,#007AFF,#5856d6);
-  display:flex;align-items:center;justify-content:center;font-size:16px;
+  background:linear-gradient(135deg,#6366f1,#38bdf8);
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 2px 8px rgba(99,102,241,0.25);
 }
 .topbar-brand h1{font-size:16px;font-weight:700;color:var(--text)}
-.topbar-actions{display:flex;align-items:center;gap:8px}
+.topbar-brand h1 span{color:var(--text-secondary);font-weight:400;font-size:14px;margin-left:6px}
+.topbar-actions{display:flex;align-items:center;gap:12px}
+.topbar-user{font-size:13px;color:var(--text-secondary)}
 .btn-logout{
-  padding:6px 14px;border:1px solid var(--border);border-radius:20px;
+  padding:6px 14px;border:1px solid var(--border);border-radius:var(--radius-sm);
   background:transparent;color:var(--text-secondary);font-size:13px;
   cursor:pointer;transition:all .2s;font-family:var(--font);
 }
-.btn-logout:hover{background:var(--danger-light);color:var(--danger);border-color:var(--danger)}
+.btn-logout:hover{background:var(--danger-light);color:var(--danger);border-color:var(--danger-border)}
 
 /* ===== Tab Navigation ===== */
 .tab-bar{
-  background:var(--surface);border-bottom:1px solid var(--border-light);
-  padding:0 24px;display:flex;gap:0;
+  background:var(--surface);border-bottom:1px solid var(--border);
+  padding:12px 24px;display:flex;gap:8px;
 }
 .tab-btn{
-  padding:0 20px;height:44px;border:none;background:transparent;
+  padding:10px 20px;border:none;background:transparent;
   color:var(--text-secondary);font-size:14px;font-weight:500;
-  cursor:pointer;position:relative;transition:color .2s;
-  font-family:var(--font);white-space:nowrap;
+  cursor:pointer;border-radius:var(--radius-sm);transition:all .2s;
+  font-family:var(--font);white-space:nowrap;display:flex;align-items:center;gap:6px;
 }
-.tab-btn:hover{color:var(--text)}
-.tab-btn.active{color:var(--primary);font-weight:600}
-.tab-btn.active::after{
-  content:'';position:absolute;bottom:0;left:0;right:0;height:2px;
-  background:var(--primary);border-radius:2px 2px 0 0;
-}
+.tab-btn:hover{background:var(--surface2);color:var(--text)}
+.tab-btn.active{background:var(--primary);color:#fff;font-weight:600}
+.tab-btn .tab-icon{font-size:15px}
 
 /* ===== Main Content ===== */
-.main-content{flex:1;padding:24px;max-width:1200px;margin:0 auto;width:100%}
+.main-content{flex:1;padding:24px;max-width:1000px;margin:0 auto;width:100%}
 .tab-panel{display:none}
 .tab-panel.active{display:block}
 
+/* ===== Info Card (feature tips) ===== */
+.info-card{
+  background:var(--primary-light);border:1px solid var(--primary-border);
+  border-radius:var(--radius);padding:16px 20px;margin-bottom:20px;
+  font-size:13px;color:var(--text);line-height:1.7;
+}
+.info-card.green{background:var(--success-light);border-color:var(--success-border)}
+.info-card.amber{background:var(--warning-light);border-color:var(--warning-border)}
+.info-card-title{font-weight:600;font-size:14px;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.info-card p{color:#94a3b8}
+
 /* ===== Cards & Sections ===== */
 .card{
-  background:var(--surface);border:1px solid var(--border-light);
+  background:var(--surface);border:1px solid var(--border);
   border-radius:var(--radius);padding:24px;margin-bottom:16px;
-  box-shadow:var(--shadow-sm);
+  box-shadow:var(--shadow);
 }
 .card-title{
   font-size:15px;font-weight:600;color:var(--text);
@@ -150,14 +167,14 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 /* ===== Form Elements ===== */
 .form-group{margin-bottom:16px}
 .form-group label{
-  display:block;font-size:13px;font-weight:500;
-  color:var(--text-secondary);margin-bottom:6px;
+  display:block;font-size:14px;font-weight:500;
+  color:#94a3b8;margin-bottom:6px;
 }
 .form-group label .required{color:var(--danger);margin-left:2px}
 .form-group input,.form-group textarea,.form-group select{
-  width:100%;padding:9px 12px;
-  border:1.5px solid var(--border-light);border-radius:var(--radius-sm);
-  font-size:14px;color:var(--text);background:#fff;
+  width:100%;padding:12px;
+  border:1px solid var(--border);border-radius:var(--radius-sm);
+  font-size:14px;color:var(--text);background:var(--bg);
   outline:none;transition:border-color .2s,box-shadow .2s;
   font-family:var(--font);
 }
@@ -165,30 +182,30 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
   border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-light);
 }
 .form-group textarea{resize:vertical;min-height:80px;line-height:1.5}
-.form-group select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236e6e73' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:32px;cursor:pointer}
+.form-group select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2364748b' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:32px;cursor:pointer}
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .form-row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
-.form-hint{font-size:12px;color:var(--text-placeholder);margin-top:4px}
+.form-hint{font-size:12px;color:var(--text-muted);margin-top:4px;line-height:1.5}
 
 /* ===== Toggle Switch ===== */
 .toggle-row{
   display:flex;align-items:center;justify-content:space-between;
-  padding:10px 0;border-bottom:1px solid var(--border-light);
+  padding:12px 0;border-bottom:1px solid var(--border);
 }
 .toggle-row:last-child{border-bottom:none}
 .toggle-label{font-size:14px;color:var(--text)}
-.toggle-desc{font-size:12px;color:var(--text-secondary);margin-top:1px}
+.toggle-desc{font-size:12px;color:var(--text-secondary);margin-top:2px}
 .toggle{position:relative;display:inline-block;width:44px;height:26px;flex-shrink:0}
 .toggle input{opacity:0;width:0;height:0;position:absolute}
 .toggle-track{
   position:absolute;inset:0;border-radius:13px;
-  background:#d1d1d6;cursor:pointer;transition:background .25s;
+  background:#3f3f46;cursor:pointer;transition:background .25s;
 }
 .toggle input:checked+.toggle-track{background:var(--primary)}
 .toggle-thumb{
   position:absolute;top:3px;left:3px;width:20px;height:20px;
   border-radius:50%;background:#fff;transition:transform .25s;
-  box-shadow:0 1px 4px rgba(0,0,0,0.2);pointer-events:none;
+  box-shadow:0 1px 4px rgba(0,0,0,0.3);pointer-events:none;
 }
 .toggle input:checked~.toggle-thumb{transform:translateX(18px)}
 
@@ -201,28 +218,31 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 }
 .btn:disabled{opacity:.55;cursor:not-allowed}
 .btn-primary{background:var(--primary);color:#fff}
-.btn-primary:hover:not(:disabled){background:var(--primary-hover);transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,122,255,0.3)}
+.btn-primary:hover:not(:disabled){background:var(--primary-hover);transform:translateY(-1px);box-shadow:0 4px 12px rgba(99,102,241,0.35)}
 .btn-secondary{background:var(--surface2);color:var(--text);border:1px solid var(--border)}
-.btn-secondary:hover:not(:disabled){background:var(--border-light)}
-.btn-danger{background:var(--danger-light);color:var(--danger);border:1px solid rgba(255,59,48,0.2)}
-.btn-danger:hover:not(:disabled){background:rgba(255,59,48,0.2)}
+.btn-secondary:hover:not(:disabled){background:var(--border);color:var(--text)}
+.btn-danger{background:var(--danger);color:#fff}
+.btn-danger:hover:not(:disabled){background:#dc2626;transform:translateY(-1px)}
+.btn-danger-ghost{background:var(--danger-light);color:var(--danger);border:1px solid var(--danger-border)}
+.btn-danger-ghost:hover:not(:disabled){background:rgba(239,68,68,0.2)}
 .btn-success{background:var(--success);color:#fff}
-.btn-success:hover:not(:disabled){background:#2eb350;transform:translateY(-1px)}
+.btn-success:hover:not(:disabled){background:#16a34a;transform:translateY(-1px)}
 .btn-ghost{background:transparent;color:var(--text-secondary);border:1px solid var(--border)}
 .btn-ghost:hover:not(:disabled){background:var(--surface2);color:var(--text)}
 .btn-sm{padding:6px 12px;font-size:13px;border-radius:6px}
-.btn-icon{padding:8px;border-radius:8px;background:transparent;border:1px solid var(--border);color:var(--text-secondary);cursor:pointer;transition:all .2s;font-size:14px;display:inline-flex;align-items:center}
+.btn-icon{padding:8px;border-radius:var(--radius-sm);background:transparent;border:1px solid var(--border);color:var(--text-secondary);cursor:pointer;transition:all .2s;font-size:14px;display:inline-flex;align-items:center}
 .btn-icon:hover{background:var(--surface2);color:var(--text)}
+.btn-icon:disabled{opacity:.3}
 
 /* ===== Announcement Cards ===== */
 .ann-list{display:flex;flex-direction:column;gap:10px;margin-top:8px}
 .ann-card{
-  background:var(--surface);border:1px solid var(--border-light);
+  background:var(--surface2);border:1px solid var(--border);
   border-radius:var(--radius-sm);padding:16px;
   display:flex;align-items:flex-start;gap:12px;
-  transition:box-shadow .2s;
+  transition:border-color .2s;
 }
-.ann-card:hover{box-shadow:var(--shadow-sm)}
+.ann-card:hover{border-color:var(--border-light)}
 .ann-card-left{flex:1;min-width:0}
 .ann-card-header{display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap}
 .ann-card-title{font-size:14px;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:300px}
@@ -233,15 +253,15 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
   display:inline-flex;align-items:center;gap:4px;
   font-size:11px;font-weight:600;padding:2px 8px;border-radius:20px;
 }
-.type-info{background:var(--info-light);color:var(--info)}
-.type-feature{background:var(--success-light);color:#1a8a3c}
-.type-warning{background:var(--warning-light);color:#b56700}
+.type-info{background:var(--info-light);color:var(--primary)}
+.type-feature{background:var(--success-light);color:var(--success)}
+.type-warning{background:var(--warning-light);color:var(--warning)}
 .priority-badge{
-  font-size:11px;color:var(--text-placeholder);
-  background:var(--surface2);padding:2px 7px;border-radius:4px;
+  font-size:11px;color:var(--text-secondary);
+  background:var(--bg);padding:2px 7px;border-radius:4px;border:1px solid var(--border);
 }
-.popup-badge{font-size:11px;color:#5856d6;background:rgba(88,86,214,0.1);padding:2px 7px;border-radius:4px}
-.once-badge{font-size:11px;color:var(--text-secondary);background:var(--surface2);padding:2px 7px;border-radius:4px}
+.popup-badge{font-size:11px;color:var(--accent);background:var(--accent-light);padding:2px 7px;border-radius:4px}
+.once-badge{font-size:11px;color:var(--text-secondary);background:var(--bg);padding:2px 7px;border-radius:4px;border:1px solid var(--border)}
 
 /* ===== Preview Panel ===== */
 .preview-box{
@@ -258,13 +278,13 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .ad-preview-text-area{flex:1;min-width:0}
 .ad-preview-badge{
   display:inline-block;font-size:10px;font-weight:700;padding:2px 7px;
-  border-radius:4px;background:rgba(0,122,255,0.8);color:#fff;
+  border-radius:4px;background:rgba(99,102,241,0.8);color:#fff;
   margin-bottom:4px;letter-spacing:.5px;
 }
 .ad-preview-text{font-size:13px;color:rgba(255,255,255,0.9);font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .ad-preview-btn{
   flex-shrink:0;padding:6px 12px;border-radius:6px;
-  background:#007AFF;color:#fff;font-size:12px;font-weight:600;
+  background:var(--primary);color:#fff;font-size:12px;font-weight:600;
   white-space:nowrap;
 }
 
@@ -280,15 +300,14 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .ann-preview-content{font-size:13px;color:rgba(255,255,255,0.8);line-height:1.6;margin-bottom:16px;white-space:pre-line}
 .ann-preview-action{
   width:100%;padding:10px;border-radius:8px;
-  background:linear-gradient(135deg,#007AFF,#5856d6);
-  color:#fff;font-size:14px;font-weight:600;
+  background:var(--primary);color:#fff;font-size:14px;font-weight:600;
   border:none;cursor:pointer;
 }
 
 /* ===== Modal ===== */
 .modal-backdrop{
   position:fixed;inset:0;z-index:1000;
-  background:rgba(0,0,0,0.4);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);
+  background:rgba(0,0,0,0.6);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);
   display:none;align-items:center;justify-content:center;padding:20px;
 }
 .modal-backdrop.open{display:flex}
@@ -296,14 +315,14 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
   background:var(--surface);border-radius:var(--radius-lg);
   width:100%;max-height:90vh;overflow-y:auto;
   box-shadow:var(--shadow-lg);animation:modalIn .2s ease;
-  border:1px solid var(--border-light);
+  border:1px solid var(--border);
 }
 .modal.modal-md{max-width:560px}
 .modal.modal-lg{max-width:780px}
 .modal.modal-xl{max-width:960px}
 .modal-header{
   display:flex;align-items:center;justify-content:space-between;
-  padding:20px 24px 0;border-bottom:1px solid var(--border-light);padding-bottom:16px;
+  padding:20px 24px 0;border-bottom:1px solid var(--border);padding-bottom:16px;
   position:sticky;top:0;background:var(--surface);z-index:10;border-radius:var(--radius-lg) var(--radius-lg) 0 0;
 }
 .modal-header h3{font-size:16px;font-weight:700;color:var(--text)}
@@ -312,11 +331,11 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
   color:var(--text-secondary);cursor:pointer;font-size:16px;
   display:flex;align-items:center;justify-content:center;transition:all .2s;
 }
-.modal-close:hover{background:var(--border-light);color:var(--text)}
+.modal-close:hover{background:var(--border);color:var(--text)}
 .modal-body{padding:20px 24px}
 .modal-footer{
   padding:16px 24px 20px;display:flex;gap:10px;justify-content:flex-end;
-  border-top:1px solid var(--border-light);
+  border-top:1px solid var(--border);
 }
 @keyframes modalIn{from{opacity:0;transform:scale(.96) translateY(-8px)}to{opacity:1;transform:scale(1) translateY(0)}}
 
@@ -326,7 +345,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
   display:flex;flex-direction:column;gap:8px;pointer-events:none;
 }
 .toast{
-  background:var(--surface);border:1px solid var(--border-light);
+  background:var(--surface);border:1px solid var(--border);
   border-radius:var(--radius-sm);padding:12px 16px;
   box-shadow:var(--shadow-lg);display:flex;align-items:center;gap:10px;
   min-width:280px;max-width:400px;pointer-events:all;
@@ -341,11 +360,11 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 @keyframes toastIn{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
 @keyframes toastOut{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(20px)}}
 
-/* ===== GitHub Config ===== */
-.github-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.github-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:4px}
+/* ===== Config Grid ===== */
+.config-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.config-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:4px}
 .code-block{
-  background:#1d1d1f;color:#e2e8f0;border-radius:var(--radius-sm);
+  background:var(--bg);color:var(--text);border-radius:var(--radius-sm);border:1px solid var(--border);
   padding:16px;font-family:"SF Mono","Fira Code",monospace;font-size:12px;
   line-height:1.6;overflow:auto;max-height:400px;white-space:pre;
 }
@@ -356,42 +375,44 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
   border-top-color:#fff;border-radius:50%;
   animation:spin .7s linear infinite;flex-shrink:0;
 }
-.spinner-dark{border-color:rgba(0,0,0,0.15);border-top-color:var(--text-secondary)}
+.spinner-dark{border-color:rgba(255,255,255,0.15);border-top-color:var(--text-secondary)}
 @keyframes spin{to{transform:rotate(360deg)}}
 
 /* ===== Confirm Dialog ===== */
-.confirm-box{background:var(--surface);border-radius:var(--radius-lg);max-width:380px;width:100%;padding:28px;box-shadow:var(--shadow-lg);text-align:center;animation:modalIn .2s ease}
+.confirm-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);max-width:380px;width:100%;padding:28px;box-shadow:var(--shadow-lg);text-align:center;animation:modalIn .2s ease}
 .confirm-box .icon{font-size:40px;margin-bottom:12px}
-.confirm-box h3{font-size:17px;font-weight:700;margin-bottom:8px}
+.confirm-box h3{font-size:17px;font-weight:700;margin-bottom:8px;color:var(--text)}
 .confirm-box p{font-size:14px;color:var(--text-secondary);margin-bottom:20px;line-height:1.5}
 .confirm-actions{display:flex;gap:10px;justify-content:center}
 
 /* ===== Responsive ===== */
 @media(max-width:768px){
-  .form-row,.form-row-3,.github-grid{grid-template-columns:1fr}
+  .form-row,.form-row-3,.config-grid{grid-template-columns:1fr}
   .main-content{padding:16px}
   .topbar{padding:0 16px}
-  .tab-bar{padding:0 8px;overflow-x:auto}
-  .tab-btn{padding:0 14px;font-size:13px}
+  .tab-bar{padding:8px 8px;overflow-x:auto;gap:4px}
+  .tab-btn{padding:8px 14px;font-size:13px}
   .modal-backdrop{padding:12px}
+  .topbar-user{display:none}
 }
 
 /* ===== Divider ===== */
-.divider{height:1px;background:var(--border-light);margin:20px 0}
+.divider{height:1px;background:var(--border);margin:20px 0}
 
 /* ===== Empty State ===== */
 .empty-state{text-align:center;padding:40px 20px;color:var(--text-secondary)}
-.empty-state .icon{font-size:48px;margin-bottom:12px}
+.empty-state .icon{font-size:48px;margin-bottom:12px;opacity:.5}
 .empty-state p{font-size:14px}
 
 /* ===== Locale Section ===== */
 .locale-section{
   background:var(--surface2);border-radius:var(--radius-sm);
-  padding:16px;margin-top:4px;border:1px solid var(--border-light);
+  padding:16px;margin-top:4px;border:1px solid var(--border);
 }
-.locale-title{font-size:12px;font-weight:600;color:var(--text-secondary);letter-spacing:.5px;text-transform:uppercase;margin-bottom:12px}
+.locale-title{font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px;display:flex;align-items:center;gap:6px}
+.locale-desc{font-size:12px;color:var(--text-muted);margin-bottom:12px;line-height:1.5}
 
-/* ===== Inline Flex Helpers ===== */
+/* ===== Helpers ===== */
 .flex{display:flex}.items-center{align-items:center}.gap-8{gap:8px}.gap-12{gap:12px}.flex-1{flex:1}.justify-between{justify-content:space-between}.justify-end{justify-content:flex-end}.flex-wrap{flex-wrap:wrap}
 .mt-4{margin-top:4px}.mt-8{margin-top:8px}.mt-12{margin-top:12px}.mt-16{margin-top:16px}.mb-16{margin-bottom:16px}
 .text-sm{font-size:13px}.text-xs{font-size:12px}.text-secondary{color:var(--text-secondary)}.font-mono{font-family:"SF Mono","Fira Code",monospace;font-size:12px}
@@ -403,7 +424,9 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 <div id="login-page">
   <div class="login-card">
     <div class="login-logo">
-      <div class="icon">🛠️</div>
+      <div class="icon">
+        <svg width="32" height="32" viewBox="0 0 2049 2049" fill="#ffffff"><path d="M1430.5 1431.3 c-3.3 -0.8 -6.2 -4.1 -15.7 -18.3 -5.1 -7.4 -10.6 -15.5 -12.3 -18 -1.7 -2.5 -6.1 -8.8 -9.7 -14 -3.6 -5.2 -10.2 -14.9 -14.8 -21.5 -4.6 -6.6 -14.7 -21.4 -22.5 -33 -15.9 -23.5 -35.3 -51.7 -38.2 -55.5 -1.1 -1.4 -9.8 -14.2 -19.5 -28.5 -9.6 -14.3 -20.4 -30.3 -24 -35.5 -3.5 -5.2 -12.7 -18.7 -20.3 -30 -15.3 -22.6 -25.6 -37.8 -35.1 -51.5 -3.5 -4.9 -11.1 -16.2 -17.1 -25 -5.9 -8.7 -18.2 -26.7 -27.2 -40 -9.1 -13.2 -21.6 -31.6 -27.9 -41 -6.3 -9.3 -19.2 -28.4 -28.6 -42.2 -9.4 -13.9 -22.5 -33.3 -29.1 -43 -30.4 -44.9 -37.4 -55.2 -41 -60.3 -2.2 -3 -8.5 -12.2 -14.1 -20.5 -5.5 -8.2 -12.1 -17.8 -14.5 -21.3 l-4.5 -6.3 -202.6 0 -202.7 -0.1 -3.1 -5.1 c-2.9 -4.7 -19.5 -31.5 -35.5 -57.2 -20.1 -32.3 -32.2 -51.6 -40.3 -63.9 -5 -7.7 -8.9 -14.3 -8.7 -14.6 0.4 -0.6 601.5 -0.7 611.6 -0.1 2 0.1 3.4 1.4 6.1 5.3 1.8 2.9 9.4 14.1 16.8 24.8 7.3 10.7 16.1 23.6 19.5 28.5 27.6 40.7 50.3 73.9 65.1 95.5 9.6 14 21.8 31.9 27 39.8 5.3 7.8 10.2 14.2 10.9 14.2 0.8 0 1.7 -1 2 -2.2 0.4 -1.1 4.7 -8 9.5 -15.2 4.8 -7.2 16.7 -25.2 26.4 -40.1 9.8 -14.8 23.7 -36 31 -47 7.3 -11 14.5 -22 16 -24.5 1.4 -2.5 4.4 -7 6.5 -10 2.1 -3 14.1 -21 26.6 -40 12.5 -19 24.1 -36.3 25.7 -38.5 3.2 -4.5 12.3 -18.2 21.7 -32.7 3.5 -5.4 6.9 -9.8 7.5 -9.8 1.2 0 9.8 11.7 11.1 15.1 0.3 0.9 -0.8 3.3 -2.8 6 -3.6 4.7 -15.3 21.1 -23.2 32.4 -2.7 3.9 -8.7 12.4 -13.5 19 -4.8 6.6 -15.4 21.4 -23.6 32.9 -8.2 11.5 -18.7 26.2 -23.4 32.7 -8.7 12 -33.8 46.9 -42.6 59.3 -25.8 36.2 -38.6 54.4 -43.1 61.6 -1.9 3 -4.4 6.5 -5.5 7.7 l-2 2.2 4.3 5.7 c2.4 3.2 4.9 5.9 5.4 6.1 0.6 0.1 5.8 -7.5 11.7 -17 5.8 -9.4 13.1 -20.8 16.2 -25.2 3.1 -4.4 11.4 -16.8 18.5 -27.5 7 -10.7 18.6 -28.2 25.7 -38.8 7.1 -10.7 17 -25.8 21.9 -33.6 8.6 -13.6 18 -27.9 30.8 -47.1 34.3 -51.3 48 -71.5 48.5 -71.5 0.7 0 8.8 12.4 10.6 16.1 0.7 1.4 -0.1 3.1 -3.5 7.6 -2.4 3.1 -6.4 8.7 -8.9 12.4 -2.5 3.6 -6.6 9.5 -9.2 13 -2.6 3.5 -9.2 12.7 -14.7 20.4 -5.6 7.7 -17.2 23.8 -25.8 35.9 -8.7 12 -20.5 28.7 -26.3 37.1 -5.8 8.3 -14.5 20.7 -19.5 27.4 -4.9 6.7 -9.7 13.2 -10.5 14.4 -0.8 1.3 -4.2 6 -7.5 10.6 -3.3 4.6 -6.9 9.6 -8 11.1 -2.4 3.4 -24.7 35 -33.5 47.5 -3.4 5 -7.6 10.5 -9.2 12.3 -1.6 1.9 -2.5 3.8 -2.1 4.5 3 5.2 8.5 12.7 9.1 12.3 0.4 -0.2 5.7 -8.1 11.7 -17.6 6.1 -9.4 18.5 -28.5 27.6 -42.3 9.1 -13.9 22.7 -34.6 30.3 -46.2 7.6 -11.5 16.1 -24.4 19 -28.6 2.8 -4.1 8.5 -12.7 12.6 -19 16.2 -24.9 46.9 -71.4 58.9 -89.2 12.1 -18.2 12.6 -18.8 14.1 -16.7 3.7 5.3 9 14.5 9 15.5 0 0.6 -2.3 4.3 -5 8.1 -2.8 3.8 -7.8 11 -11.2 15.9 -3.3 5 -7.3 10.6 -8.8 12.5 -1.5 1.9 -5.5 7.6 -8.8 12.5 -9.2 13.6 -18.2 26.3 -35.1 49.7 -8.5 11.7 -19.7 27.4 -24.9 34.8 -5.2 7.4 -13.2 18.4 -17.7 24.5 -4.5 6 -11.8 16.2 -16.1 22.5 -4.3 6.4 -10.5 15.2 -13.7 19.5 -7.6 10.5 -20.2 28.4 -29.3 41.6 l-7.3 10.6 4 5.9 c2.2 3.2 4.3 6 4.7 6.1 0.8 0.3 9.9 -12.5 17.5 -24.5 13.2 -20.8 20.9 -32.8 44.4 -68.4 13.8 -21.1 29.8 -45.5 35.6 -54.3 12.7 -19.5 35.1 -53.6 54.2 -82.5 7.8 -11.8 15.5 -23.6 17.1 -26.2 1.6 -2.7 3.1 -4.8 3.4 -4.8 0.4 0 3.2 3.9 6.3 8.6 6.6 9.9 6.9 7.8 -2.8 20.9 -5.1 6.9 -15.6 21.7 -18.5 25.9 -0.7 1.1 -6.8 9.7 -13.5 19 -6.6 9.3 -15.4 21.7 -19.5 27.7 -9.6 13.8 -34.9 49.2 -43 60.2 -1.4 1.9 -6.5 9.2 -11.4 16.3 -5 7.1 -11.5 16.3 -14.6 20.4 -3.1 4.1 -10.2 14 -15.7 22 -5.5 8 -15.1 21.7 -21.3 30.5 -6.2 8.8 -11.5 16.5 -11.7 17.2 -0.6 1.5 6.8 12.3 8.4 12.3 0.6 0 3.7 -3.7 6.8 -8.3 9.3 -13.6 38 -58 41.5 -64.3 1.9 -3.3 5.7 -9 8.5 -12.9 2.8 -3.8 7.3 -10.6 10 -15 2.7 -4.4 10.8 -16.9 18 -27.7 7.1 -10.9 17.3 -26.4 22.6 -34.5 5.3 -8.2 21.1 -32.2 35.2 -53.5 14 -21.2 26 -39.6 26.6 -40.7 0.7 -1.2 1.6 -2.1 2 -2.1 1.1 0 11.1 16 11.1 17.6 0 0.6 -2.2 4 -4.8 7.5 -2.7 3.5 -7.2 9.8 -10 13.9 -2.8 4.1 -8.5 12.2 -12.6 18 -4.2 5.8 -10.2 14.4 -13.5 19.2 -3.3 4.8 -8.4 11.8 -11.3 15.5 -6.4 8.2 -14.5 19.5 -26 36.3 -10.2 15 -19.5 28.2 -31.7 45 -18.2 25.2 -41.8 58.6 -48.5 69 -2.7 4.1 -8 11.9 -11.8 17.2 l-6.9 9.7 4.3 6.5 c2.4 3.6 4.8 6.4 5.3 6.3 0.6 -0.2 2.4 -2.5 4 -5.1 3 -4.7 13.3 -20.8 30.8 -48.1 4.9 -7.7 12 -18.5 15.7 -24 3.7 -5.5 9.7 -14.9 13.5 -21 3.7 -6 9.1 -14.6 12 -19 2.9 -4.4 8.7 -13.4 13 -20 9.9 -15.3 40.5 -61.7 66.9 -101.8 7.6 -11.4 14.2 -20.5 14.7 -20.1 1.4 0.8 9.9 15.6 9.9 17.2 0 0.8 -6.9 10.9 -15.3 22.6 -14 19.2 -27.5 38.3 -55.2 77.8 -5.5 7.8 -14.5 20.5 -20 28.1 -11.6 16.1 -17.1 23.9 -35.6 50.7 -7.5 10.7 -18 25.8 -23.4 33.5 -5.4 7.7 -13.3 19 -17.6 25.2 -4.4 6.2 -7.9 11.8 -7.9 12.4 0 1.8 8 12.1 9.1 11.7 0.5 -0.2 2.4 -2.7 4.2 -5.6 1.7 -2.9 7.1 -11 11.8 -18 4.8 -7 13.1 -19.7 18.6 -28.2 5.5 -8.5 15.1 -23.4 21.3 -33 6.1 -9.6 13.7 -21.1 16.7 -25.5 3 -4.4 6 -9 6.6 -10.2 1.9 -3.6 18.3 -29 30 -46.6 6 -8.9 12.1 -18.1 13.5 -20.5 15 -24 45 -69.2 46 -69.2 1.1 0 8.2 16.2 8.2 18.7 0 1.2 -1.1 3.4 -2.4 5 -1.3 1.5 -9.5 12.9 -18.2 25.3 -22.1 31.2 -25.8 36.6 -30.1 43.5 -2 3.3 -5.9 9 -8.7 12.7 -2.8 3.6 -7.3 9.9 -10.1 13.8 -2.7 4 -9.4 13.4 -14.8 20.9 -5.3 7.5 -12.6 17.9 -16.2 23.1 -3.6 5.2 -12 17.5 -18.8 27.2 -6.7 9.7 -15.3 22.2 -19.2 27.8 -3.8 5.6 -8.6 12.4 -10.5 15.1 -1.9 2.7 -5.5 7.8 -8 11.4 -2.5 3.6 -6.9 9.9 -9.8 14 -6.3 8.7 -7 6.2 7.3 26.5 5.7 8 13.8 19.7 18.1 26.1 4.4 6.3 15.6 22.7 24.9 36.3 25.7 37.4 52.5 76.5 63.1 92.1 5.2 7.7 13.2 19.4 17.7 26 26 37.7 35.7 52.5 35.7 54.3 0 3.9 -22.3 47.9 -33.7 66.7 -13.3 21.7 -35.4 50 -53.8 68.6 -13.6 13.8 -17.1 15.9 -24 14.2z"/><path d="M519 1370.1 c0 -0.5 10.2 -16.1 22.7 -34.7 32.9 -49.2 77.9 -116.2 86.1 -128.4 6.6 -9.8 39.1 -58.8 61.1 -92 5.3 -7.9 16.3 -24.4 24.4 -36.5 8.1 -12.1 34.5 -51.6 58.5 -87.7 l43.7 -65.7 92.7 -0.1 92.7 0 -8.4 12.3 c-4.6 6.7 -26.6 39.4 -48.9 72.7 -22.3 33.3 -46.4 69.3 -53.5 80 -16.2 24.1 -17.5 26.2 -57.7 86.5 -18 27 -32.9 49.6 -33.1 50.3 -0.4 0.9 25 1.2 124.8 1.2 69 0 125.9 -0.4 126.4 -0.8 0.6 -0.4 1.9 -2 3.1 -3.7 21.6 -31.1 35.9 -51.7 40.9 -59 12.4 -18.2 38.6 -56.1 40.3 -58.3 l1.7 -2.3 5.2 7.8 c5.2 8 27.9 40.5 59.8 85.8 9.9 14.1 20.4 28.9 23.3 33 2.8 4.2 5.2 7.9 5.2 8.5 0 0.5 -2.1 3.7 -4.8 7.2 -2.6 3.5 -8.7 12.2 -13.5 19.3 -4.8 7.2 -11.6 17.1 -15 22 -3.5 5 -10.3 14.9 -15.2 22 -4.9 7.2 -12.1 17.5 -16 23 -3.9 5.5 -11.3 16.4 -16.5 24.3 l-9.4 14.2 -310.3 0 c-179 0 -310.3 -0.4 -310.3 -0.9z"/></svg>
+      </div>
       <h1>ZX AI Tools</h1>
       <p>管理后台 · 公告系统</p>
     </div>
@@ -427,19 +450,22 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
   <!-- Topbar -->
   <div class="topbar">
     <div class="topbar-brand">
-      <div class="brand-icon">🛠️</div>
-      <h1>ZX AI Tools 管理后台</h1>
+      <div class="brand-icon">
+        <svg width="18" height="18" viewBox="0 0 2049 2049" fill="#ffffff"><path d="M1430.5 1431.3 c-3.3 -0.8 -6.2 -4.1 -15.7 -18.3 -5.1 -7.4 -10.6 -15.5 -12.3 -18 -1.7 -2.5 -6.1 -8.8 -9.7 -14 -3.6 -5.2 -10.2 -14.9 -14.8 -21.5 -4.6 -6.6 -14.7 -21.4 -22.5 -33 -15.9 -23.5 -35.3 -51.7 -38.2 -55.5 -1.1 -1.4 -9.8 -14.2 -19.5 -28.5 -9.6 -14.3 -20.4 -30.3 -24 -35.5 -3.5 -5.2 -12.7 -18.7 -20.3 -30 -15.3 -22.6 -25.6 -37.8 -35.1 -51.5 -3.5 -4.9 -11.1 -16.2 -17.1 -25 -5.9 -8.7 -18.2 -26.7 -27.2 -40 -9.1 -13.2 -21.6 -31.6 -27.9 -41 -6.3 -9.3 -19.2 -28.4 -28.6 -42.2 -9.4 -13.9 -22.5 -33.3 -29.1 -43 -30.4 -44.9 -37.4 -55.2 -41 -60.3 -2.2 -3 -8.5 -12.2 -14.1 -20.5 -5.5 -8.2 -12.1 -17.8 -14.5 -21.3 l-4.5 -6.3 -202.6 0 -202.7 -0.1 -3.1 -5.1 c-2.9 -4.7 -19.5 -31.5 -35.5 -57.2 -20.1 -32.3 -32.2 -51.6 -40.3 -63.9 -5 -7.7 -8.9 -14.3 -8.7 -14.6 0.4 -0.6 601.5 -0.7 611.6 -0.1 2 0.1 3.4 1.4 6.1 5.3 1.8 2.9 9.4 14.1 16.8 24.8 7.3 10.7 16.1 23.6 19.5 28.5 27.6 40.7 50.3 73.9 65.1 95.5 9.6 14 21.8 31.9 27 39.8 5.3 7.8 10.2 14.2 10.9 14.2 0.8 0 1.7 -1 2 -2.2 0.4 -1.1 4.7 -8 9.5 -15.2 4.8 -7.2 16.7 -25.2 26.4 -40.1 9.8 -14.8 23.7 -36 31 -47 7.3 -11 14.5 -22 16 -24.5 1.4 -2.5 4.4 -7 6.5 -10 2.1 -3 14.1 -21 26.6 -40 12.5 -19 24.1 -36.3 25.7 -38.5 3.2 -4.5 12.3 -18.2 21.7 -32.7 3.5 -5.4 6.9 -9.8 7.5 -9.8 1.2 0 9.8 11.7 11.1 15.1 0.3 0.9 -0.8 3.3 -2.8 6 -3.6 4.7 -15.3 21.1 -23.2 32.4 -2.7 3.9 -8.7 12.4 -13.5 19 -4.8 6.6 -15.4 21.4 -23.6 32.9 -8.2 11.5 -18.7 26.2 -23.4 32.7 -8.7 12 -33.8 46.9 -42.6 59.3 -25.8 36.2 -38.6 54.4 -43.1 61.6 -1.9 3 -4.4 6.5 -5.5 7.7 l-2 2.2 4.3 5.7 c2.4 3.2 4.9 5.9 5.4 6.1 0.6 0.1 5.8 -7.5 11.7 -17 5.8 -9.4 13.1 -20.8 16.2 -25.2 3.1 -4.4 11.4 -16.8 18.5 -27.5 7 -10.7 18.6 -28.2 25.7 -38.8 7.1 -10.7 17 -25.8 21.9 -33.6 8.6 -13.6 18 -27.9 30.8 -47.1 34.3 -51.3 48 -71.5 48.5 -71.5 0.7 0 8.8 12.4 10.6 16.1 0.7 1.4 -0.1 3.1 -3.5 7.6 -2.4 3.1 -6.4 8.7 -8.9 12.4 -2.5 3.6 -6.6 9.5 -9.2 13 -2.6 3.5 -9.2 12.7 -14.7 20.4 -5.6 7.7 -17.2 23.8 -25.8 35.9 -8.7 12 -20.5 28.7 -26.3 37.1 -5.8 8.3 -14.5 20.7 -19.5 27.4 -4.9 6.7 -9.7 13.2 -10.5 14.4 -0.8 1.3 -4.2 6 -7.5 10.6 -3.3 4.6 -6.9 9.6 -8 11.1 -2.4 3.4 -24.7 35 -33.5 47.5 -3.4 5 -7.6 10.5 -9.2 12.3 -1.6 1.9 -2.5 3.8 -2.1 4.5 3 5.2 8.5 12.7 9.1 12.3 0.4 -0.2 5.7 -8.1 11.7 -17.6 6.1 -9.4 18.5 -28.5 27.6 -42.3 9.1 -13.9 22.7 -34.6 30.3 -46.2 7.6 -11.5 16.1 -24.4 19 -28.6 2.8 -4.1 8.5 -12.7 12.6 -19 16.2 -24.9 46.9 -71.4 58.9 -89.2 12.1 -18.2 12.6 -18.8 14.1 -16.7 3.7 5.3 9 14.5 9 15.5 0 0.6 -2.3 4.3 -5 8.1 -2.8 3.8 -7.8 11 -11.2 15.9 -3.3 5 -7.3 10.6 -8.8 12.5 -1.5 1.9 -5.5 7.6 -8.8 12.5 -9.2 13.6 -18.2 26.3 -35.1 49.7 -8.5 11.7 -19.7 27.4 -24.9 34.8 -5.2 7.4 -13.2 18.4 -17.7 24.5 -4.5 6 -11.8 16.2 -16.1 22.5 -4.3 6.4 -10.5 15.2 -13.7 19.5 -7.6 10.5 -20.2 28.4 -29.3 41.6 l-7.3 10.6 4 5.9 c2.2 3.2 4.3 6 4.7 6.1 0.8 0.3 9.9 -12.5 17.5 -24.5 13.2 -20.8 20.9 -32.8 44.4 -68.4 13.8 -21.1 29.8 -45.5 35.6 -54.3 12.7 -19.5 35.1 -53.6 54.2 -82.5 7.8 -11.8 15.5 -23.6 17.1 -26.2 1.6 -2.7 3.1 -4.8 3.4 -4.8 0.4 0 3.2 3.9 6.3 8.6 6.6 9.9 6.9 7.8 -2.8 20.9 -5.1 6.9 -15.6 21.7 -18.5 25.9 -0.7 1.1 -6.8 9.7 -13.5 19 -6.6 9.3 -15.4 21.7 -19.5 27.7 -9.6 13.8 -34.9 49.2 -43 60.2 -1.4 1.9 -6.5 9.2 -11.4 16.3 -5 7.1 -11.5 16.3 -14.6 20.4 -3.1 4.1 -10.2 14 -15.7 22 -5.5 8 -15.1 21.7 -21.3 30.5 -6.2 8.8 -11.5 16.5 -11.7 17.2 -0.6 1.5 6.8 12.3 8.4 12.3 0.6 0 3.7 -3.7 6.8 -8.3 9.3 -13.6 38 -58 41.5 -64.3 1.9 -3.3 5.7 -9 8.5 -12.9 2.8 -3.8 7.3 -10.6 10 -15 2.7 -4.4 10.8 -16.9 18 -27.7 7.1 -10.9 17.3 -26.4 22.6 -34.5 5.3 -8.2 21.1 -32.2 35.2 -53.5 14 -21.2 26 -39.6 26.6 -40.7 0.7 -1.2 1.6 -2.1 2 -2.1 1.1 0 11.1 16 11.1 17.6 0 0.6 -2.2 4 -4.8 7.5 -2.7 3.5 -7.2 9.8 -10 13.9 -2.8 4.1 -8.5 12.2 -12.6 18 -4.2 5.8 -10.2 14.4 -13.5 19.2 -3.3 4.8 -8.4 11.8 -11.3 15.5 -6.4 8.2 -14.5 19.5 -26 36.3 -10.2 15 -19.5 28.2 -31.7 45 -18.2 25.2 -41.8 58.6 -48.5 69 -2.7 4.1 -8 11.9 -11.8 17.2 l-6.9 9.7 4.3 6.5 c2.4 3.6 4.8 6.4 5.3 6.3 0.6 -0.2 2.4 -2.5 4 -5.1 3 -4.7 13.3 -20.8 30.8 -48.1 4.9 -7.7 12 -18.5 15.7 -24 3.7 -5.5 9.7 -14.9 13.5 -21 3.7 -6 9.1 -14.6 12 -19 2.9 -4.4 8.7 -13.4 13 -20 9.9 -15.3 40.5 -61.7 66.9 -101.8 7.6 -11.4 14.2 -20.5 14.7 -20.1 1.4 0.8 9.9 15.6 9.9 17.2 0 0.8 -6.9 10.9 -15.3 22.6 -14 19.2 -27.5 38.3 -55.2 77.8 -5.5 7.8 -14.5 20.5 -20 28.1 -11.6 16.1 -17.1 23.9 -35.6 50.7 -7.5 10.7 -18 25.8 -23.4 33.5 -5.4 7.7 -13.3 19 -17.6 25.2 -4.4 6.2 -7.9 11.8 -7.9 12.4 0 1.8 8 12.1 9.1 11.7 0.5 -0.2 2.4 -2.7 4.2 -5.6 1.7 -2.9 7.1 -11 11.8 -18 4.8 -7 13.1 -19.7 18.6 -28.2 5.5 -8.5 15.1 -23.4 21.3 -33 6.1 -9.6 13.7 -21.1 16.7 -25.5 3 -4.4 6 -9 6.6 -10.2 1.9 -3.6 18.3 -29 30 -46.6 6 -8.9 12.1 -18.1 13.5 -20.5 15 -24 45 -69.2 46 -69.2 1.1 0 8.2 16.2 8.2 18.7 0 1.2 -1.1 3.4 -2.4 5 -1.3 1.5 -9.5 12.9 -18.2 25.3 -22.1 31.2 -25.8 36.6 -30.1 43.5 -2 3.3 -5.9 9 -8.7 12.7 -2.8 3.6 -7.3 9.9 -10.1 13.8 -2.7 4 -9.4 13.4 -14.8 20.9 -5.3 7.5 -12.6 17.9 -16.2 23.1 -3.6 5.2 -12 17.5 -18.8 27.2 -6.7 9.7 -15.3 22.2 -19.2 27.8 -3.8 5.6 -8.6 12.4 -10.5 15.1 -1.9 2.7 -5.5 7.8 -8 11.4 -2.5 3.6 -6.9 9.9 -9.8 14 -6.3 8.7 -7 6.2 7.3 26.5 5.7 8 13.8 19.7 18.1 26.1 4.4 6.3 15.6 22.7 24.9 36.3 25.7 37.4 52.5 76.5 63.1 92.1 5.2 7.7 13.2 19.4 17.7 26 26 37.7 35.7 52.5 35.7 54.3 0 3.9 -22.3 47.9 -33.7 66.7 -13.3 21.7 -35.4 50 -53.8 68.6 -13.6 13.8 -17.1 15.9 -24 14.2z"/><path d="M519 1370.1 c0 -0.5 10.2 -16.1 22.7 -34.7 32.9 -49.2 77.9 -116.2 86.1 -128.4 6.6 -9.8 39.1 -58.8 61.1 -92 5.3 -7.9 16.3 -24.4 24.4 -36.5 8.1 -12.1 34.5 -51.6 58.5 -87.7 l43.7 -65.7 92.7 -0.1 92.7 0 -8.4 12.3 c-4.6 6.7 -26.6 39.4 -48.9 72.7 -22.3 33.3 -46.4 69.3 -53.5 80 -16.2 24.1 -17.5 26.2 -57.7 86.5 -18 27 -32.9 49.6 -33.1 50.3 -0.4 0.9 25 1.2 124.8 1.2 69 0 125.9 -0.4 126.4 -0.8 0.6 -0.4 1.9 -2 3.1 -3.7 21.6 -31.1 35.9 -51.7 40.9 -59 12.4 -18.2 38.6 -56.1 40.3 -58.3 l1.7 -2.3 5.2 7.8 c5.2 8 27.9 40.5 59.8 85.8 9.9 14.1 20.4 28.9 23.3 33 2.8 4.2 5.2 7.9 5.2 8.5 0 0.5 -2.1 3.7 -4.8 7.2 -2.6 3.5 -8.7 12.2 -13.5 19.3 -4.8 7.2 -11.6 17.1 -15 22 -3.5 5 -10.3 14.9 -15.2 22 -4.9 7.2 -12.1 17.5 -16 23 -3.9 5.5 -11.3 16.4 -16.5 24.3 l-9.4 14.2 -310.3 0 c-179 0 -310.3 -0.4 -310.3 -0.9z"/></svg>
+      </div>
+      <h1>ZX AI Tools <span>管理后台</span></h1>
     </div>
     <div class="topbar-actions">
+      <span class="topbar-user" id="topbar-user"></span>
       <button class="btn-logout" onclick="handleLogout()">退出登录</button>
     </div>
   </div>
 
   <!-- Tab Bar -->
   <div class="tab-bar">
-    <button class="tab-btn active" onclick="switchTab('tab-ad')" data-tab="tab-ad">📢 推广条</button>
-    <button class="tab-btn" onclick="switchTab('tab-ann')" data-tab="tab-ann">📋 公告管理</button>
-    <button class="tab-btn" onclick="switchTab('tab-github')" data-tab="tab-github">🚀 GitHub 发布</button>
+    <button class="tab-btn active" onclick="switchTab('tab-ad')" data-tab="tab-ad"><span class="tab-icon">📢</span> 推广条管理</button>
+    <button class="tab-btn" onclick="switchTab('tab-ann')" data-tab="tab-ann"><span class="tab-icon">📋</span> 公告管理</button>
+    <button class="tab-btn" onclick="switchTab('tab-github')" data-tab="tab-github"><span class="tab-icon">🚀</span> 发布管理</button>
   </div>
 
   <!-- Main Content -->
@@ -447,6 +473,12 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 
     <!-- ===== TAB: 推广条 ===== -->
     <div class="tab-panel active" id="tab-ad">
+      <!-- Tip Card -->
+      <div class="info-card">
+        <div class="info-card-title">💡 推广条功能说明</div>
+        <p>推广条会显示在软件界面的右上角，用于展示促销信息、新功能提示等内容。<br>用户可以关闭推广条，关闭后不再显示（直到下次更新）。</p>
+      </div>
+
       <div class="card">
         <div class="card-title">📢 推广条管理 <span class="badge-tag">TopRightAd</span></div>
         <div class="form-row">
@@ -457,38 +489,45 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
           <div class="form-group">
             <label>优先级 <span class="required">*</span></label>
             <input type="number" id="ad-priority" value="100" min="0" max="9999">
+            <div class="form-hint">数字越大越优先显示，多条推广时按此排序，建议填 100</div>
           </div>
         </div>
         <div class="form-row">
           <div class="form-group">
             <label>推广文字（英文）<span class="required">*</span></label>
             <input type="text" id="ad-text" placeholder="e.g. Try ZX AI Tools Pro now!">
+            <div class="form-hint">显示在推广条中的主要文字内容，建议简短有力，不超过 30 个字</div>
           </div>
           <div class="form-group">
             <label>标签文字（英文）</label>
             <input type="text" id="ad-badge" placeholder="e.g. NEW / HOT">
+            <div class="form-hint">显示在文字左侧的小标签，如 NEW、HOT、限时 等</div>
           </div>
         </div>
         <div class="form-row">
           <div class="form-group">
             <label>按钮文字（英文）<span class="required">*</span></label>
             <input type="text" id="ad-cta-label" placeholder="e.g. Learn More">
+            <div class="form-hint">推广条右侧按钮的文字，如 了解更多、立即获取</div>
           </div>
           <div class="form-group">
             <label>跳转链接 <span class="required">*</span></label>
             <input type="url" id="ad-cta-url" placeholder="https://example.com">
+            <div class="form-hint">点击按钮后跳转的页面地址，填写完整的 https:// 链接</div>
           </div>
         </div>
         <div class="form-group">
           <label>过期时间（可留空）</label>
           <input type="datetime-local" id="ad-expires-at">
+          <div class="form-hint">可选填，到期后推广条自动停止显示，不填则永久有效</div>
         </div>
 
         <div class="divider"></div>
 
         <!-- zh-CN Locale -->
         <div class="locale-section">
-          <div class="locale-title">🇨🇳 中文本地化（zh-CN）</div>
+          <div class="locale-title">🌐 中文本地化（可选）</div>
+          <div class="locale-desc">如果填写了中文内容，中文系统的用户会看到中文版本的推广条。不填则所有用户都看英文版本。</div>
           <div class="form-row">
             <div class="form-group">
               <label>推广文字（中文）</label>
@@ -526,6 +565,12 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 
     <!-- ===== TAB: 公告管理 ===== -->
     <div class="tab-panel" id="tab-ann">
+      <!-- Tip Card -->
+      <div class="info-card green">
+        <div class="info-card-title">💡 公告功能说明</div>
+        <p>公告会以弹窗或通知的形式在软件内展示给用户。<br>支持 <strong>info</strong>（普通）、<strong>feature</strong>（新功能）、<strong>warning</strong>（警告）三种类型，分别对应蓝色、绿色、橙色的样式。</p>
+      </div>
+
       <div class="card">
         <div class="section-header">
           <h2>📋 公告列表</h2>
@@ -540,29 +585,38 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
       </div>
     </div>
 
-    <!-- ===== TAB: GitHub 发布 ===== -->
+    <!-- ===== TAB: 发布管理 ===== -->
     <div class="tab-panel" id="tab-github">
-      <!-- GitHub Config -->
+      <!-- Tip Card -->
+      <div class="info-card amber">
+        <div class="info-card-title">💡 发布管理说明</div>
+        <p>在这里配置远程存储信息，编辑完推广条和公告后，<br>点击"同步发布"将内容上传到服务器，用户下次打开软件时即可看到更新。<br>Token 需要有仓库写入权限。</p>
+      </div>
+
+      <!-- Config -->
       <div class="card">
-        <div class="card-title">⚙️ GitHub 配置</div>
-        <div class="github-grid">
+        <div class="card-title">⚙️ 远程配置</div>
+        <div class="config-grid">
           <div class="form-group">
-            <label>用户名（owner）<span class="required">*</span></label>
-            <input type="text" id="gh-owner" placeholder="YOUR_GITHUB_USERNAME">
+            <label>用户名（Owner）<span class="required">*</span></label>
+            <input type="text" id="gh-owner" placeholder="你的账号用户名">
+            <div class="form-hint">你的账号用户名</div>
           </div>
           <div class="form-group">
-            <label>仓库名（repo）<span class="required">*</span></label>
+            <label>仓库名（Repo）<span class="required">*</span></label>
             <input type="text" id="gh-repo" placeholder="zx-ai-tools">
+            <div class="form-hint">存放配置文件的仓库名称</div>
           </div>
         </div>
         <div class="form-group">
-          <label>Personal Access Token <span class="required">*</span></label>
+          <label>访问令牌（Token）<span class="required">*</span></label>
           <input type="password" id="gh-token" placeholder="ghp_xxxxxx..." autocomplete="off">
-          <div class="form-hint">需要 repo 权限（contents read/write）</div>
+          <div class="form-hint">访问令牌，用于验证身份和写入权限，请妥善保管</div>
         </div>
         <div class="form-group">
           <label>文件路径</label>
           <input type="text" id="gh-path" value="announcements.json">
+          <div class="form-hint">配置文件在仓库中的路径，默认为 announcements.json</div>
         </div>
         <div class="flex justify-end">
           <button class="btn btn-secondary" onclick="saveGithubConfig()">💾 保存配置</button>
@@ -572,9 +626,9 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
       <!-- Operations -->
       <div class="card">
         <div class="card-title">🚀 操作</div>
-        <div class="github-actions">
-          <button class="btn btn-secondary" id="btn-pull" onclick="pullFromGithub()">⬇️ 从 GitHub 拉取</button>
-          <button class="btn btn-primary" id="btn-push" onclick="pushToGithub()">⬆️ 发布到 GitHub</button>
+        <div class="config-actions">
+          <button class="btn btn-secondary" id="btn-pull" onclick="pullFromGithub()">⬇️ 拉取远程配置</button>
+          <button class="btn btn-primary" id="btn-push" onclick="pushToGithub()">⬆️ 同步发布</button>
           <button class="btn btn-ghost" onclick="previewJson()">📄 预览 JSON</button>
           <button class="btn btn-ghost" onclick="copyJson()">📋 复制 JSON</button>
         </div>
@@ -617,9 +671,9 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
         <div class="form-group">
           <label>类型 <span class="required">*</span></label>
           <select id="ann-type">
-            <option value="info">ℹ️ info — 信息</option>
-            <option value="feature">✨ feature — 新功能</option>
-            <option value="warning">⚠️ warning — 警告</option>
+            <option value="info">ℹ️ info — 普通通知（蓝色，适合一般公告）</option>
+            <option value="feature">✨ feature — 新功能（绿色，适合功能更新说明）</option>
+            <option value="warning">⚠️ warning — 警告提示（橙色，适合重要提醒）</option>
           </select>
         </div>
       </div>
@@ -631,6 +685,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
         <div class="form-group">
           <label>优先级（越大越靠前）</label>
           <input type="number" id="ann-priority" value="100" min="0" max="9999">
+          <div class="form-hint">数字越大越靠前显示，建议用 100、200、300 这样的间隔便于插入</div>
         </div>
       </div>
       <div class="form-group">
@@ -664,7 +719,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
       <div class="toggle-row">
         <div>
           <div class="toggle-label">弹窗显示（popup）</div>
-          <div class="toggle-desc">启用后在应用内以模态弹窗展示</div>
+          <div class="toggle-desc">开启后以弹窗形式显示，关闭则在通知列表中显示</div>
         </div>
         <label class="toggle">
           <input type="checkbox" id="ann-popup" onchange="this.nextElementSibling.nextElementSibling && null">
@@ -675,7 +730,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
       <div class="toggle-row">
         <div>
           <div class="toggle-label">只显示一次（showOnce）</div>
-          <div class="toggle-desc">用户关闭后不再显示</div>
+          <div class="toggle-desc">仅显示一次：开启后用户看过就不再弹出，适合一次性公告</div>
         </div>
         <label class="toggle">
           <input type="checkbox" id="ann-show-once" checked>
@@ -693,7 +748,8 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 
       <!-- zh-CN Locale -->
       <div class="locale-section">
-        <div class="locale-title">🇨🇳 中文本地化（zh-CN）</div>
+        <div class="locale-title">🌐 中文本地化（可选）</div>
+        <div class="locale-desc">如果填写了中文内容，中文系统的用户会看到中文版本。不填则所有用户看英文版本。</div>
         <div class="form-group">
           <label>标题（中文）</label>
           <input type="text" id="ann-zh-title" placeholder="中文标题">
@@ -718,7 +774,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
       <div style="background:linear-gradient(135deg,#1a1a2e,#16213e);border-radius:10px;padding:20px;display:flex;justify-content:center">
         <div class="ann-preview-popup" id="ann-live-preview">
           <div class="ann-preview-header">
-            <div class="ann-preview-icon" id="pv-ann-icon" style="background:rgba(0,122,255,0.2)">ℹ️</div>
+            <div class="ann-preview-icon" id="pv-ann-icon" style="background:rgba(99,102,241,0.2)">ℹ️</div>
             <div class="ann-preview-title" id="pv-ann-title">公告标题</div>
           </div>
           <div class="ann-preview-summary" id="pv-ann-summary">摘要内容</div>
@@ -914,6 +970,9 @@ function checkAuth() {
 function showApp() {
   document.getElementById('login-page').style.display = 'none';
   document.getElementById('app').style.display = 'flex';
+  // Show logged-in user hint
+  const userEl = document.getElementById('topbar-user');
+  if (userEl) userEl.textContent = '已登录';
   loadState();
   loadGithubConfig();
   renderAdForm();
@@ -1035,9 +1094,9 @@ function renderAnnList() {
 }
 
 const TYPE_META = {
-  info:    { icon: 'ℹ️',  label: 'info',    cls: 'type-info',    bg: 'rgba(0,122,255,0.2)' },
-  feature: { icon: '✨', label: 'feature', cls: 'type-feature', bg: 'rgba(52,199,89,0.2)'  },
-  warning: { icon: '⚠️', label: 'warning', cls: 'type-warning', bg: 'rgba(255,149,0,0.2)'  },
+  info:    { icon: 'ℹ️',  label: 'info',    cls: 'type-info',    bg: 'rgba(99,102,241,0.2)' },
+  feature: { icon: '✨', label: 'feature', cls: 'type-feature', bg: 'rgba(34,197,94,0.2)'  },
+  warning: { icon: '⚠️', label: 'warning', cls: 'type-warning', bg: 'rgba(245,158,11,0.2)'  },
 };
 
 function renderAnnCard(ann, i, total) {
@@ -1057,11 +1116,11 @@ function renderAnnCard(ann, i, total) {
       <div class="ann-card-meta">${popupBadge}${onceBadge}${expBadge}</div>
     </div>
     <div class="ann-card-actions">
-      <button class="btn-icon" title="上移" onclick="moveAnn(${i},-1)" ${i===0?'disabled':''}>↑</button>
-      <button class="btn-icon" title="下移" onclick="moveAnn(${i},1)"  ${i===total-1?'disabled':''}>↓</button>
+      <button class="btn-icon" title="上移" onclick="moveAnn(${i},-1)" ${i===0?'disabled':''}>&uarr;</button>
+      <button class="btn-icon" title="下移" onclick="moveAnn(${i},1)"  ${i===total-1?'disabled':''}>&darr;</button>
       <button class="btn btn-sm btn-ghost" onclick="previewAnn(${i})">👁️</button>
       <button class="btn btn-sm btn-secondary" onclick="openAnnModal(${i})">✏️ 编辑</button>
-      <button class="btn btn-sm btn-danger" onclick="deleteAnn(${i})">🗑️</button>
+      <button class="btn btn-sm btn-danger-ghost" onclick="deleteAnn(${i})">🗑️</button>
     </div>
   </div>`;
 }
@@ -1254,7 +1313,7 @@ function saveGithubConfig() {
   localStorage.setItem(LS.GH_REPO,  document.getElementById('gh-repo').value.trim());
   localStorage.setItem(LS.GH_TOKEN, document.getElementById('gh-token').value.trim());
   localStorage.setItem(LS.GH_PATH,  document.getElementById('gh-path').value.trim() || 'announcements.json');
-  toast('GitHub 配置已保存', 'success');
+  toast('配置已保存', 'success');
 }
 
 function getGithubConfig() {
@@ -1263,7 +1322,7 @@ function getGithubConfig() {
   const token = document.getElementById('gh-token').value.trim();
   const path  = document.getElementById('gh-path').value.trim() || 'announcements.json';
   if (!owner || !repo || !token) {
-    toast('请先填写完整 GitHub 配置（用户名、仓库名、Token）', 'error');
+    toast('请先填写完整配置（用户名、仓库名、Token）', 'error');
     return null;
   }
   return { owner, repo, token, path };
@@ -1284,7 +1343,7 @@ async function pullFromGithub() {
   if (!cfg) return;
 
   setLoading('btn-pull', true, '拉取中…');
-  setGhStatus('正在从 GitHub 拉取…');
+  setGhStatus('正在拉取远程配置…');
 
   try {
     const url = `https://api.github.com/repos/${cfg.owner}/${cfg.repo}/contents/${cfg.path}`;
@@ -1311,7 +1370,7 @@ async function pullFromGithub() {
     renderAnnList();
 
     setGhStatus(`✅ 拉取成功（SHA: ${ghFileSha.slice(0,8)}…）`, 'success');
-    toast('从 GitHub 拉取成功！', 'success');
+    toast('远程配置拉取成功！', 'success');
   } catch(e) {
     setGhStatus(`❌ 拉取失败：${e.message}`, 'error');
     toast(`拉取失败：${e.message}`, 'error');
@@ -1328,7 +1387,7 @@ async function pushToGithub() {
   if (!cfg) return;
 
   setLoading('btn-push', true, '发布中…');
-  setGhStatus('正在发布到 GitHub…');
+  setGhStatus('正在同步发布…');
 
   try {
     // First get current sha if we don't have one
@@ -1377,7 +1436,7 @@ async function pushToGithub() {
     ghFileSha = result.content && result.content.sha;
 
     setGhStatus(`✅ 发布成功！SHA: ${(ghFileSha||'').slice(0,8)}…`, 'success');
-    toast('发布到 GitHub 成功！🎉', 'success');
+    toast('同步发布成功！🎉', 'success');
   } catch(e) {
     setGhStatus(`❌ 发布失败：${e.message}`, 'error');
     toast(`发布失败：${e.message}`, 'error');
