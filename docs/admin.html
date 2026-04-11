@@ -10,177 +10,166 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --bg:#f8f9fc;
-  --surface:#ffffff;
-  --surface2:#f9fafb;
-  --border:#e5e7eb;
-  --border-hover:#d1d5db;
+  --glass-bg:rgba(255,255,255,0.15);
+  --glass-border:rgba(255,255,255,0.2);
+  --glass-blur:blur(20px) saturate(180%);
+  --card-bg:rgba(255,255,255,0.92);
+  --card-border:rgba(255,255,255,0.8);
+  --card-shadow:0 20px 60px rgba(0,0,0,0.15),0 8px 20px rgba(0,0,0,0.08),inset 0 1px 0 rgba(255,255,255,1);
   --primary:#6366f1;
   --primary-hover:#4f46e5;
-  --primary-light:rgba(99,102,241,0.08);
-  --primary-ring:rgba(99,102,241,0.1);
-  --primary-border:#c7d2fe;
   --text:#111827;
   --text2:#374151;
   --text3:#6b7280;
   --text4:#9ca3af;
   --danger:#ef4444;
-  --danger-bg:#fff5f5;
-  --danger-border:#fecaca;
   --success:#10b981;
-  --success-bg:#ecfdf5;
-  --success-border:#6ee7b7;
-  --success-text:#065f46;
-  --warning:#f59e0b;
-  --warning-bg:#fffbeb;
-  --warning-border:#fcd34d;
-  --shadow:0 1px 3px rgba(0,0,0,0.08),0 1px 2px rgba(0,0,0,0.04);
-  --shadow-md:0 4px 12px rgba(0,0,0,0.12);
-  --shadow-lg:0 8px 24px rgba(0,0,0,0.14);
-  --radius:12px;
-  --radius-sm:8px;
   --font:'Inter',-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
 }
-body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased;font-size:14px;line-height:1.5}
-a{color:inherit;text-decoration:none}
+@keyframes gradientShift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pulse{0%,100%{box-shadow:0 4px 20px rgba(99,102,241,0.5)}50%{box-shadow:0 4px 30px rgba(99,102,241,0.8),0 0 0 8px rgba(99,102,241,0.1)}}
+@keyframes toastIn{from{opacity:0;transform:translateX(120%)}to{opacity:1;transform:translateX(0)}}
+@keyframes toastOut{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(120%)}}
+@keyframes modalIn{from{opacity:0;transform:scale(.95) translateY(-8px)}to{opacity:1;transform:scale(1) translateY(0)}}
+@keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+body{
+  font-family:var(--font);color:#fff;min-height:100vh;-webkit-font-smoothing:antialiased;font-size:14px;line-height:1.5;
+  background:linear-gradient(135deg,#667eea 0%,#764ba2 25%,#6B73FF 50%,#a855f7 75%,#ec4899 100%);
+  background-size:400% 400%;animation:gradientShift 20s ease infinite;
+}
 
 /* ===== Login ===== */
-#login-page{
-  min-height:100vh;display:flex;align-items:center;justify-content:center;
-  background:linear-gradient(135deg,#f0f0ff 0%,#f8f9fc 40%,#e8f4ff 100%);
-}
+#login-page{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
 .login-card{
-  background:var(--surface);border:1px solid var(--border);border-radius:16px;
-  padding:44px 40px;width:100%;max-width:400px;box-shadow:var(--shadow-md);
+  background:var(--card-bg);backdrop-filter:blur(40px) saturate(200%);-webkit-backdrop-filter:blur(40px) saturate(200%);
+  border:1px solid var(--card-border);border-radius:24px;padding:44px 40px;width:100%;max-width:400px;
+  box-shadow:var(--card-shadow);animation:fadeIn .5s ease;
 }
 .login-logo{text-align:center;margin-bottom:32px}
 .login-logo svg{margin-bottom:12px}
 .login-logo h1{font-size:22px;font-weight:700;color:var(--text);margin-bottom:4px}
 .login-logo p{font-size:13px;color:var(--text3)}
 .login-form .fg{margin-bottom:16px}
-.login-form .fg label{display:block;font-size:14px;font-weight:500;color:var(--text2);margin-bottom:6px}
+.login-form .fg label{display:block;font-size:13px;font-weight:600;color:var(--text2);margin-bottom:8px;letter-spacing:.01em}
 .login-form .fg input{
-  width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:var(--radius-sm);
-  font-size:14px;color:var(--text);background:var(--surface);outline:none;
-  transition:all .2s;font-family:var(--font);
+  width:100%;padding:12px 16px;border:1.5px solid #e5e7eb;border-radius:10px;
+  font-size:14px;color:var(--text);background:#f8f9fc;outline:none;transition:all .25s ease;font-family:var(--font);
 }
 .login-form .fg input::placeholder{color:var(--text4)}
-.login-form .fg input:focus{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-ring)}
+.login-form .fg input:focus{border-color:var(--primary);box-shadow:0 0 0 4px rgba(99,102,241,0.12);background:#fff;transform:translateY(-1px)}
 .login-btn{
-  width:100%;margin-top:8px;padding:12px;border:none;border-radius:var(--radius-sm);
-  background:var(--primary);color:#fff;font-size:14px;font-weight:600;cursor:pointer;
-  transition:all .2s;font-family:var(--font);display:flex;align-items:center;justify-content:center;gap:8px;
+  width:100%;margin-top:8px;padding:13px;border:none;border-radius:10px;
+  background:linear-gradient(135deg,#6366f1,#8b5cf6,#a855f7);color:#fff;
+  font-size:14px;font-weight:700;cursor:pointer;transition:all .3s cubic-bezier(.4,0,.2,1);
+  font-family:var(--font);display:flex;align-items:center;justify-content:center;gap:8px;
+  box-shadow:0 4px 20px rgba(99,102,241,0.4);
 }
-.login-btn:hover{background:var(--primary-hover);transform:translateY(-1px);box-shadow:0 2px 8px rgba(99,102,241,0.3)}
+.login-btn:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(99,102,241,0.5)}
 .login-btn:active{transform:translateY(0)}
-.login-btn:disabled{opacity:.6;cursor:not-allowed;transform:none}
-.login-error{
-  background:var(--danger-bg);border:1px solid var(--danger-border);
-  color:var(--danger);border-radius:var(--radius-sm);padding:10px 14px;
-  font-size:13px;margin-top:12px;display:none;
-}
+.login-btn:disabled{opacity:.7;cursor:not-allowed;transform:none}
+.login-error{background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.2);color:var(--danger);border-radius:10px;padding:10px 14px;font-size:13px;margin-top:12px;display:none}
 
-/* ===== App Layout ===== */
+/* ===== App ===== */
 #app{display:none;flex-direction:column;min-height:100vh}
 
 /* ===== Topbar ===== */
 .topbar{
   position:sticky;top:0;z-index:100;height:64px;
-  background:var(--surface);border-bottom:1px solid var(--border);
-  box-shadow:0 1px 3px rgba(0,0,0,0.06);
+  background:var(--glass-bg);backdrop-filter:var(--glass-blur);-webkit-backdrop-filter:var(--glass-blur);
+  border-bottom:1px solid var(--glass-border);box-shadow:0 1px 0 rgba(255,255,255,0.1);
   padding:0 32px;display:flex;align-items:center;justify-content:space-between;
 }
 .topbar-left{display:flex;align-items:center;gap:12px}
 .topbar-left svg{flex-shrink:0}
-.topbar-title{font-size:18px;font-weight:700;color:var(--text)}
-.topbar-tag{background:#f3f4f6;color:var(--text3);font-size:12px;border-radius:6px;padding:2px 8px;font-weight:500}
+.topbar-title{font-size:18px;font-weight:700;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,0.1)}
+.topbar-tag{background:rgba(255,255,255,0.2);color:rgba(255,255,255,0.9);font-size:12px;border-radius:6px;padding:2px 10px;font-weight:500;backdrop-filter:blur(10px)}
 .topbar-right{display:flex;align-items:center;gap:16px}
-.topbar-status{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--text3)}
-.topbar-status .dot{width:7px;height:7px;border-radius:50%;background:var(--success);flex-shrink:0}
+.topbar-status{display:flex;align-items:center;gap:6px;font-size:13px;color:rgba(255,255,255,0.8)}
+.topbar-status .dot{width:7px;height:7px;border-radius:50%;background:#4ade80;flex-shrink:0;box-shadow:0 0 6px rgba(74,222,128,0.5)}
 .btn-logout{
-  padding:8px 16px;border:1px solid var(--border);border-radius:var(--radius-sm);
-  background:var(--surface);color:var(--text3);font-size:13px;font-weight:500;
-  cursor:pointer;transition:all .2s;font-family:var(--font);
+  padding:8px 16px;border:1px solid rgba(255,255,255,0.25);border-radius:8px;
+  background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.85);font-size:13px;font-weight:500;
+  cursor:pointer;transition:all .2s;font-family:var(--font);backdrop-filter:blur(10px);
 }
-.btn-logout:hover{color:var(--text);border-color:var(--border-hover);background:var(--surface2)}
+.btn-logout:hover{background:rgba(255,255,255,0.2);color:#fff;border-color:rgba(255,255,255,0.4)}
 
 /* ===== Main ===== */
 .main-wrap{flex:1;padding:24px 32px;max-width:960px;margin:0 auto;width:100%}
 
 /* ===== Tab Bar ===== */
 .tab-bar{
-  display:inline-flex;background:var(--surface);border:1px solid var(--border);
-  border-radius:var(--radius);padding:4px;gap:4px;margin-bottom:24px;
+  display:inline-flex;background:var(--glass-bg);backdrop-filter:var(--glass-blur);-webkit-backdrop-filter:var(--glass-blur);
+  border:1px solid var(--glass-border);border-radius:14px;padding:5px;gap:4px;margin-bottom:24px;
 }
 .tab-btn{
-  padding:8px 20px;border:none;background:transparent;
-  color:var(--text3);font-size:14px;font-weight:500;border-radius:var(--radius-sm);
-  cursor:pointer;transition:all .2s;font-family:var(--font);white-space:nowrap;
+  padding:9px 22px;border:none;background:transparent;
+  color:rgba(255,255,255,0.7);font-size:14px;font-weight:500;border-radius:10px;
+  cursor:pointer;transition:all .3s cubic-bezier(.4,0,.2,1);font-family:var(--font);white-space:nowrap;
   display:flex;align-items:center;gap:6px;
 }
-.tab-btn:hover{background:#f3f4f6;color:var(--text)}
-.tab-btn.active{background:var(--primary);color:#fff;box-shadow:0 2px 8px rgba(99,102,241,0.3)}
-.tab-btn.active:hover{background:var(--primary-hover)}
-
+.tab-btn:hover{background:rgba(255,255,255,0.1);color:#fff}
+.tab-btn.active{background:rgba(255,255,255,0.9);color:var(--primary);font-weight:600;box-shadow:0 2px 12px rgba(0,0,0,0.15)}
 .tab-panel{display:none}
-.tab-panel.active{display:block}
+.tab-panel.active{display:block;animation:fadeIn .35s ease}
 
 /* ===== Tip Card ===== */
 .tip-card{
-  background:linear-gradient(135deg,#f0f0ff 0%,#e8f4ff 100%);
-  border:1px solid var(--primary-border);border-radius:var(--radius);
-  padding:20px 24px;margin-bottom:20px;position:relative;overflow:hidden;
+  background:rgba(255,255,255,0.12);backdrop-filter:blur(20px) saturate(150%);-webkit-backdrop-filter:blur(20px) saturate(150%);
+  border:1px solid rgba(255,255,255,0.25);border-radius:16px;
+  padding:24px 28px;margin-bottom:20px;position:relative;overflow:hidden;
+  box-shadow:0 8px 32px rgba(0,0,0,0.12),inset 0 1px 0 rgba(255,255,255,0.3);
 }
-.tip-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--primary)}
-.tip-card-title{font-size:15px;font-weight:600;color:var(--text);margin-bottom:8px}
-.tip-card-body{font-size:13px;color:var(--text2);line-height:1.8}
-.tip-card-body ul{margin:4px 0 0 0;padding-left:0;list-style:none}
+.tip-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:linear-gradient(180deg,#fff 0%,rgba(255,255,255,0.3) 100%);border-radius:4px}
+.tip-card-title{font-size:16px;font-weight:700;color:#fff;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.tip-card-body{font-size:14px;color:rgba(255,255,255,0.85);line-height:1.8}
+.tip-card-body ul{margin:4px 0 0;padding:0;list-style:none}
 .tip-card-body ul li{position:relative;padding-left:16px;margin-bottom:2px}
-.tip-card-body ul li::before{content:'•';position:absolute;left:4px;color:var(--primary);font-weight:700}
+.tip-card-body ul li::before{content:'•';position:absolute;left:4px;color:rgba(255,255,255,0.5);font-weight:700}
 
 /* ===== Card ===== */
 .card{
-  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
-  padding:24px;margin-bottom:16px;box-shadow:var(--shadow);
+  background:var(--card-bg);backdrop-filter:blur(40px) saturate(200%);-webkit-backdrop-filter:blur(40px) saturate(200%);
+  border:1px solid var(--card-border);border-radius:20px;padding:32px;margin-bottom:16px;
+  box-shadow:var(--card-shadow);animation:fadeIn .4s ease;
 }
-.card-head{font-size:16px;font-weight:600;color:var(--text);margin-bottom:20px;display:flex;align-items:center;gap:8px}
-.card-head .tag{font-size:11px;font-weight:500;padding:2px 8px;border-radius:20px;background:var(--primary-light);color:var(--primary)}
-
+.card-head{font-size:17px;font-weight:700;color:var(--text);margin-bottom:24px;display:flex;align-items:center;gap:10px}
+.card-head .tag{font-size:11px;font-weight:500;padding:3px 10px;border-radius:20px;background:rgba(99,102,241,0.08);color:var(--primary)}
 .section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
-.section-header h2{font-size:16px;font-weight:600;color:var(--text)}
+.section-header h2{font-size:17px;font-weight:700;color:var(--text);display:flex;align-items:center;gap:10px}
 
 /* ===== Form ===== */
-.fg{margin-bottom:16px}
-.fg label{display:block;font-size:14px;font-weight:500;color:var(--text2);margin-bottom:6px}
+.fg{margin-bottom:18px}
+.fg label{display:block;font-size:13px;font-weight:600;color:var(--text2);margin-bottom:8px;letter-spacing:.01em}
 .fg label .req{color:var(--danger);margin-left:2px}
 .fg input,.fg textarea,.fg select{
-  width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:var(--radius-sm);
-  font-size:14px;color:var(--text);background:var(--surface);outline:none;
-  transition:all .2s;font-family:var(--font);
+  width:100%;padding:12px 16px;border:1.5px solid #e5e7eb;border-radius:10px;
+  font-size:14px;color:var(--text);background:#f8f9fc;outline:none;transition:all .25s ease;font-family:var(--font);
 }
 .fg input::placeholder,.fg textarea::placeholder{color:var(--text4)}
-.fg input:focus,.fg textarea:focus,.fg select:focus{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-ring)}
+.fg input:focus,.fg textarea:focus,.fg select:focus{border-color:var(--primary);box-shadow:0 0 0 4px rgba(99,102,241,0.12);background:#fff;transform:translateY(-1px)}
 .fg textarea{resize:vertical;min-height:80px;line-height:1.6}
 .fg select{
   appearance:none;cursor:pointer;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%239ca3af' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
   background-repeat:no-repeat;background-position:right 14px center;padding-right:36px;
 }
-.fg .hint{font-size:12px;color:var(--text4);margin-top:4px;line-height:1.5}
-.fg-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.fg-row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
-.fg input[readonly]{background:var(--surface2);color:var(--text3);cursor:default}
+.fg .hint{font-size:12px;color:var(--text4);margin-top:6px;line-height:1.5}
+.fg-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.fg input[readonly]{background:#f0f1f3;color:var(--text3);cursor:default}
+.config-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 
-/* ===== Locale Section ===== */
-.locale-box{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:20px;margin-top:4px}
+/* ===== Locale ===== */
+.locale-box{background:#f3f4f6;border:1.5px solid #e5e7eb;border-radius:12px;padding:20px;margin-top:4px}
 .locale-title{font-size:14px;font-weight:600;color:var(--text);margin-bottom:4px;display:flex;align-items:center;gap:6px}
 .locale-desc{font-size:12px;color:var(--text4);margin-bottom:14px;line-height:1.6}
 
 /* ===== Divider ===== */
-.divider{height:1px;background:var(--border);margin:20px 0}
+.divider{height:1px;background:#e5e7eb;margin:22px 0}
 
 /* ===== Toggle ===== */
-.toggle-row{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid #f3f4f6}
+.toggle-row{display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid #f3f4f6}
 .toggle-row:last-child{border-bottom:none}
 .toggle-label{font-size:14px;font-weight:500;color:var(--text)}
 .toggle-desc{font-size:12px;color:var(--text4);margin-top:2px}
@@ -188,49 +177,55 @@ a{color:inherit;text-decoration:none}
 .toggle input{opacity:0;width:0;height:0;position:absolute}
 .toggle-track{position:absolute;inset:0;border-radius:13px;background:#d1d5db;cursor:pointer;transition:background .25s}
 .toggle input:checked+.toggle-track{background:var(--primary)}
-.toggle-thumb{position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:transform .25s;box-shadow:0 1px 3px rgba(0,0,0,0.15);pointer-events:none}
+.toggle-thumb{position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:transform .25s;box-shadow:0 1px 4px rgba(0,0,0,0.18);pointer-events:none}
 .toggle input:checked~.toggle-thumb{transform:translateX(18px)}
 
 /* ===== Buttons ===== */
-.btn{
-  display:inline-flex;align-items:center;gap:6px;padding:10px 24px;border:none;border-radius:var(--radius-sm);
-  font-size:14px;font-weight:500;cursor:pointer;transition:all .2s;font-family:var(--font);white-space:nowrap;
-}
-.btn:disabled{opacity:.55;cursor:not-allowed}
-.btn-primary{background:var(--primary);color:#fff;box-shadow:0 2px 8px rgba(99,102,241,0.3)}
-.btn-primary:hover:not(:disabled){background:var(--primary-hover);transform:translateY(-1px);box-shadow:0 4px 12px rgba(99,102,241,0.35)}
-.btn-secondary{background:var(--surface);color:var(--text2);border:1px solid var(--border)}
-.btn-secondary:hover:not(:disabled){background:var(--surface2);border-color:var(--border-hover)}
-.btn-danger{background:var(--danger-bg);color:var(--danger);border:1px solid var(--danger-border)}
-.btn-danger:hover:not(:disabled){background:#fee2e2}
-.btn-ghost{background:transparent;color:var(--text3);border:1px solid var(--border)}
-.btn-ghost:hover:not(:disabled){background:var(--surface2);color:var(--text)}
-.btn-sm{padding:6px 14px;font-size:13px}
-.btn-icon{padding:7px;border-radius:var(--radius-sm);background:var(--surface);border:1px solid var(--border);color:var(--text3);cursor:pointer;transition:all .2s;font-size:14px;display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px}
-.btn-icon:hover{background:var(--surface2);color:var(--text);border-color:var(--border-hover)}
+.btn{display:inline-flex;align-items:center;gap:7px;padding:12px 20px;border:none;border-radius:12px;font-size:14px;font-weight:600;cursor:pointer;transition:all .3s cubic-bezier(.4,0,.2,1);font-family:var(--font);white-space:nowrap}
+.btn:disabled{opacity:.7;cursor:not-allowed;transform:none !important}
+.btn-pull{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;box-shadow:0 4px 15px rgba(102,126,234,0.4)}
+.btn-pull:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 8px 25px rgba(102,126,234,0.5)}
+.btn-pull:active:not(:disabled){transform:translateY(0)}
+.btn-publish{background:linear-gradient(135deg,#6366f1,#8b5cf6,#a855f7);color:#fff;font-weight:700;padding:12px 28px;box-shadow:0 4px 20px rgba(99,102,241,0.5);animation:pulse 2s ease-in-out infinite;position:relative;overflow:hidden}
+.btn-publish::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,transparent 40%,rgba(255,255,255,0.15) 50%,transparent 60%);background-size:200% 100%;animation:shimmer 3s ease-in-out infinite}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.btn-publish:hover:not(:disabled){transform:translateY(-3px) scale(1.02);box-shadow:0 10px 30px rgba(99,102,241,0.6);animation:none}
+.btn-publish:active:not(:disabled){transform:translateY(-1px) scale(1.01)}
+.btn-preview{background:rgba(99,102,241,0.08);border:1.5px solid rgba(99,102,241,0.3);color:var(--primary)}
+.btn-preview:hover:not(:disabled){background:rgba(99,102,241,0.15);border-color:rgba(99,102,241,0.5);transform:translateY(-1px)}
+.btn-copy{background:rgba(107,114,128,0.08);border:1.5px solid rgba(107,114,128,0.2);color:var(--text3)}
+.btn-copy:hover:not(:disabled){background:rgba(107,114,128,0.12);color:var(--text2);transform:translateY(-1px)}
+.btn-save{background:#111827;color:#fff;border-radius:10px;padding:10px 24px;box-shadow:0 2px 8px rgba(0,0,0,0.15)}
+.btn-save:hover:not(:disabled){background:#1f2937;transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,0.2)}
+.btn-primary-card{background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;box-shadow:0 4px 15px rgba(99,102,241,0.35)}
+.btn-primary-card:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 8px 25px rgba(99,102,241,0.45)}
+.btn-secondary-card{background:rgba(99,102,241,0.08);border:1.5px solid rgba(99,102,241,0.2);color:var(--primary)}
+.btn-secondary-card:hover:not(:disabled){background:rgba(99,102,241,0.15);transform:translateY(-1px)}
+.btn-danger-card{background:rgba(239,68,68,0.06);border:1.5px solid rgba(239,68,68,0.2);color:var(--danger)}
+.btn-danger-card:hover:not(:disabled){background:rgba(239,68,68,0.12)}
+.btn-ghost-card{background:rgba(107,114,128,0.06);border:1.5px solid rgba(107,114,128,0.15);color:var(--text3)}
+.btn-ghost-card:hover:not(:disabled){background:rgba(107,114,128,0.1);color:var(--text2);transform:translateY(-1px)}
+.btn-sm{padding:7px 14px;font-size:13px;border-radius:8px}
+.btn-icon{padding:7px;border-radius:8px;background:rgba(107,114,128,0.06);border:1.5px solid rgba(107,114,128,0.15);color:var(--text3);cursor:pointer;transition:all .2s;font-size:14px;display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px}
+.btn-icon:hover{background:rgba(107,114,128,0.12);color:var(--text)}
 .btn-icon:disabled{opacity:.3;cursor:not-allowed}
+.op-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+
+/* ===== Spinner SVG ===== */
+.spin-icon{animation:spin .8s linear infinite}
 
 /* ===== Preview ===== */
-.preview-box{
-  background:linear-gradient(135deg,#1e1b4b 0%,#1e3a5f 100%);
-  border-radius:var(--radius-sm);padding:24px;min-height:80px;
-  display:flex;align-items:center;justify-content:center;
-}
-.ad-preview-inner{
-  background:linear-gradient(135deg,rgba(255,255,255,0.08),rgba(255,255,255,0.03));
-  border:1px solid rgba(255,255,255,0.1);border-radius:10px;
-  padding:12px 16px;max-width:360px;width:100%;
-  display:flex;align-items:center;justify-content:space-between;gap:12px;
-}
+.preview-box{background:linear-gradient(135deg,#1e1b4b,#312e81,#1e3a5f);border-radius:12px;padding:24px;min-height:80px;display:flex;align-items:center;justify-content:center}
+.ad-preview-inner{background:linear-gradient(135deg,rgba(255,255,255,0.08),rgba(255,255,255,0.03));border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:12px 16px;max-width:360px;width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px}
 .ad-preview-text-area{flex:1;min-width:0}
 .ad-preview-badge{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;background:rgba(99,102,241,0.8);color:#fff;margin-bottom:4px;letter-spacing:.5px}
 .ad-preview-text{font-size:13px;color:rgba(255,255,255,0.9);font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .ad-preview-btn{flex-shrink:0;padding:6px 14px;border-radius:6px;background:#6366f1;color:#fff;font-size:12px;font-weight:600;white-space:nowrap}
 
-/* ===== Announcement List ===== */
+/* ===== Ann List ===== */
 .ann-list{display:flex;flex-direction:column;gap:10px;margin-top:8px}
-.ann-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:16px;display:flex;align-items:flex-start;gap:12px;transition:all .2s}
-.ann-card:hover{border-color:var(--border-hover);box-shadow:var(--shadow)}
+.ann-card{background:#fff;border:1.5px solid #e5e7eb;border-radius:12px;padding:16px;display:flex;align-items:flex-start;gap:12px;transition:all .2s}
+.ann-card:hover{border-color:#d1d5db;box-shadow:0 4px 16px rgba(0,0,0,0.06)}
 .ann-card-left{flex:1;min-width:0}
 .ann-card-header{display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap}
 .ann-card-title{font-size:14px;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:300px}
@@ -238,19 +233,17 @@ a{color:inherit;text-decoration:none}
 .ann-card-meta{display:flex;align-items:center;gap:6px;margin-top:6px;flex-wrap:wrap}
 .ann-card-actions{display:flex;align-items:center;gap:6px;flex-shrink:0}
 .type-badge{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:600;padding:2px 8px;border-radius:20px}
-.type-info{background:var(--primary-light);color:var(--primary)}
+.type-info{background:rgba(99,102,241,0.08);color:var(--primary)}
 .type-feature{background:rgba(16,185,129,0.08);color:var(--success)}
-.type-warning{background:rgba(245,158,11,0.08);color:var(--warning)}
-.meta-badge{font-size:11px;color:var(--text4);background:var(--surface2);padding:2px 8px;border-radius:4px;border:1px solid #f3f4f6}
+.type-warning{background:rgba(245,158,11,0.08);color:#f59e0b}
+.meta-badge{font-size:11px;color:var(--text4);background:#f9fafb;padding:2px 8px;border-radius:4px;border:1px solid #f3f4f6}
 .popup-badge{font-size:11px;color:#7c3aed;background:rgba(124,58,237,0.06);padding:2px 8px;border-radius:4px}
-
-/* ===== Empty State ===== */
 .empty-state{text-align:center;padding:48px 20px;color:var(--text4)}
 .empty-state .icon{font-size:48px;margin-bottom:12px;opacity:.5}
 .empty-state p{font-size:14px;color:var(--text3)}
 
 /* ===== Ann Preview ===== */
-.ann-preview-popup{background:#1a1d27;border-radius:12px;padding:24px;max-width:380px;width:100%;border:1px solid rgba(255,255,255,0.06)}
+.ann-preview-popup{background:#1a1d27;border-radius:14px;padding:24px;max-width:380px;width:100%;border:1px solid rgba(255,255,255,0.06)}
 .ann-preview-header{display:flex;align-items:center;gap:10px;margin-bottom:12px}
 .ann-preview-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
 .ann-preview-title{font-size:16px;font-weight:700;color:#fff}
@@ -259,61 +252,58 @@ a{color:inherit;text-decoration:none}
 .ann-preview-action{width:100%;padding:10px;border-radius:8px;background:var(--primary);color:#fff;font-size:14px;font-weight:600;border:none;cursor:pointer}
 
 /* ===== Modal ===== */
-.modal-backdrop{position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,0.35);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;padding:20px}
+.modal-backdrop{position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,0.4);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;padding:20px}
 .modal-backdrop.open{display:flex}
-.modal{background:var(--surface);border-radius:16px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:var(--shadow-lg);animation:modalIn .2s ease;border:1px solid var(--border)}
-.modal.modal-md{max-width:560px}
-.modal.modal-lg{max-width:780px}
-.modal.modal-xl{max-width:960px}
-.modal-header{display:flex;align-items:center;justify-content:space-between;padding:20px 24px;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--surface);z-index:10;border-radius:16px 16px 0 0}
-.modal-header h3{font-size:16px;font-weight:700;color:var(--text)}
-.modal-close{width:30px;height:30px;border-radius:8px;border:none;background:var(--surface2);color:var(--text3);cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.modal{background:var(--card-bg);backdrop-filter:blur(40px);border-radius:20px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:var(--card-shadow);animation:modalIn .25s ease;border:1px solid var(--card-border)}
+.modal.modal-md{max-width:560px}.modal.modal-lg{max-width:780px}.modal.modal-xl{max-width:960px}
+.modal-header{display:flex;align-items:center;justify-content:space-between;padding:20px 28px;border-bottom:1px solid #e5e7eb;position:sticky;top:0;background:rgba(255,255,255,0.95);backdrop-filter:blur(20px);z-index:10;border-radius:20px 20px 0 0}
+.modal-header h3{font-size:17px;font-weight:700;color:var(--text)}
+.modal-close{width:30px;height:30px;border-radius:8px;border:none;background:#f3f4f6;color:var(--text3);cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;transition:all .2s}
 .modal-close:hover{background:#e5e7eb;color:var(--text)}
-.modal-body{padding:20px 24px}
-.modal-footer{padding:16px 24px 20px;display:flex;gap:10px;justify-content:flex-end;border-top:1px solid var(--border)}
-@keyframes modalIn{from{opacity:0;transform:scale(.97) translateY(-6px)}to{opacity:1;transform:scale(1) translateY(0)}}
+.modal-body{padding:24px 28px}
+.modal-footer{padding:16px 28px 24px;display:flex;gap:10px;justify-content:flex-end;border-top:1px solid #e5e7eb}
 
 /* ===== Toast ===== */
 .toast-container{position:fixed;top:76px;right:20px;z-index:2000;display:flex;flex-direction:column;gap:8px;pointer-events:none}
-.toast{border-radius:10px;padding:12px 16px;box-shadow:0 4px 12px rgba(0,0,0,0.1);display:flex;align-items:center;gap:10px;min-width:280px;max-width:400px;pointer-events:all;animation:toastIn .3s ease;font-size:14px}
+.toast{
+  background:rgba(255,255,255,0.95);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border-radius:12px;padding:14px 18px;box-shadow:0 8px 30px rgba(0,0,0,0.12);
+  display:flex;align-items:center;gap:10px;min-width:280px;max-width:400px;pointer-events:all;
+  animation:toastIn .3s ease;font-size:14px;
+}
 .toast.removing{animation:toastOut .3s ease forwards}
-.toast-icon{font-size:17px;flex-shrink:0}
-.toast-msg{flex:1}
-.toast.success{background:var(--success-bg);border:1px solid var(--success-border);color:var(--success-text)}
-.toast.error{background:var(--danger-bg);border:1px solid #fca5a5;color:#991b1b}
-.toast.info{background:#eff6ff;border:1px solid #93c5fd;color:#1e40af}
-@keyframes toastIn{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
-@keyframes toastOut{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(20px)}}
+.toast-icon{flex-shrink:0;display:flex}
+.toast-msg{flex:1;color:var(--text)}
+.toast.success{border:1px solid #6ee7b7;border-left:4px solid var(--success)}
+.toast.success .toast-msg{color:#065f46}
+.toast.error{border:1px solid #fca5a5;border-left:4px solid var(--danger)}
+.toast.error .toast-msg{color:#991b1b}
+.toast.info{border:1px solid #93c5fd;border-left:4px solid #3b82f6}
+.toast.info .toast-msg{color:#1e40af}
 
 /* ===== Confirm ===== */
-.confirm-box{background:var(--surface);border:1px solid var(--border);border-radius:16px;max-width:380px;width:100%;padding:28px;box-shadow:var(--shadow-lg);text-align:center;animation:modalIn .2s ease}
+.confirm-box{background:var(--card-bg);border:1px solid var(--card-border);border-radius:20px;max-width:380px;width:100%;padding:32px;box-shadow:var(--card-shadow);text-align:center;animation:modalIn .25s ease}
 .confirm-box .icon{font-size:40px;margin-bottom:12px}
 .confirm-box h3{font-size:17px;font-weight:700;margin-bottom:8px;color:var(--text)}
 .confirm-box p{font-size:14px;color:var(--text3);margin-bottom:20px;line-height:1.5}
 .confirm-actions{display:flex;gap:10px;justify-content:center}
 
-/* ===== Config Grid ===== */
-.config-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-
 /* ===== Code Block ===== */
-.code-block{background:#0f172a;color:#e2e8f0;border-radius:var(--radius-sm);border:1px solid #1e293b;padding:16px;font-family:"SF Mono","Fira Code",monospace;font-size:12px;line-height:1.6;overflow:auto;max-height:400px;white-space:pre}
-
-/* ===== Spinner ===== */
-.spinner{width:16px;height:16px;border:2px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0}
-@keyframes spin{to{transform:rotate(360deg)}}
+.code-block{background:#0f172a;color:#e2e8f0;border-radius:12px;border:1px solid #1e293b;padding:18px;font-family:"SF Mono","Fira Code",monospace;font-size:12px;line-height:1.6;overflow:auto;max-height:400px;white-space:pre}
 
 /* ===== Helpers ===== */
-.flex{display:flex}.items-center{align-items:center}.gap-8{gap:8px}.gap-12{gap:12px}.flex-1{flex:1}.justify-end{justify-content:flex-end}
+.flex{display:flex}.items-center{align-items:center}.gap-8{gap:8px}.justify-end{justify-content:flex-end}
 .mt-8{margin-top:8px}.mt-12{margin-top:12px}.mt-16{margin-top:16px}
 
 /* ===== Responsive ===== */
 @media(max-width:768px){
-  .fg-row,.fg-row3,.config-grid{grid-template-columns:1fr}
+  .fg-row,.config-grid{grid-template-columns:1fr}
   .main-wrap{padding:16px}
   .topbar{padding:0 16px}
   .tab-bar{display:flex;width:100%;overflow-x:auto}
   .tab-btn{flex:1;justify-content:center;padding:8px 12px;font-size:13px}
-  .modal-backdrop{padding:12px}
+  .op-row{flex-direction:column}
+  .op-row .btn{width:100%;justify-content:center}
   .topbar-tag{display:none}
 }
 </style>
@@ -341,7 +331,7 @@ a{color:inherit;text-decoration:none}
 <div id="app">
   <div class="topbar">
     <div class="topbar-left">
-      <svg width="32" height="32" viewBox="0 0 2049 2049" fill="#111827"><path d="M1430.5 1431.3 c-3.3 -0.8 -6.2 -4.1 -15.7 -18.3 -5.1 -7.4 -10.6 -15.5 -12.3 -18 -1.7 -2.5 -6.1 -8.8 -9.7 -14 -3.6 -5.2 -10.2 -14.9 -14.8 -21.5 -4.6 -6.6 -14.7 -21.4 -22.5 -33 -15.9 -23.5 -35.3 -51.7 -38.2 -55.5 -1.1 -1.4 -9.8 -14.2 -19.5 -28.5 -9.6 -14.3 -20.4 -30.3 -24 -35.5 -3.5 -5.2 -12.7 -18.7 -20.3 -30 -15.3 -22.6 -25.6 -37.8 -35.1 -51.5 -3.5 -4.9 -11.1 -16.2 -17.1 -25 -5.9 -8.7 -18.2 -26.7 -27.2 -40 -9.1 -13.2 -21.6 -31.6 -27.9 -41 -6.3 -9.3 -19.2 -28.4 -28.6 -42.2 -9.4 -13.9 -22.5 -33.3 -29.1 -43 -30.4 -44.9 -37.4 -55.2 -41 -60.3 -2.2 -3 -8.5 -12.2 -14.1 -20.5 -5.5 -8.2 -12.1 -17.8 -14.5 -21.3 l-4.5 -6.3 -202.6 0 -202.7 -0.1 -3.1 -5.1 c-2.9 -4.7 -19.5 -31.5 -35.5 -57.2 -20.1 -32.3 -32.2 -51.6 -40.3 -63.9 -5 -7.7 -8.9 -14.3 -8.7 -14.6 0.4 -0.6 601.5 -0.7 611.6 -0.1 2 0.1 3.4 1.4 6.1 5.3 1.8 2.9 9.4 14.1 16.8 24.8 7.3 10.7 16.1 23.6 19.5 28.5 27.6 40.7 50.3 73.9 65.1 95.5 9.6 14 21.8 31.9 27 39.8 5.3 7.8 10.2 14.2 10.9 14.2 0.8 0 1.7 -1 2 -2.2 0.4 -1.1 4.7 -8 9.5 -15.2 4.8 -7.2 16.7 -25.2 26.4 -40.1 9.8 -14.8 23.7 -36 31 -47 7.3 -11 14.5 -22 16 -24.5 1.4 -2.5 4.4 -7 6.5 -10 2.1 -3 14.1 -21 26.6 -40 12.5 -19 24.1 -36.3 25.7 -38.5 3.2 -4.5 12.3 -18.2 21.7 -32.7 3.5 -5.4 6.9 -9.8 7.5 -9.8 1.2 0 9.8 11.7 11.1 15.1 0.3 0.9 -0.8 3.3 -2.8 6 -3.6 4.7 -15.3 21.1 -23.2 32.4 -2.7 3.9 -8.7 12.4 -13.5 19 -4.8 6.6 -15.4 21.4 -23.6 32.9 -8.2 11.5 -18.7 26.2 -23.4 32.7 -8.7 12 -33.8 46.9 -42.6 59.3 -25.8 36.2 -38.6 54.4 -43.1 61.6 -1.9 3 -4.4 6.5 -5.5 7.7 l-2 2.2 4.3 5.7 c2.4 3.2 4.9 5.9 5.4 6.1 0.6 0.1 5.8 -7.5 11.7 -17 5.8 -9.4 13.1 -20.8 16.2 -25.2 3.1 -4.4 11.4 -16.8 18.5 -27.5 7 -10.7 18.6 -28.2 25.7 -38.8 7.1 -10.7 17 -25.8 21.9 -33.6 8.6 -13.6 18 -27.9 30.8 -47.1 34.3 -51.3 48 -71.5 48.5 -71.5 0.7 0 8.8 12.4 10.6 16.1 0.7 1.4 -0.1 3.1 -3.5 7.6 -2.4 3.1 -6.4 8.7 -8.9 12.4 -2.5 3.6 -6.6 9.5 -9.2 13 -2.6 3.5 -9.2 12.7 -14.7 20.4 -5.6 7.7 -17.2 23.8 -25.8 35.9 -8.7 12 -20.5 28.7 -26.3 37.1 -5.8 8.3 -14.5 20.7 -19.5 27.4 -4.9 6.7 -9.7 13.2 -10.5 14.4 -0.8 1.3 -4.2 6 -7.5 10.6 -3.3 4.6 -6.9 9.6 -8 11.1 -2.4 3.4 -24.7 35 -33.5 47.5 -3.4 5 -7.6 10.5 -9.2 12.3 -1.6 1.9 -2.5 3.8 -2.1 4.5 3 5.2 8.5 12.7 9.1 12.3 0.4 -0.2 5.7 -8.1 11.7 -17.6 6.1 -9.4 18.5 -28.5 27.6 -42.3 9.1 -13.9 22.7 -34.6 30.3 -46.2 7.6 -11.5 16.1 -24.4 19 -28.6 2.8 -4.1 8.5 -12.7 12.6 -19 16.2 -24.9 46.9 -71.4 58.9 -89.2 12.1 -18.2 12.6 -18.8 14.1 -16.7 3.7 5.3 9 14.5 9 15.5 0 0.6 -2.3 4.3 -5 8.1 -2.8 3.8 -7.8 11 -11.2 15.9 -3.3 5 -7.3 10.6 -8.8 12.5 -1.5 1.9 -5.5 7.6 -8.8 12.5 -9.2 13.6 -18.2 26.3 -35.1 49.7 -8.5 11.7 -19.7 27.4 -24.9 34.8 -5.2 7.4 -13.2 18.4 -17.7 24.5 -4.5 6 -11.8 16.2 -16.1 22.5 -4.3 6.4 -10.5 15.2 -13.7 19.5 -7.6 10.5 -20.2 28.4 -29.3 41.6 l-7.3 10.6 4 5.9 c2.2 3.2 4.3 6 4.7 6.1 0.8 0.3 9.9 -12.5 17.5 -24.5 13.2 -20.8 20.9 -32.8 44.4 -68.4 13.8 -21.1 29.8 -45.5 35.6 -54.3 12.7 -19.5 35.1 -53.6 54.2 -82.5 7.8 -11.8 15.5 -23.6 17.1 -26.2 1.6 -2.7 3.1 -4.8 3.4 -4.8 0.4 0 3.2 3.9 6.3 8.6 6.6 9.9 6.9 7.8 -2.8 20.9 -5.1 6.9 -15.6 21.7 -18.5 25.9 -0.7 1.1 -6.8 9.7 -13.5 19 -6.6 9.3 -15.4 21.7 -19.5 27.7 -9.6 13.8 -34.9 49.2 -43 60.2 -1.4 1.9 -6.5 9.2 -11.4 16.3 -5 7.1 -11.5 16.3 -14.6 20.4 -3.1 4.1 -10.2 14 -15.7 22 -5.5 8 -15.1 21.7 -21.3 30.5 -6.2 8.8 -11.5 16.5 -11.7 17.2 -0.6 1.5 6.8 12.3 8.4 12.3 0.6 0 3.7 -3.7 6.8 -8.3 9.3 -13.6 38 -58 41.5 -64.3 1.9 -3.3 5.7 -9 8.5 -12.9 2.8 -3.8 7.3 -10.6 10 -15 2.7 -4.4 10.8 -16.9 18 -27.7 7.1 -10.9 17.3 -26.4 22.6 -34.5 5.3 -8.2 21.1 -32.2 35.2 -53.5 14 -21.2 26 -39.6 26.6 -40.7 0.7 -1.2 1.6 -2.1 2 -2.1 1.1 0 11.1 16 11.1 17.6 0 0.6 -2.2 4 -4.8 7.5 -2.7 3.5 -7.2 9.8 -10 13.9 -2.8 4.1 -8.5 12.2 -12.6 18 -4.2 5.8 -10.2 14.4 -13.5 19.2 -3.3 4.8 -8.4 11.8 -11.3 15.5 -6.4 8.2 -14.5 19.5 -26 36.3 -10.2 15 -19.5 28.2 -31.7 45 -18.2 25.2 -41.8 58.6 -48.5 69 -2.7 4.1 -8 11.9 -11.8 17.2 l-6.9 9.7 4.3 6.5 c2.4 3.6 4.8 6.4 5.3 6.3 0.6 -0.2 2.4 -2.5 4 -5.1 3 -4.7 13.3 -20.8 30.8 -48.1 4.9 -7.7 12 -18.5 15.7 -24 3.7 -5.5 9.7 -14.9 13.5 -21 3.7 -6 9.1 -14.6 12 -19 2.9 -4.4 8.7 -13.4 13 -20 9.9 -15.3 40.5 -61.7 66.9 -101.8 7.6 -11.4 14.2 -20.5 14.7 -20.1 1.4 0.8 9.9 15.6 9.9 17.2 0 0.8 -6.9 10.9 -15.3 22.6 -14 19.2 -27.5 38.3 -55.2 77.8 -5.5 7.8 -14.5 20.5 -20 28.1 -11.6 16.1 -17.1 23.9 -35.6 50.7 -7.5 10.7 -18 25.8 -23.4 33.5 -5.4 7.7 -13.3 19 -17.6 25.2 -4.4 6.2 -7.9 11.8 -7.9 12.4 0 1.8 8 12.1 9.1 11.7 0.5 -0.2 2.4 -2.7 4.2 -5.6 1.7 -2.9 7.1 -11 11.8 -18 4.8 -7 13.1 -19.7 18.6 -28.2 5.5 -8.5 15.1 -23.4 21.3 -33 6.1 -9.6 13.7 -21.1 16.7 -25.5 3 -4.4 6 -9 6.6 -10.2 1.9 -3.6 18.3 -29 30 -46.6 6 -8.9 12.1 -18.1 13.5 -20.5 15 -24 45 -69.2 46 -69.2 1.1 0 8.2 16.2 8.2 18.7 0 1.2 -1.1 3.4 -2.4 5 -1.3 1.5 -9.5 12.9 -18.2 25.3 -22.1 31.2 -25.8 36.6 -30.1 43.5 -2 3.3 -5.9 9 -8.7 12.7 -2.8 3.6 -7.3 9.9 -10.1 13.8 -2.7 4 -9.4 13.4 -14.8 20.9 -5.3 7.5 -12.6 17.9 -16.2 23.1 -3.6 5.2 -12 17.5 -18.8 27.2 -6.7 9.7 -15.3 22.2 -19.2 27.8 -3.8 5.6 -8.6 12.4 -10.5 15.1 -1.9 2.7 -5.5 7.8 -8 11.4 -2.5 3.6 -6.9 9.9 -9.8 14 -6.3 8.7 -7 6.2 7.3 26.5 5.7 8 13.8 19.7 18.1 26.1 4.4 6.3 15.6 22.7 24.9 36.3 25.7 37.4 52.5 76.5 63.1 92.1 5.2 7.7 13.2 19.4 17.7 26 26 37.7 35.7 52.5 35.7 54.3 0 3.9 -22.3 47.9 -33.7 66.7 -13.3 21.7 -35.4 50 -53.8 68.6 -13.6 13.8 -17.1 15.9 -24 14.2z"/><path d="M519 1370.1 c0 -0.5 10.2 -16.1 22.7 -34.7 32.9 -49.2 77.9 -116.2 86.1 -128.4 6.6 -9.8 39.1 -58.8 61.1 -92 5.3 -7.9 16.3 -24.4 24.4 -36.5 8.1 -12.1 34.5 -51.6 58.5 -87.7 l43.7 -65.7 92.7 -0.1 92.7 0 -8.4 12.3 c-4.6 6.7 -26.6 39.4 -48.9 72.7 -22.3 33.3 -46.4 69.3 -53.5 80 -16.2 24.1 -17.5 26.2 -57.7 86.5 -18 27 -32.9 49.6 -33.1 50.3 -0.4 0.9 25 1.2 124.8 1.2 69 0 125.9 -0.4 126.4 -0.8 0.6 -0.4 1.9 -2 3.1 -3.7 21.6 -31.1 35.9 -51.7 40.9 -59 12.4 -18.2 38.6 -56.1 40.3 -58.3 l1.7 -2.3 5.2 7.8 c5.2 8 27.9 40.5 59.8 85.8 9.9 14.1 20.4 28.9 23.3 33 2.8 4.2 5.2 7.9 5.2 8.5 0 0.5 -2.1 3.7 -4.8 7.2 -2.6 3.5 -8.7 12.2 -13.5 19.3 -4.8 7.2 -11.6 17.1 -15 22 -3.5 5 -10.3 14.9 -15.2 22 -4.9 7.2 -12.1 17.5 -16 23 -3.9 5.5 -11.3 16.4 -16.5 24.3 l-9.4 14.2 -310.3 0 c-179 0 -310.3 -0.4 -310.3 -0.9z"/></svg>
+      <svg width="32" height="32" viewBox="0 0 2049 2049" fill="#ffffff"><path d="M1430.5 1431.3 c-3.3 -0.8 -6.2 -4.1 -15.7 -18.3 -5.1 -7.4 -10.6 -15.5 -12.3 -18 -1.7 -2.5 -6.1 -8.8 -9.7 -14 -3.6 -5.2 -10.2 -14.9 -14.8 -21.5 -4.6 -6.6 -14.7 -21.4 -22.5 -33 -15.9 -23.5 -35.3 -51.7 -38.2 -55.5 -1.1 -1.4 -9.8 -14.2 -19.5 -28.5 -9.6 -14.3 -20.4 -30.3 -24 -35.5 -3.5 -5.2 -12.7 -18.7 -20.3 -30 -15.3 -22.6 -25.6 -37.8 -35.1 -51.5 -3.5 -4.9 -11.1 -16.2 -17.1 -25 -5.9 -8.7 -18.2 -26.7 -27.2 -40 -9.1 -13.2 -21.6 -31.6 -27.9 -41 -6.3 -9.3 -19.2 -28.4 -28.6 -42.2 -9.4 -13.9 -22.5 -33.3 -29.1 -43 -30.4 -44.9 -37.4 -55.2 -41 -60.3 -2.2 -3 -8.5 -12.2 -14.1 -20.5 -5.5 -8.2 -12.1 -17.8 -14.5 -21.3 l-4.5 -6.3 -202.6 0 -202.7 -0.1 -3.1 -5.1 c-2.9 -4.7 -19.5 -31.5 -35.5 -57.2 -20.1 -32.3 -32.2 -51.6 -40.3 -63.9 -5 -7.7 -8.9 -14.3 -8.7 -14.6 0.4 -0.6 601.5 -0.7 611.6 -0.1 2 0.1 3.4 1.4 6.1 5.3 1.8 2.9 9.4 14.1 16.8 24.8 7.3 10.7 16.1 23.6 19.5 28.5 27.6 40.7 50.3 73.9 65.1 95.5 9.6 14 21.8 31.9 27 39.8 5.3 7.8 10.2 14.2 10.9 14.2 0.8 0 1.7 -1 2 -2.2 0.4 -1.1 4.7 -8 9.5 -15.2 4.8 -7.2 16.7 -25.2 26.4 -40.1 9.8 -14.8 23.7 -36 31 -47 7.3 -11 14.5 -22 16 -24.5 1.4 -2.5 4.4 -7 6.5 -10 2.1 -3 14.1 -21 26.6 -40 12.5 -19 24.1 -36.3 25.7 -38.5 3.2 -4.5 12.3 -18.2 21.7 -32.7 3.5 -5.4 6.9 -9.8 7.5 -9.8 1.2 0 9.8 11.7 11.1 15.1 0.3 0.9 -0.8 3.3 -2.8 6 -3.6 4.7 -15.3 21.1 -23.2 32.4 -2.7 3.9 -8.7 12.4 -13.5 19 -4.8 6.6 -15.4 21.4 -23.6 32.9 -8.2 11.5 -18.7 26.2 -23.4 32.7 -8.7 12 -33.8 46.9 -42.6 59.3 -25.8 36.2 -38.6 54.4 -43.1 61.6 -1.9 3 -4.4 6.5 -5.5 7.7 l-2 2.2 4.3 5.7 c2.4 3.2 4.9 5.9 5.4 6.1 0.6 0.1 5.8 -7.5 11.7 -17 5.8 -9.4 13.1 -20.8 16.2 -25.2 3.1 -4.4 11.4 -16.8 18.5 -27.5 7 -10.7 18.6 -28.2 25.7 -38.8 7.1 -10.7 17 -25.8 21.9 -33.6 8.6 -13.6 18 -27.9 30.8 -47.1 34.3 -51.3 48 -71.5 48.5 -71.5 0.7 0 8.8 12.4 10.6 16.1 0.7 1.4 -0.1 3.1 -3.5 7.6 -2.4 3.1 -6.4 8.7 -8.9 12.4 -2.5 3.6 -6.6 9.5 -9.2 13 -2.6 3.5 -9.2 12.7 -14.7 20.4 -5.6 7.7 -17.2 23.8 -25.8 35.9 -8.7 12 -20.5 28.7 -26.3 37.1 -5.8 8.3 -14.5 20.7 -19.5 27.4 -4.9 6.7 -9.7 13.2 -10.5 14.4 -0.8 1.3 -4.2 6 -7.5 10.6 -3.3 4.6 -6.9 9.6 -8 11.1 -2.4 3.4 -24.7 35 -33.5 47.5 -3.4 5 -7.6 10.5 -9.2 12.3 -1.6 1.9 -2.5 3.8 -2.1 4.5 3 5.2 8.5 12.7 9.1 12.3 0.4 -0.2 5.7 -8.1 11.7 -17.6 6.1 -9.4 18.5 -28.5 27.6 -42.3 9.1 -13.9 22.7 -34.6 30.3 -46.2 7.6 -11.5 16.1 -24.4 19 -28.6 2.8 -4.1 8.5 -12.7 12.6 -19 16.2 -24.9 46.9 -71.4 58.9 -89.2 12.1 -18.2 12.6 -18.8 14.1 -16.7 3.7 5.3 9 14.5 9 15.5 0 0.6 -2.3 4.3 -5 8.1 -2.8 3.8 -7.8 11 -11.2 15.9 -3.3 5 -7.3 10.6 -8.8 12.5 -1.5 1.9 -5.5 7.6 -8.8 12.5 -9.2 13.6 -18.2 26.3 -35.1 49.7 -8.5 11.7 -19.7 27.4 -24.9 34.8 -5.2 7.4 -13.2 18.4 -17.7 24.5 -4.5 6 -11.8 16.2 -16.1 22.5 -4.3 6.4 -10.5 15.2 -13.7 19.5 -7.6 10.5 -20.2 28.4 -29.3 41.6 l-7.3 10.6 4 5.9 c2.2 3.2 4.3 6 4.7 6.1 0.8 0.3 9.9 -12.5 17.5 -24.5 13.2 -20.8 20.9 -32.8 44.4 -68.4 13.8 -21.1 29.8 -45.5 35.6 -54.3 12.7 -19.5 35.1 -53.6 54.2 -82.5 7.8 -11.8 15.5 -23.6 17.1 -26.2 1.6 -2.7 3.1 -4.8 3.4 -4.8 0.4 0 3.2 3.9 6.3 8.6 6.6 9.9 6.9 7.8 -2.8 20.9 -5.1 6.9 -15.6 21.7 -18.5 25.9 -0.7 1.1 -6.8 9.7 -13.5 19 -6.6 9.3 -15.4 21.7 -19.5 27.7 -9.6 13.8 -34.9 49.2 -43 60.2 -1.4 1.9 -6.5 9.2 -11.4 16.3 -5 7.1 -11.5 16.3 -14.6 20.4 -3.1 4.1 -10.2 14 -15.7 22 -5.5 8 -15.1 21.7 -21.3 30.5 -6.2 8.8 -11.5 16.5 -11.7 17.2 -0.6 1.5 6.8 12.3 8.4 12.3 0.6 0 3.7 -3.7 6.8 -8.3 9.3 -13.6 38 -58 41.5 -64.3 1.9 -3.3 5.7 -9 8.5 -12.9 2.8 -3.8 7.3 -10.6 10 -15 2.7 -4.4 10.8 -16.9 18 -27.7 7.1 -10.9 17.3 -26.4 22.6 -34.5 5.3 -8.2 21.1 -32.2 35.2 -53.5 14 -21.2 26 -39.6 26.6 -40.7 0.7 -1.2 1.6 -2.1 2 -2.1 1.1 0 11.1 16 11.1 17.6 0 0.6 -2.2 4 -4.8 7.5 -2.7 3.5 -7.2 9.8 -10 13.9 -2.8 4.1 -8.5 12.2 -12.6 18 -4.2 5.8 -10.2 14.4 -13.5 19.2 -3.3 4.8 -8.4 11.8 -11.3 15.5 -6.4 8.2 -14.5 19.5 -26 36.3 -10.2 15 -19.5 28.2 -31.7 45 -18.2 25.2 -41.8 58.6 -48.5 69 -2.7 4.1 -8 11.9 -11.8 17.2 l-6.9 9.7 4.3 6.5 c2.4 3.6 4.8 6.4 5.3 6.3 0.6 -0.2 2.4 -2.5 4 -5.1 3 -4.7 13.3 -20.8 30.8 -48.1 4.9 -7.7 12 -18.5 15.7 -24 3.7 -5.5 9.7 -14.9 13.5 -21 3.7 -6 9.1 -14.6 12 -19 2.9 -4.4 8.7 -13.4 13 -20 9.9 -15.3 40.5 -61.7 66.9 -101.8 7.6 -11.4 14.2 -20.5 14.7 -20.1 1.4 0.8 9.9 15.6 9.9 17.2 0 0.8 -6.9 10.9 -15.3 22.6 -14 19.2 -27.5 38.3 -55.2 77.8 -5.5 7.8 -14.5 20.5 -20 28.1 -11.6 16.1 -17.1 23.9 -35.6 50.7 -7.5 10.7 -18 25.8 -23.4 33.5 -5.4 7.7 -13.3 19 -17.6 25.2 -4.4 6.2 -7.9 11.8 -7.9 12.4 0 1.8 8 12.1 9.1 11.7 0.5 -0.2 2.4 -2.7 4.2 -5.6 1.7 -2.9 7.1 -11 11.8 -18 4.8 -7 13.1 -19.7 18.6 -28.2 5.5 -8.5 15.1 -23.4 21.3 -33 6.1 -9.6 13.7 -21.1 16.7 -25.5 3 -4.4 6 -9 6.6 -10.2 1.9 -3.6 18.3 -29 30 -46.6 6 -8.9 12.1 -18.1 13.5 -20.5 15 -24 45 -69.2 46 -69.2 1.1 0 8.2 16.2 8.2 18.7 0 1.2 -1.1 3.4 -2.4 5 -1.3 1.5 -9.5 12.9 -18.2 25.3 -22.1 31.2 -25.8 36.6 -30.1 43.5 -2 3.3 -5.9 9 -8.7 12.7 -2.8 3.6 -7.3 9.9 -10.1 13.8 -2.7 4 -9.4 13.4 -14.8 20.9 -5.3 7.5 -12.6 17.9 -16.2 23.1 -3.6 5.2 -12 17.5 -18.8 27.2 -6.7 9.7 -15.3 22.2 -19.2 27.8 -3.8 5.6 -8.6 12.4 -10.5 15.1 -1.9 2.7 -5.5 7.8 -8 11.4 -2.5 3.6 -6.9 9.9 -9.8 14 -6.3 8.7 -7 6.2 7.3 26.5 5.7 8 13.8 19.7 18.1 26.1 4.4 6.3 15.6 22.7 24.9 36.3 25.7 37.4 52.5 76.5 63.1 92.1 5.2 7.7 13.2 19.4 17.7 26 26 37.7 35.7 52.5 35.7 54.3 0 3.9 -22.3 47.9 -33.7 66.7 -13.3 21.7 -35.4 50 -53.8 68.6 -13.6 13.8 -17.1 15.9 -24 14.2z"/><path d="M519 1370.1 c0 -0.5 10.2 -16.1 22.7 -34.7 32.9 -49.2 77.9 -116.2 86.1 -128.4 6.6 -9.8 39.1 -58.8 61.1 -92 5.3 -7.9 16.3 -24.4 24.4 -36.5 8.1 -12.1 34.5 -51.6 58.5 -87.7 l43.7 -65.7 92.7 -0.1 92.7 0 -8.4 12.3 c-4.6 6.7 -26.6 39.4 -48.9 72.7 -22.3 33.3 -46.4 69.3 -53.5 80 -16.2 24.1 -17.5 26.2 -57.7 86.5 -18 27 -32.9 49.6 -33.1 50.3 -0.4 0.9 25 1.2 124.8 1.2 69 0 125.9 -0.4 126.4 -0.8 0.6 -0.4 1.9 -2 3.1 -3.7 21.6 -31.1 35.9 -51.7 40.9 -59 12.4 -18.2 38.6 -56.1 40.3 -58.3 l1.7 -2.3 5.2 7.8 c5.2 8 27.9 40.5 59.8 85.8 9.9 14.1 20.4 28.9 23.3 33 2.8 4.2 5.2 7.9 5.2 8.5 0 0.5 -2.1 3.7 -4.8 7.2 -2.6 3.5 -8.7 12.2 -13.5 19.3 -4.8 7.2 -11.6 17.1 -15 22 -3.5 5 -10.3 14.9 -15.2 22 -4.9 7.2 -12.1 17.5 -16 23 -3.9 5.5 -11.3 16.4 -16.5 24.3 l-9.4 14.2 -310.3 0 c-179 0 -310.3 -0.4 -310.3 -0.9z"/></svg>
       <span class="topbar-title">ZX AI Tools</span>
       <span class="topbar-tag">管理后台</span>
     </div>
@@ -368,7 +358,7 @@ a{color:inherit;text-decoration:none}
         </div>
       </div>
       <div class="card">
-        <div class="card-head">📢 推广条设置 <span class="tag">TopRightAd</span></div>
+        <div class="card-head"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 4H5a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2V6a2 2 0 00-2-2z"/><path d="M12 12v6"/><path d="M8 18h8"/></svg> 推广条设置 <span class="tag">TopRightAd</span></div>
         <div class="fg-row">
           <div class="fg"><label>自动编号</label><input type="text" id="ad-id" readonly placeholder="自动生成，无需填写" style="font-family:monospace;font-size:12px"></div>
           <div class="fg"><label>优先级 <span class="req">*</span></label><input type="number" id="ad-priority" value="100" min="0" max="9999" placeholder="建议填 100"><div class="hint">数字越大越优先显示</div></div>
@@ -394,9 +384,9 @@ a{color:inherit;text-decoration:none}
         </div>
       </div>
       <div class="card">
-        <div class="card-head">👁️ 实时预览</div>
+        <div class="card-head"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> 实时预览</div>
         <div class="preview-box"><div class="ad-preview-inner"><div class="ad-preview-text-area"><div class="ad-preview-badge" id="pv-badge">推广</div><div class="ad-preview-text" id="pv-text">推广文字将在此显示</div></div><div class="ad-preview-btn" id="pv-btn">了解更多</div></div></div>
-        <div class="mt-12 flex justify-end"><button class="btn btn-primary" onclick="saveAdToState()">💾 保存推广条</button></div>
+        <div class="mt-12 flex justify-end"><button class="btn btn-primary-card" onclick="saveAdToState()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg> 保存推广条</button></div>
       </div>
     </div>
 
@@ -410,7 +400,7 @@ a{color:inherit;text-decoration:none}
         </div>
       </div>
       <div class="card">
-        <div class="section-header"><h2>📋 公告列表</h2><button class="btn btn-primary" onclick="openAnnModal(null)">➕ 添加公告</button></div>
+        <div class="section-header"><h2><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg> 公告列表</h2><button class="btn btn-primary-card" onclick="openAnnModal(null)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> 添加公告</button></div>
         <div id="ann-list-container"><div class="empty-state"><div class="icon">📭</div><p>暂无公告，点击「添加公告」开始创建</p></div></div>
       </div>
     </div>
@@ -422,22 +412,22 @@ a{color:inherit;text-decoration:none}
         <div class="tip-card-body">编辑完推广条或公告后，需要点击「同步发布」才能生效。<br>发布后用户下次打开软件时会自动获取最新内容，无需用户手动更新软件。<br>配置只需填写一次，保存后下次直接使用。</div>
       </div>
       <div class="card">
-        <div class="card-head">⚙️ 远程配置</div>
+        <div class="card-head"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg> 远程配置</div>
         <div class="config-grid">
           <div class="fg"><label>用户名 <span class="req">*</span></label><input type="text" id="gh-owner" placeholder="你的账号用户名"><div class="hint">远程仓库的拥有者用户名</div></div>
           <div class="fg"><label>仓库名 <span class="req">*</span></label><input type="text" id="gh-repo" placeholder="zx-ai-tools"><div class="hint">存放配置文件的仓库名称</div></div>
         </div>
         <div class="fg"><label>访问令牌 <span class="req">*</span></label><input type="password" id="gh-token" placeholder="ghp_xxxxxx..." autocomplete="off"><div class="hint">访问令牌，用于验证身份和写入权限，请妥善保管</div></div>
         <div class="fg"><label>文件路径</label><input type="text" id="gh-path" value="announcements.json"><div class="hint">配置文件在仓库中的路径，默认为 announcements.json</div></div>
-        <div class="flex justify-end"><button class="btn btn-secondary" onclick="saveGithubConfig()">💾 保存配置</button></div>
+        <div class="flex justify-end"><button class="btn btn-save" onclick="saveGithubConfig()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg> 保存配置</button></div>
       </div>
       <div class="card">
-        <div class="card-head">🚀 操作</div>
-        <div class="flex gap-8" style="flex-wrap:wrap">
-          <button class="btn btn-secondary" id="btn-pull" onclick="pullFromGithub()">⬇️ 拉取远程配置</button>
-          <button class="btn btn-primary" id="btn-push" onclick="pushToGithub()">⬆️ 同步发布</button>
-          <button class="btn btn-ghost" onclick="previewJson()">📄 预览数据</button>
-          <button class="btn btn-ghost" onclick="copyJson()">📋 复制数据</button>
+        <div class="card-head"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 00-2.91-.09z"/><path d="m12 15-3-3a22 22 0 012-3.95A12.88 12.88 0 0122 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 01-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg> 操作</div>
+        <div class="op-row">
+          <button class="btn btn-pull" id="btn-pull" onclick="pullFromGithub()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> 拉取远端配置</button>
+          <button class="btn btn-publish" id="btn-push" onclick="pushToGithub()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg> 同步发布</button>
+          <button class="btn btn-preview" onclick="previewJson()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> 预览数据</button>
+          <button class="btn btn-copy" onclick="copyJson()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg> 复制数据</button>
         </div>
         <div id="gh-status" class="mt-12" style="font-size:13px;color:var(--text3)"></div>
       </div>
@@ -445,34 +435,24 @@ a{color:inherit;text-decoration:none}
   </div>
 </div>
 
-<!-- Toast -->
 <div class="toast-container" id="toast-container"></div>
 
 <!-- Confirm -->
-<div class="modal-backdrop" id="confirm-modal"><div class="confirm-box"><div class="icon" id="confirm-icon">⚠️</div><h3 id="confirm-title">确认操作</h3><p id="confirm-msg">确认执行此操作？</p><div class="confirm-actions"><button class="btn btn-secondary" onclick="closeConfirm(false)">取消</button><button class="btn btn-danger" id="confirm-ok-btn" onclick="closeConfirm(true)">确认删除</button></div></div></div>
+<div class="modal-backdrop" id="confirm-modal"><div class="confirm-box"><div class="icon">⚠️</div><h3 id="confirm-title">确认操作</h3><p id="confirm-msg">确认执行此操作？</p><div class="confirm-actions"><button class="btn btn-secondary-card" onclick="closeConfirm(false)">取消</button><button class="btn btn-danger-card" id="confirm-ok-btn" onclick="closeConfirm(true)">确认删除</button></div></div></div>
 
 <!-- Ann Modal -->
 <div class="modal-backdrop" id="ann-modal"><div class="modal modal-xl">
   <div class="modal-header"><h3 id="ann-modal-title">添加公告</h3><button class="modal-close" onclick="closeAnnModal()">✕</button></div>
   <div class="modal-body">
-    <div class="fg-row">
-      <div class="fg"><label>自动编号</label><input type="text" id="ann-id" readonly style="font-family:monospace;font-size:12px"></div>
-      <div class="fg"><label>类型 <span class="req">*</span></label><select id="ann-type"><option value="info">ℹ️ 普通通知（蓝色）</option><option value="feature">✨ 新功能（绿色）</option><option value="warning">⚠️ 警告提示（橙色）</option></select></div>
-    </div>
-    <div class="fg-row">
-      <div class="fg"><label>标题 <span class="req">*</span></label><input type="text" id="ann-title" placeholder="例：🎉 新功能上线！"></div>
-      <div class="fg"><label>优先级</label><input type="number" id="ann-priority" value="100" min="0" max="9999"><div class="hint">数字越大越靠前，建议用 100、200、300</div></div>
-    </div>
+    <div class="fg-row"><div class="fg"><label>自动编号</label><input type="text" id="ann-id" readonly style="font-family:monospace;font-size:12px"></div><div class="fg"><label>类型 <span class="req">*</span></label><select id="ann-type"><option value="info">ℹ️ 普通通知（蓝色）</option><option value="feature">✨ 新功能（绿色）</option><option value="warning">⚠️ 警告提示（橙色）</option></select></div></div>
+    <div class="fg-row"><div class="fg"><label>标题 <span class="req">*</span></label><input type="text" id="ann-title" placeholder="例：🎉 新功能上线！"></div><div class="fg"><label>优先级</label><input type="number" id="ann-priority" value="100" min="0" max="9999"><div class="hint">数字越大越靠前，建议用 100、200、300</div></div></div>
     <div class="fg"><label>摘要 <span class="req">*</span></label><input type="text" id="ann-summary" placeholder="一句话简短描述"></div>
     <div class="fg"><label>详细内容</label><textarea id="ann-content" rows="4" placeholder="详细内容，可以用 \n 换行"></textarea></div>
     <div class="divider"></div>
-    <div class="card-head" style="font-size:14px;margin-bottom:12px">🔘 操作按钮（选填）</div>
-    <div class="fg-row">
-      <div class="fg"><label>按钮文字</label><input type="text" id="ann-action-label" placeholder="例：了解更多"></div>
-      <div class="fg"><label>跳转链接</label><input type="url" id="ann-action-target" placeholder="https://"></div>
-    </div>
+    <div style="font-size:14px;font-weight:600;color:var(--text);margin-bottom:12px;display:flex;align-items:center;gap:8px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 12h8"/><path d="M12 8v8"/></svg> 操作按钮（选填）</div>
+    <div class="fg-row"><div class="fg"><label>按钮文字</label><input type="text" id="ann-action-label" placeholder="例：了解更多"></div><div class="fg"><label>跳转链接</label><input type="url" id="ann-action-target" placeholder="https://"></div></div>
     <div class="divider"></div>
-    <div class="card-head" style="font-size:14px;margin-bottom:0">🎛️ 显示设置</div>
+    <div style="font-size:14px;font-weight:600;color:var(--text);margin-bottom:0;display:flex;align-items:center;gap:8px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 00-2 2v.18a2 2 0 01-1 1.73l-.43.25a2 2 0 01-2 0l-.15-.08a2 2 0 00-2.73.73l-.22.38a2 2 0 00.73 2.73l.15.1a2 2 0 011 1.72v.51a2 2 0 01-1 1.74l-.15.09a2 2 0 00-.73 2.73l.22.38a2 2 0 002.73.73l.15-.08a2 2 0 012 0l.43.25a2 2 0 011 1.73V20a2 2 0 002 2h.44a2 2 0 002-2v-.18a2 2 0 011-1.73l.43-.25a2 2 0 012 0l.15.08a2 2 0 002.73-.73l.22-.39a2 2 0 00-.73-2.73l-.15-.08a2 2 0 01-1-1.74v-.5a2 2 0 011-1.74l.15-.09a2 2 0 00.73-2.73l-.22-.38a2 2 0 00-2.73-.73l-.15.08a2 2 0 01-2 0l-.43-.25a2 2 0 01-1-1.73V4a2 2 0 00-2-2z"/><circle cx="12" cy="12" r="3"/></svg> 显示设置</div>
     <div class="toggle-row"><div><div class="toggle-label">弹窗显示</div><div class="toggle-desc">开启后以弹窗形式显示，关闭则在通知列表中显示</div></div><label class="toggle"><input type="checkbox" id="ann-popup"><div class="toggle-track"></div><div class="toggle-thumb"></div></label></div>
     <div class="toggle-row"><div><div class="toggle-label">仅显示一次</div><div class="toggle-desc">开启后用户看过就不再弹出，适合一次性公告</div></div><label class="toggle"><input type="checkbox" id="ann-show-once" checked><div class="toggle-track"></div><div class="toggle-thumb"></div></label></div>
     <div class="fg mt-12"><label>过期时间（可选）</label><input type="datetime-local" id="ann-expires-at"></div>
@@ -486,31 +466,26 @@ a{color:inherit;text-decoration:none}
       <div class="fg"><label>按钮文字（中文）</label><input type="text" id="ann-zh-action-label" placeholder="例：了解更多"></div>
     </div>
     <div class="divider"></div>
-    <div class="card-head" style="font-size:14px;margin-bottom:12px">👁️ 公告预览</div>
-    <div style="background:linear-gradient(135deg,#1e1b4b,#1e3a5f);border-radius:10px;padding:20px;display:flex;justify-content:center">
-      <div class="ann-preview-popup" id="ann-live-preview">
-        <div class="ann-preview-header"><div class="ann-preview-icon" id="pv-ann-icon" style="background:rgba(99,102,241,0.2)">ℹ️</div><div class="ann-preview-title" id="pv-ann-title">公告标题</div></div>
-        <div class="ann-preview-summary" id="pv-ann-summary">摘要内容</div>
-        <div class="ann-preview-content" id="pv-ann-content"></div>
-        <button class="ann-preview-action" id="pv-ann-action" style="display:none">操作按钮</button>
-      </div>
+    <div style="font-size:14px;font-weight:600;color:var(--text);margin-bottom:12px;display:flex;align-items:center;gap:8px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> 公告预览</div>
+    <div style="background:linear-gradient(135deg,#1e1b4b,#312e81,#1e3a5f);border-radius:12px;padding:24px;display:flex;justify-content:center">
+      <div class="ann-preview-popup" id="ann-live-preview"><div class="ann-preview-header"><div class="ann-preview-icon" id="pv-ann-icon" style="background:rgba(99,102,241,0.2)">ℹ️</div><div class="ann-preview-title" id="pv-ann-title">公告标题</div></div><div class="ann-preview-summary" id="pv-ann-summary">摘要内容</div><div class="ann-preview-content" id="pv-ann-content"></div><button class="ann-preview-action" id="pv-ann-action" style="display:none">操作按钮</button></div>
     </div>
   </div>
-  <div class="modal-footer"><button class="btn btn-secondary" onclick="closeAnnModal()">取消</button><button class="btn btn-primary" onclick="saveAnnouncement()">💾 保存公告</button></div>
+  <div class="modal-footer"><button class="btn btn-ghost-card" onclick="closeAnnModal()">取消</button><button class="btn btn-primary-card" onclick="saveAnnouncement()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg> 保存公告</button></div>
 </div></div>
 
 <!-- JSON Modal -->
 <div class="modal-backdrop" id="json-modal"><div class="modal modal-lg">
   <div class="modal-header"><h3>📄 数据预览</h3><button class="modal-close" onclick="closeModal('json-modal')">✕</button></div>
   <div class="modal-body"><pre class="code-block" id="json-preview-content"></pre></div>
-  <div class="modal-footer"><button class="btn btn-secondary" onclick="closeModal('json-modal')">关闭</button><button class="btn btn-primary" onclick="copyJson()">📋 复制数据</button></div>
+  <div class="modal-footer"><button class="btn btn-ghost-card" onclick="closeModal('json-modal')">关闭</button><button class="btn btn-primary-card" onclick="copyJson()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg> 复制数据</button></div>
 </div></div>
 
 <!-- Ann Preview Modal -->
 <div class="modal-backdrop" id="ann-preview-modal"><div class="modal modal-md">
   <div class="modal-header"><h3>👁️ 公告效果预览</h3><button class="modal-close" onclick="closeModal('ann-preview-modal')">✕</button></div>
-  <div class="modal-body"><div style="background:linear-gradient(135deg,#1e1b4b,#1e3a5f);border-radius:10px;padding:20px;display:flex;justify-content:center"><div class="ann-preview-popup" id="ann-solo-preview"></div></div></div>
-  <div class="modal-footer"><button class="btn btn-secondary" onclick="closeModal('ann-preview-modal')">关闭</button></div>
+  <div class="modal-body"><div style="background:linear-gradient(135deg,#1e1b4b,#312e81,#1e3a5f);border-radius:12px;padding:24px;display:flex;justify-content:center"><div class="ann-preview-popup" id="ann-solo-preview"></div></div></div>
+  <div class="modal-footer"><button class="btn btn-ghost-card" onclick="closeModal('ann-preview-modal')">关闭</button></div>
 </div></div>
 
 <script>
@@ -519,26 +494,43 @@ const LS={TOKEN:'zxai_admin_token',TOKEN_EXP:'zxai_admin_token_exp',GH_OWNER:'zx
 const TOKEN_TTL=7*24*60*60*1000;
 let state={version:'1.0',topRightAd:null,announcements:[]};
 let ghFileSha=null,editingAnnIndex=null;
+const SPINNER_SVG='<svg class="spin-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>';
 
 async function sha256(s){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));return Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,'0')).join('')}
 function uid(){return crypto.randomUUID()}
-function toast(msg,type='info'){const icons={success:'✅',error:'❌',info:'ℹ️'};const el=document.createElement('div');el.className=`toast ${type}`;el.innerHTML=`<span class="toast-icon">${icons[type]||'ℹ️'}</span><span class="toast-msg">${msg}</span>`;document.getElementById('toast-container').appendChild(el);setTimeout(()=>{el.classList.add('removing');el.addEventListener('animationend',()=>el.remove())},3000)}
+
+function toast(msg,type='info'){
+  const icons={
+    success:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>',
+    error:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>',
+    info:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>'
+  };
+  const el=document.createElement('div');el.className=`toast ${type}`;
+  el.innerHTML=`<span class="toast-icon">${icons[type]||icons.info}</span><span class="toast-msg">${msg}</span>`;
+  document.getElementById('toast-container').appendChild(el);
+  setTimeout(()=>{el.classList.add('removing');el.addEventListener('animationend',()=>el.remove())},3000);
+}
+
 let _cr=null;
 function confirm(t,m,bl='确认删除'){document.getElementById('confirm-title').textContent=t;document.getElementById('confirm-msg').textContent=m;document.getElementById('confirm-ok-btn').textContent=bl;document.getElementById('confirm-modal').classList.add('open');return new Promise(r=>{_cr=r})}
 function closeConfirm(ok){document.getElementById('confirm-modal').classList.remove('open');if(_cr){_cr(ok);_cr=null}}
 function openModal(id){document.getElementById(id).classList.add('open')}
 function closeModal(id){document.getElementById(id).classList.remove('open')}
-function setLoading(id,l,t=''){const b=document.getElementById(id);if(!b)return;b.disabled=l;if(l){b.dataset.o=b.innerHTML;b.innerHTML=`<div class="spinner"></div>${t||'请稍候…'}`}else{b.innerHTML=b.dataset.o||b.innerHTML}}
+
+function setLoading(id,l,t=''){
+  const b=document.getElementById(id);if(!b)return;b.disabled=l;
+  if(l){b.dataset.o=b.innerHTML;b.innerHTML=`${SPINNER_SVG} ${t||'请稍候…'}`;b.style.animation='none'}
+  else{b.innerHTML=b.dataset.o||b.innerHTML;if(id==='btn-push')b.style.animation='pulse 2s ease-in-out infinite'}
+}
 
 async function handleLogin(e){
   e.preventDefault();const a=document.getElementById('login-account').value.trim(),p=document.getElementById('login-password').value,err=document.getElementById('login-error'),btn=document.getElementById('login-btn');
-  btn.disabled=true;btn.innerHTML='<div class="spinner" style="border-color:rgba(255,255,255,.3);border-top-color:#fff"></div>验证中…';err.style.display='none';
+  btn.disabled=true;btn.innerHTML=`${SPINNER_SVG} 验证中…`;err.style.display='none';
   if(await sha256(`${a}:${p}`)===CRED_HASH){const tk=await sha256(Date.now()+Math.random().toString());localStorage.setItem(LS.TOKEN,tk);localStorage.setItem(LS.TOKEN_EXP,(Date.now()+TOKEN_TTL).toString());showApp()}
   else{err.style.display='block';btn.disabled=false;btn.textContent='登录'}
 }
 function handleLogout(){localStorage.removeItem(LS.TOKEN);localStorage.removeItem(LS.TOKEN_EXP);document.getElementById('app').style.display='none';document.getElementById('login-page').style.display='flex';document.getElementById('login-password').value=''}
 function checkAuth(){const t=localStorage.getItem(LS.TOKEN),e=parseInt(localStorage.getItem(LS.TOKEN_EXP)||'0',10);return t&&Date.now()<e}
-
 function showApp(){document.getElementById('login-page').style.display='none';document.getElementById('app').style.display='flex';loadState();loadGithubConfig();renderAdForm();renderAnnList();bindAdPreview()}
 function loadState(){try{const r=localStorage.getItem(LS.DATA);if(r){state={version:'1.0',topRightAd:null,announcements:[],...JSON.parse(r)}}}catch(e){}}
 function saveState(){localStorage.setItem(LS.DATA,JSON.stringify(state))}
@@ -580,9 +572,8 @@ function renderAnnCard(a,i,t){
   const m=TYPE_META[a.type]||TYPE_META.info;
   const pb=a.popup?'<span class="popup-badge">弹窗</span>':'';const ob=a.showOnce?'<span class="meta-badge">仅一次</span>':'';
   const eb=a.expiresAt?`<span class="meta-badge">过期 ${a.expiresAt.slice(0,10)}</span>`:'';
-  return `<div class="ann-card"><div class="ann-card-left"><div class="ann-card-header"><span class="type-badge ${m.cls}">${m.icon} ${m.label}</span><span class="ann-card-title">${escHtml(a.title||'(无标题)')}</span><span class="meta-badge">优先级 ${a.priority??100}</span></div><div class="ann-card-summary">${escHtml(a.summary||'')}</div><div class="ann-card-meta">${pb}${ob}${eb}</div></div><div class="ann-card-actions"><button class="btn-icon" title="上移" onclick="moveAnn(${i},-1)" ${i===0?'disabled':''}>↑</button><button class="btn-icon" title="下移" onclick="moveAnn(${i},1)" ${i===t-1?'disabled':''}>↓</button><button class="btn btn-sm btn-ghost" onclick="previewAnn(${i})">👁️</button><button class="btn btn-sm btn-secondary" onclick="openAnnModal(${i})">✏️</button><button class="btn btn-sm btn-danger" onclick="deleteAnn(${i})">🗑️</button></div></div>`;
+  return `<div class="ann-card"><div class="ann-card-left"><div class="ann-card-header"><span class="type-badge ${m.cls}">${m.icon} ${m.label}</span><span class="ann-card-title">${escHtml(a.title||'(无标题)')}</span><span class="meta-badge">优先级 ${a.priority??100}</span></div><div class="ann-card-summary">${escHtml(a.summary||'')}</div><div class="ann-card-meta">${pb}${ob}${eb}</div></div><div class="ann-card-actions"><button class="btn-icon" title="上移" onclick="moveAnn(${i},-1)" ${i===0?'disabled':''}>↑</button><button class="btn-icon" title="下移" onclick="moveAnn(${i},1)" ${i===t-1?'disabled':''}>↓</button><button class="btn btn-sm btn-ghost-card" onclick="previewAnn(${i})">👁️</button><button class="btn btn-sm btn-secondary-card" onclick="openAnnModal(${i})">✏️</button><button class="btn btn-sm btn-danger-card" onclick="deleteAnn(${i})">🗑️</button></div></div>`;
 }
-
 function openAnnModal(idx){
   editingAnnIndex=idx;document.getElementById('ann-modal-title').textContent=idx===null?'添加公告':'编辑公告';
   let a={};if(idx!==null&&idx>=0)a=state.announcements[idx]||{};
@@ -633,7 +624,7 @@ function previewAnn(i){
 function loadGithubConfig(){document.getElementById('gh-owner').value=localStorage.getItem(LS.GH_OWNER)||'';document.getElementById('gh-repo').value=localStorage.getItem(LS.GH_REPO)||'';document.getElementById('gh-token').value=localStorage.getItem(LS.GH_TOKEN)||'';document.getElementById('gh-path').value=localStorage.getItem(LS.GH_PATH)||'announcements.json'}
 function saveGithubConfig(){localStorage.setItem(LS.GH_OWNER,document.getElementById('gh-owner').value.trim());localStorage.setItem(LS.GH_REPO,document.getElementById('gh-repo').value.trim());localStorage.setItem(LS.GH_TOKEN,document.getElementById('gh-token').value.trim());localStorage.setItem(LS.GH_PATH,document.getElementById('gh-path').value.trim()||'announcements.json');toast('配置已保存','success')}
 function getGithubConfig(){const o=document.getElementById('gh-owner').value.trim(),r=document.getElementById('gh-repo').value.trim(),t=document.getElementById('gh-token').value.trim(),p=document.getElementById('gh-path').value.trim()||'announcements.json';if(!o||!r||!t){toast('请先填写完整配置（用户名、仓库名、令牌）','error');return null}return{owner:o,repo:r,token:t,path:p}}
-function setGhStatus(m,t='info'){const e=document.getElementById('gh-status');e.textContent=m;e.style.color=t==='success'?'var(--success)':t==='error'?'var(--danger)':'var(--text3)'}
+function setGhStatus(m,t='info'){const e=document.getElementById('gh-status');e.textContent=m;e.style.color=t==='success'?'#10b981':t==='error'?'#ef4444':'var(--text3)'}
 
 async function pullFromGithub(){
   const c=getGithubConfig();if(!c)return;setLoading('btn-pull',true,'拉取中…');setGhStatus('正在拉取远程配置…');
