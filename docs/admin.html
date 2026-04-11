@@ -4,1490 +4,661 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ZX AI Tools 管理后台</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-/* ===== Reset & Base ===== */
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --bg:#0f1117;
-  --surface:#1a1d27;
-  --surface2:#21242f;
-  --border:#2a2d3a;
-  --border-light:#323545;
+  --bg:#f8f9fc;
+  --surface:#ffffff;
+  --surface2:#f9fafb;
+  --border:#e5e7eb;
+  --border-hover:#d1d5db;
   --primary:#6366f1;
   --primary-hover:#4f46e5;
-  --primary-light:rgba(99,102,241,0.12);
-  --primary-border:rgba(99,102,241,0.25);
-  --accent:#38bdf8;
-  --accent-light:rgba(56,189,248,0.12);
-  --text:#e2e8f0;
-  --text-secondary:#64748b;
-  --text-muted:#475569;
-  --text-placeholder:#4b5563;
+  --primary-light:rgba(99,102,241,0.08);
+  --primary-ring:rgba(99,102,241,0.1);
+  --primary-border:#c7d2fe;
+  --text:#111827;
+  --text2:#374151;
+  --text3:#6b7280;
+  --text4:#9ca3af;
   --danger:#ef4444;
-  --danger-light:rgba(239,68,68,0.12);
-  --danger-border:rgba(239,68,68,0.25);
-  --success:#22c55e;
-  --success-light:rgba(34,197,94,0.12);
-  --success-border:rgba(34,197,94,0.25);
+  --danger-bg:#fff5f5;
+  --danger-border:#fecaca;
+  --success:#10b981;
+  --success-bg:#ecfdf5;
+  --success-border:#6ee7b7;
+  --success-text:#065f46;
   --warning:#f59e0b;
-  --warning-light:rgba(245,158,11,0.12);
-  --warning-border:rgba(245,158,11,0.25);
-  --info:#6366f1;
-  --info-light:rgba(99,102,241,0.12);
-  --shadow:0 4px 6px rgba(0,0,0,0.3);
-  --shadow-lg:0 8px 32px rgba(0,0,0,0.4);
+  --warning-bg:#fffbeb;
+  --warning-border:#fcd34d;
+  --shadow:0 1px 3px rgba(0,0,0,0.08),0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md:0 4px 12px rgba(0,0,0,0.12);
+  --shadow-lg:0 8px 24px rgba(0,0,0,0.14);
   --radius:12px;
   --radius-sm:8px;
-  --radius-lg:16px;
-  --font:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;
+  --font:'Inter',-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
 }
-body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased}
+body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased;font-size:14px;line-height:1.5}
+a{color:inherit;text-decoration:none}
 
-/* ===== Login Page ===== */
+/* ===== Login ===== */
 #login-page{
   min-height:100vh;display:flex;align-items:center;justify-content:center;
-  background:var(--bg);position:relative;overflow:hidden;
+  background:linear-gradient(135deg,#f0f0ff 0%,#f8f9fc 40%,#e8f4ff 100%);
 }
-#login-page::before{content:'';position:absolute;top:-200px;left:-100px;width:500px;height:500px;background:radial-gradient(circle,rgba(99,102,241,0.12),transparent 70%);pointer-events:none}
-#login-page::after{content:'';position:absolute;bottom:-150px;right:-50px;width:400px;height:400px;background:radial-gradient(circle,rgba(56,189,248,0.08),transparent 70%);pointer-events:none}
 .login-card{
-  background:var(--surface);border:1px solid var(--border);border-radius:20px;
-  padding:40px 44px;width:100%;max-width:400px;
-  box-shadow:var(--shadow-lg);position:relative;z-index:1;
+  background:var(--surface);border:1px solid var(--border);border-radius:16px;
+  padding:44px 40px;width:100%;max-width:400px;box-shadow:var(--shadow-md);
 }
-.login-logo{text-align:center;margin-bottom:28px}
-.login-logo .icon{
-  width:64px;height:64px;border-radius:16px;margin:0 auto 12px;
-  background:linear-gradient(135deg,#6366f1,#38bdf8);
-  display:flex;align-items:center;justify-content:center;
-  box-shadow:0 4px 20px rgba(99,102,241,0.3);
+.login-logo{text-align:center;margin-bottom:32px}
+.login-logo svg{margin-bottom:12px}
+.login-logo h1{font-size:22px;font-weight:700;color:var(--text);margin-bottom:4px}
+.login-logo p{font-size:13px;color:var(--text3)}
+.login-form .fg{margin-bottom:16px}
+.login-form .fg label{display:block;font-size:14px;font-weight:500;color:var(--text2);margin-bottom:6px}
+.login-form .fg input{
+  width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:var(--radius-sm);
+  font-size:14px;color:var(--text);background:var(--surface);outline:none;
+  transition:all .2s;font-family:var(--font);
 }
-.login-logo h1{font-size:22px;font-weight:700;color:var(--text)}
-.login-logo p{font-size:13px;color:var(--text-secondary);margin-top:4px}
-.login-form .form-group{margin-bottom:16px}
-.login-form label{display:block;font-size:13px;font-weight:500;color:var(--text-secondary);margin-bottom:6px}
-.login-form input{
-  width:100%;padding:12px 14px;
-  border:1px solid var(--border);border-radius:var(--radius-sm);
-  font-size:15px;color:var(--text);background:var(--bg);outline:none;
-  transition:border-color .2s,box-shadow .2s;
+.login-form .fg input::placeholder{color:var(--text4)}
+.login-form .fg input:focus{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-ring)}
+.login-btn{
+  width:100%;margin-top:8px;padding:12px;border:none;border-radius:var(--radius-sm);
+  background:var(--primary);color:#fff;font-size:14px;font-weight:600;cursor:pointer;
+  transition:all .2s;font-family:var(--font);display:flex;align-items:center;justify-content:center;gap:8px;
 }
-.login-form input:focus{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-light)}
-.login-form .btn-login{
-  width:100%;margin-top:8px;padding:13px;border:none;border-radius:var(--radius-sm);
-  background:var(--primary);color:#fff;
-  font-size:15px;font-weight:600;cursor:pointer;
-  transition:all .2s;
-}
-.login-form .btn-login:hover{background:var(--primary-hover);transform:translateY(-1px);box-shadow:0 4px 16px rgba(99,102,241,0.35)}
-.login-form .btn-login:active{transform:translateY(0)}
-.login-form .btn-login:disabled{opacity:.6;cursor:not-allowed;transform:none}
+.login-btn:hover{background:var(--primary-hover);transform:translateY(-1px);box-shadow:0 2px 8px rgba(99,102,241,0.3)}
+.login-btn:active{transform:translateY(0)}
+.login-btn:disabled{opacity:.6;cursor:not-allowed;transform:none}
 .login-error{
-  background:var(--danger-light);border:1px solid var(--danger-border);
+  background:var(--danger-bg);border:1px solid var(--danger-border);
   color:var(--danger);border-radius:var(--radius-sm);padding:10px 14px;
   font-size:13px;margin-top:12px;display:none;
 }
 
 /* ===== App Layout ===== */
 #app{display:none;flex-direction:column;min-height:100vh}
+
+/* ===== Topbar ===== */
 .topbar{
-  position:sticky;top:0;z-index:100;
+  position:sticky;top:0;z-index:100;height:64px;
   background:var(--surface);border-bottom:1px solid var(--border);
-  padding:0 24px;height:56px;display:flex;align-items:center;justify-content:space-between;
+  box-shadow:0 1px 3px rgba(0,0,0,0.06);
+  padding:0 32px;display:flex;align-items:center;justify-content:space-between;
 }
-.topbar-brand{display:flex;align-items:center;gap:10px}
-.topbar-brand .brand-icon{
-  width:32px;height:32px;border-radius:8px;
-  background:linear-gradient(135deg,#6366f1,#38bdf8);
-  display:flex;align-items:center;justify-content:center;
-  box-shadow:0 2px 8px rgba(99,102,241,0.25);
-}
-.topbar-brand h1{font-size:16px;font-weight:700;color:var(--text)}
-.topbar-brand h1 span{color:var(--text-secondary);font-weight:400;font-size:14px;margin-left:6px}
-.topbar-actions{display:flex;align-items:center;gap:12px}
-.topbar-user{font-size:13px;color:var(--text-secondary)}
+.topbar-left{display:flex;align-items:center;gap:12px}
+.topbar-left svg{flex-shrink:0}
+.topbar-title{font-size:18px;font-weight:700;color:var(--text)}
+.topbar-tag{background:#f3f4f6;color:var(--text3);font-size:12px;border-radius:6px;padding:2px 8px;font-weight:500}
+.topbar-right{display:flex;align-items:center;gap:16px}
+.topbar-status{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--text3)}
+.topbar-status .dot{width:7px;height:7px;border-radius:50%;background:var(--success);flex-shrink:0}
 .btn-logout{
-  padding:6px 14px;border:1px solid var(--border);border-radius:var(--radius-sm);
-  background:transparent;color:var(--text-secondary);font-size:13px;
+  padding:8px 16px;border:1px solid var(--border);border-radius:var(--radius-sm);
+  background:var(--surface);color:var(--text3);font-size:13px;font-weight:500;
   cursor:pointer;transition:all .2s;font-family:var(--font);
 }
-.btn-logout:hover{background:var(--danger-light);color:var(--danger);border-color:var(--danger-border)}
+.btn-logout:hover{color:var(--text);border-color:var(--border-hover);background:var(--surface2)}
 
-/* ===== Tab Navigation ===== */
+/* ===== Main ===== */
+.main-wrap{flex:1;padding:24px 32px;max-width:960px;margin:0 auto;width:100%}
+
+/* ===== Tab Bar ===== */
 .tab-bar{
-  background:var(--surface);border-bottom:1px solid var(--border);
-  padding:12px 24px;display:flex;gap:8px;
+  display:inline-flex;background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);padding:4px;gap:4px;margin-bottom:24px;
 }
 .tab-btn{
-  padding:10px 20px;border:none;background:transparent;
-  color:var(--text-secondary);font-size:14px;font-weight:500;
-  cursor:pointer;border-radius:var(--radius-sm);transition:all .2s;
-  font-family:var(--font);white-space:nowrap;display:flex;align-items:center;gap:6px;
+  padding:8px 20px;border:none;background:transparent;
+  color:var(--text3);font-size:14px;font-weight:500;border-radius:var(--radius-sm);
+  cursor:pointer;transition:all .2s;font-family:var(--font);white-space:nowrap;
+  display:flex;align-items:center;gap:6px;
 }
-.tab-btn:hover{background:var(--surface2);color:var(--text)}
-.tab-btn.active{background:var(--primary);color:#fff;font-weight:600}
-.tab-btn .tab-icon{font-size:15px}
+.tab-btn:hover{background:#f3f4f6;color:var(--text)}
+.tab-btn.active{background:var(--primary);color:#fff;box-shadow:0 2px 8px rgba(99,102,241,0.3)}
+.tab-btn.active:hover{background:var(--primary-hover)}
 
-/* ===== Main Content ===== */
-.main-content{flex:1;padding:24px;max-width:1000px;margin:0 auto;width:100%}
 .tab-panel{display:none}
 .tab-panel.active{display:block}
 
-/* ===== Info Card (feature tips) ===== */
-.info-card{
-  background:var(--primary-light);border:1px solid var(--primary-border);
-  border-radius:var(--radius);padding:16px 20px;margin-bottom:20px;
-  font-size:13px;color:var(--text);line-height:1.7;
+/* ===== Tip Card ===== */
+.tip-card{
+  background:linear-gradient(135deg,#f0f0ff 0%,#e8f4ff 100%);
+  border:1px solid var(--primary-border);border-radius:var(--radius);
+  padding:20px 24px;margin-bottom:20px;position:relative;overflow:hidden;
 }
-.info-card.green{background:var(--success-light);border-color:var(--success-border)}
-.info-card.amber{background:var(--warning-light);border-color:var(--warning-border)}
-.info-card-title{font-weight:600;font-size:14px;margin-bottom:6px;display:flex;align-items:center;gap:6px}
-.info-card p{color:#94a3b8}
+.tip-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--primary)}
+.tip-card-title{font-size:15px;font-weight:600;color:var(--text);margin-bottom:8px}
+.tip-card-body{font-size:13px;color:var(--text2);line-height:1.8}
+.tip-card-body ul{margin:4px 0 0 0;padding-left:0;list-style:none}
+.tip-card-body ul li{position:relative;padding-left:16px;margin-bottom:2px}
+.tip-card-body ul li::before{content:'•';position:absolute;left:4px;color:var(--primary);font-weight:700}
 
-/* ===== Cards & Sections ===== */
+/* ===== Card ===== */
 .card{
-  background:var(--surface);border:1px solid var(--border);
-  border-radius:var(--radius);padding:24px;margin-bottom:16px;
-  box-shadow:var(--shadow);
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  padding:24px;margin-bottom:16px;box-shadow:var(--shadow);
 }
-.card-title{
-  font-size:15px;font-weight:600;color:var(--text);
-  margin-bottom:20px;display:flex;align-items:center;gap:8px;
-}
-.card-title .badge-tag{
-  font-size:11px;font-weight:500;padding:2px 8px;border-radius:20px;
-  background:var(--primary-light);color:var(--primary);
-}
-.section-header{
-  display:flex;align-items:center;justify-content:space-between;
-  margin-bottom:16px;
-}
-.section-header h2{font-size:15px;font-weight:600;color:var(--text)}
+.card-head{font-size:16px;font-weight:600;color:var(--text);margin-bottom:20px;display:flex;align-items:center;gap:8px}
+.card-head .tag{font-size:11px;font-weight:500;padding:2px 8px;border-radius:20px;background:var(--primary-light);color:var(--primary)}
 
-/* ===== Form Elements ===== */
-.form-group{margin-bottom:16px}
-.form-group label{
-  display:block;font-size:14px;font-weight:500;
-  color:#94a3b8;margin-bottom:6px;
-}
-.form-group label .required{color:var(--danger);margin-left:2px}
-.form-group input,.form-group textarea,.form-group select{
-  width:100%;padding:12px;
-  border:1px solid var(--border);border-radius:var(--radius-sm);
-  font-size:14px;color:var(--text);background:var(--bg);
-  outline:none;transition:border-color .2s,box-shadow .2s;
-  font-family:var(--font);
-}
-.form-group input:focus,.form-group textarea:focus,.form-group select:focus{
-  border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-light);
-}
-.form-group textarea{resize:vertical;min-height:80px;line-height:1.5}
-.form-group select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2364748b' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:32px;cursor:pointer}
-.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.form-row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
-.form-hint{font-size:12px;color:var(--text-muted);margin-top:4px;line-height:1.5}
+.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.section-header h2{font-size:16px;font-weight:600;color:var(--text)}
 
-/* ===== Toggle Switch ===== */
-.toggle-row{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:12px 0;border-bottom:1px solid var(--border);
+/* ===== Form ===== */
+.fg{margin-bottom:16px}
+.fg label{display:block;font-size:14px;font-weight:500;color:var(--text2);margin-bottom:6px}
+.fg label .req{color:var(--danger);margin-left:2px}
+.fg input,.fg textarea,.fg select{
+  width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:var(--radius-sm);
+  font-size:14px;color:var(--text);background:var(--surface);outline:none;
+  transition:all .2s;font-family:var(--font);
 }
-.toggle-row:last-child{border-bottom:none}
-.toggle-label{font-size:14px;color:var(--text)}
-.toggle-desc{font-size:12px;color:var(--text-secondary);margin-top:2px}
-.toggle{position:relative;display:inline-block;width:44px;height:26px;flex-shrink:0}
-.toggle input{opacity:0;width:0;height:0;position:absolute}
-.toggle-track{
-  position:absolute;inset:0;border-radius:13px;
-  background:#3f3f46;cursor:pointer;transition:background .25s;
+.fg input::placeholder,.fg textarea::placeholder{color:var(--text4)}
+.fg input:focus,.fg textarea:focus,.fg select:focus{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-ring)}
+.fg textarea{resize:vertical;min-height:80px;line-height:1.6}
+.fg select{
+  appearance:none;cursor:pointer;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%239ca3af' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 14px center;padding-right:36px;
 }
-.toggle input:checked+.toggle-track{background:var(--primary)}
-.toggle-thumb{
-  position:absolute;top:3px;left:3px;width:20px;height:20px;
-  border-radius:50%;background:#fff;transition:transform .25s;
-  box-shadow:0 1px 4px rgba(0,0,0,0.3);pointer-events:none;
-}
-.toggle input:checked~.toggle-thumb{transform:translateX(18px)}
+.fg .hint{font-size:12px;color:var(--text4);margin-top:4px;line-height:1.5}
+.fg-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.fg-row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+.fg input[readonly]{background:var(--surface2);color:var(--text3);cursor:default}
 
-/* ===== Buttons ===== */
-.btn{
-  display:inline-flex;align-items:center;gap:6px;
-  padding:9px 16px;border:none;border-radius:var(--radius-sm);
-  font-size:14px;font-weight:500;cursor:pointer;
-  transition:all .2s;font-family:var(--font);white-space:nowrap;
-}
-.btn:disabled{opacity:.55;cursor:not-allowed}
-.btn-primary{background:var(--primary);color:#fff}
-.btn-primary:hover:not(:disabled){background:var(--primary-hover);transform:translateY(-1px);box-shadow:0 4px 12px rgba(99,102,241,0.35)}
-.btn-secondary{background:var(--surface2);color:var(--text);border:1px solid var(--border)}
-.btn-secondary:hover:not(:disabled){background:var(--border);color:var(--text)}
-.btn-danger{background:var(--danger);color:#fff}
-.btn-danger:hover:not(:disabled){background:#dc2626;transform:translateY(-1px)}
-.btn-danger-ghost{background:var(--danger-light);color:var(--danger);border:1px solid var(--danger-border)}
-.btn-danger-ghost:hover:not(:disabled){background:rgba(239,68,68,0.2)}
-.btn-success{background:var(--success);color:#fff}
-.btn-success:hover:not(:disabled){background:#16a34a;transform:translateY(-1px)}
-.btn-ghost{background:transparent;color:var(--text-secondary);border:1px solid var(--border)}
-.btn-ghost:hover:not(:disabled){background:var(--surface2);color:var(--text)}
-.btn-sm{padding:6px 12px;font-size:13px;border-radius:6px}
-.btn-icon{padding:8px;border-radius:var(--radius-sm);background:transparent;border:1px solid var(--border);color:var(--text-secondary);cursor:pointer;transition:all .2s;font-size:14px;display:inline-flex;align-items:center}
-.btn-icon:hover{background:var(--surface2);color:var(--text)}
-.btn-icon:disabled{opacity:.3}
-
-/* ===== Announcement Cards ===== */
-.ann-list{display:flex;flex-direction:column;gap:10px;margin-top:8px}
-.ann-card{
-  background:var(--surface2);border:1px solid var(--border);
-  border-radius:var(--radius-sm);padding:16px;
-  display:flex;align-items:flex-start;gap:12px;
-  transition:border-color .2s;
-}
-.ann-card:hover{border-color:var(--border-light)}
-.ann-card-left{flex:1;min-width:0}
-.ann-card-header{display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap}
-.ann-card-title{font-size:14px;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:300px}
-.ann-card-summary{font-size:13px;color:var(--text-secondary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.ann-card-meta{display:flex;align-items:center;gap:8px;margin-top:6px;flex-wrap:wrap}
-.ann-card-actions{display:flex;align-items:center;gap:6px;flex-shrink:0}
-.type-badge{
-  display:inline-flex;align-items:center;gap:4px;
-  font-size:11px;font-weight:600;padding:2px 8px;border-radius:20px;
-}
-.type-info{background:var(--info-light);color:var(--primary)}
-.type-feature{background:var(--success-light);color:var(--success)}
-.type-warning{background:var(--warning-light);color:var(--warning)}
-.priority-badge{
-  font-size:11px;color:var(--text-secondary);
-  background:var(--bg);padding:2px 7px;border-radius:4px;border:1px solid var(--border);
-}
-.popup-badge{font-size:11px;color:var(--accent);background:var(--accent-light);padding:2px 7px;border-radius:4px}
-.once-badge{font-size:11px;color:var(--text-secondary);background:var(--bg);padding:2px 7px;border-radius:4px;border:1px solid var(--border)}
-
-/* ===== Preview Panel ===== */
-.preview-box{
-  background:linear-gradient(135deg,#1a1a2e 0%,#16213e 50%,#0f3460 100%);
-  border-radius:var(--radius-sm);padding:20px;min-height:80px;
-  display:flex;align-items:center;justify-content:center;
-}
-.ad-preview-inner{
-  background:linear-gradient(135deg,rgba(255,255,255,0.08),rgba(255,255,255,0.04));
-  border:1px solid rgba(255,255,255,0.12);border-radius:10px;
-  padding:12px 16px;max-width:360px;width:100%;
-  display:flex;align-items:center;justify-content:space-between;gap:12px;
-}
-.ad-preview-text-area{flex:1;min-width:0}
-.ad-preview-badge{
-  display:inline-block;font-size:10px;font-weight:700;padding:2px 7px;
-  border-radius:4px;background:rgba(99,102,241,0.8);color:#fff;
-  margin-bottom:4px;letter-spacing:.5px;
-}
-.ad-preview-text{font-size:13px;color:rgba(255,255,255,0.9);font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.ad-preview-btn{
-  flex-shrink:0;padding:6px 12px;border-radius:6px;
-  background:var(--primary);color:#fff;font-size:12px;font-weight:600;
-  white-space:nowrap;
-}
-
-/* ===== Announcement Preview Modal ===== */
-.ann-preview-popup{
-  background:#1a1d27;border-radius:12px;padding:24px;max-width:380px;width:100%;
-  border:1px solid rgba(255,255,255,0.08);
-}
-.ann-preview-header{display:flex;align-items:center;gap:10px;margin-bottom:12px}
-.ann-preview-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
-.ann-preview-title{font-size:16px;font-weight:700;color:#fff}
-.ann-preview-summary{font-size:13px;color:rgba(255,255,255,0.6);margin-bottom:12px}
-.ann-preview-content{font-size:13px;color:rgba(255,255,255,0.8);line-height:1.6;margin-bottom:16px;white-space:pre-line}
-.ann-preview-action{
-  width:100%;padding:10px;border-radius:8px;
-  background:var(--primary);color:#fff;font-size:14px;font-weight:600;
-  border:none;cursor:pointer;
-}
-
-/* ===== Modal ===== */
-.modal-backdrop{
-  position:fixed;inset:0;z-index:1000;
-  background:rgba(0,0,0,0.6);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);
-  display:none;align-items:center;justify-content:center;padding:20px;
-}
-.modal-backdrop.open{display:flex}
-.modal{
-  background:var(--surface);border-radius:var(--radius-lg);
-  width:100%;max-height:90vh;overflow-y:auto;
-  box-shadow:var(--shadow-lg);animation:modalIn .2s ease;
-  border:1px solid var(--border);
-}
-.modal.modal-md{max-width:560px}
-.modal.modal-lg{max-width:780px}
-.modal.modal-xl{max-width:960px}
-.modal-header{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:20px 24px 0;border-bottom:1px solid var(--border);padding-bottom:16px;
-  position:sticky;top:0;background:var(--surface);z-index:10;border-radius:var(--radius-lg) var(--radius-lg) 0 0;
-}
-.modal-header h3{font-size:16px;font-weight:700;color:var(--text)}
-.modal-close{
-  width:28px;height:28px;border-radius:50%;border:none;background:var(--surface2);
-  color:var(--text-secondary);cursor:pointer;font-size:16px;
-  display:flex;align-items:center;justify-content:center;transition:all .2s;
-}
-.modal-close:hover{background:var(--border);color:var(--text)}
-.modal-body{padding:20px 24px}
-.modal-footer{
-  padding:16px 24px 20px;display:flex;gap:10px;justify-content:flex-end;
-  border-top:1px solid var(--border);
-}
-@keyframes modalIn{from{opacity:0;transform:scale(.96) translateY(-8px)}to{opacity:1;transform:scale(1) translateY(0)}}
-
-/* ===== Toast ===== */
-.toast-container{
-  position:fixed;top:70px;right:20px;z-index:2000;
-  display:flex;flex-direction:column;gap:8px;pointer-events:none;
-}
-.toast{
-  background:var(--surface);border:1px solid var(--border);
-  border-radius:var(--radius-sm);padding:12px 16px;
-  box-shadow:var(--shadow-lg);display:flex;align-items:center;gap:10px;
-  min-width:280px;max-width:400px;pointer-events:all;
-  animation:toastIn .3s ease;
-}
-.toast.removing{animation:toastOut .3s ease forwards}
-.toast-icon{font-size:18px;flex-shrink:0}
-.toast-msg{font-size:14px;color:var(--text);flex:1}
-.toast.success{border-left:3px solid var(--success)}
-.toast.error{border-left:3px solid var(--danger)}
-.toast.info{border-left:3px solid var(--primary)}
-@keyframes toastIn{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
-@keyframes toastOut{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(20px)}}
-
-/* ===== Config Grid ===== */
-.config-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.config-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:4px}
-.code-block{
-  background:var(--bg);color:var(--text);border-radius:var(--radius-sm);border:1px solid var(--border);
-  padding:16px;font-family:"SF Mono","Fira Code",monospace;font-size:12px;
-  line-height:1.6;overflow:auto;max-height:400px;white-space:pre;
-}
-
-/* ===== Spinner ===== */
-.spinner{
-  width:16px;height:16px;border:2px solid rgba(255,255,255,0.3);
-  border-top-color:#fff;border-radius:50%;
-  animation:spin .7s linear infinite;flex-shrink:0;
-}
-.spinner-dark{border-color:rgba(255,255,255,0.15);border-top-color:var(--text-secondary)}
-@keyframes spin{to{transform:rotate(360deg)}}
-
-/* ===== Confirm Dialog ===== */
-.confirm-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);max-width:380px;width:100%;padding:28px;box-shadow:var(--shadow-lg);text-align:center;animation:modalIn .2s ease}
-.confirm-box .icon{font-size:40px;margin-bottom:12px}
-.confirm-box h3{font-size:17px;font-weight:700;margin-bottom:8px;color:var(--text)}
-.confirm-box p{font-size:14px;color:var(--text-secondary);margin-bottom:20px;line-height:1.5}
-.confirm-actions{display:flex;gap:10px;justify-content:center}
-
-/* ===== Responsive ===== */
-@media(max-width:768px){
-  .form-row,.form-row-3,.config-grid{grid-template-columns:1fr}
-  .main-content{padding:16px}
-  .topbar{padding:0 16px}
-  .tab-bar{padding:8px 8px;overflow-x:auto;gap:4px}
-  .tab-btn{padding:8px 14px;font-size:13px}
-  .modal-backdrop{padding:12px}
-  .topbar-user{display:none}
-}
+/* ===== Locale Section ===== */
+.locale-box{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:20px;margin-top:4px}
+.locale-title{font-size:14px;font-weight:600;color:var(--text);margin-bottom:4px;display:flex;align-items:center;gap:6px}
+.locale-desc{font-size:12px;color:var(--text4);margin-bottom:14px;line-height:1.6}
 
 /* ===== Divider ===== */
 .divider{height:1px;background:var(--border);margin:20px 0}
 
-/* ===== Empty State ===== */
-.empty-state{text-align:center;padding:40px 20px;color:var(--text-secondary)}
-.empty-state .icon{font-size:48px;margin-bottom:12px;opacity:.5}
-.empty-state p{font-size:14px}
+/* ===== Toggle ===== */
+.toggle-row{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid #f3f4f6}
+.toggle-row:last-child{border-bottom:none}
+.toggle-label{font-size:14px;font-weight:500;color:var(--text)}
+.toggle-desc{font-size:12px;color:var(--text4);margin-top:2px}
+.toggle{position:relative;display:inline-block;width:44px;height:26px;flex-shrink:0}
+.toggle input{opacity:0;width:0;height:0;position:absolute}
+.toggle-track{position:absolute;inset:0;border-radius:13px;background:#d1d5db;cursor:pointer;transition:background .25s}
+.toggle input:checked+.toggle-track{background:var(--primary)}
+.toggle-thumb{position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:transform .25s;box-shadow:0 1px 3px rgba(0,0,0,0.15);pointer-events:none}
+.toggle input:checked~.toggle-thumb{transform:translateX(18px)}
 
-/* ===== Locale Section ===== */
-.locale-section{
-  background:var(--surface2);border-radius:var(--radius-sm);
-  padding:16px;margin-top:4px;border:1px solid var(--border);
+/* ===== Buttons ===== */
+.btn{
+  display:inline-flex;align-items:center;gap:6px;padding:10px 24px;border:none;border-radius:var(--radius-sm);
+  font-size:14px;font-weight:500;cursor:pointer;transition:all .2s;font-family:var(--font);white-space:nowrap;
 }
-.locale-title{font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px;display:flex;align-items:center;gap:6px}
-.locale-desc{font-size:12px;color:var(--text-muted);margin-bottom:12px;line-height:1.5}
+.btn:disabled{opacity:.55;cursor:not-allowed}
+.btn-primary{background:var(--primary);color:#fff;box-shadow:0 2px 8px rgba(99,102,241,0.3)}
+.btn-primary:hover:not(:disabled){background:var(--primary-hover);transform:translateY(-1px);box-shadow:0 4px 12px rgba(99,102,241,0.35)}
+.btn-secondary{background:var(--surface);color:var(--text2);border:1px solid var(--border)}
+.btn-secondary:hover:not(:disabled){background:var(--surface2);border-color:var(--border-hover)}
+.btn-danger{background:var(--danger-bg);color:var(--danger);border:1px solid var(--danger-border)}
+.btn-danger:hover:not(:disabled){background:#fee2e2}
+.btn-ghost{background:transparent;color:var(--text3);border:1px solid var(--border)}
+.btn-ghost:hover:not(:disabled){background:var(--surface2);color:var(--text)}
+.btn-sm{padding:6px 14px;font-size:13px}
+.btn-icon{padding:7px;border-radius:var(--radius-sm);background:var(--surface);border:1px solid var(--border);color:var(--text3);cursor:pointer;transition:all .2s;font-size:14px;display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px}
+.btn-icon:hover{background:var(--surface2);color:var(--text);border-color:var(--border-hover)}
+.btn-icon:disabled{opacity:.3;cursor:not-allowed}
+
+/* ===== Preview ===== */
+.preview-box{
+  background:linear-gradient(135deg,#1e1b4b 0%,#1e3a5f 100%);
+  border-radius:var(--radius-sm);padding:24px;min-height:80px;
+  display:flex;align-items:center;justify-content:center;
+}
+.ad-preview-inner{
+  background:linear-gradient(135deg,rgba(255,255,255,0.08),rgba(255,255,255,0.03));
+  border:1px solid rgba(255,255,255,0.1);border-radius:10px;
+  padding:12px 16px;max-width:360px;width:100%;
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+}
+.ad-preview-text-area{flex:1;min-width:0}
+.ad-preview-badge{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;background:rgba(99,102,241,0.8);color:#fff;margin-bottom:4px;letter-spacing:.5px}
+.ad-preview-text{font-size:13px;color:rgba(255,255,255,0.9);font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ad-preview-btn{flex-shrink:0;padding:6px 14px;border-radius:6px;background:#6366f1;color:#fff;font-size:12px;font-weight:600;white-space:nowrap}
+
+/* ===== Announcement List ===== */
+.ann-list{display:flex;flex-direction:column;gap:10px;margin-top:8px}
+.ann-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:16px;display:flex;align-items:flex-start;gap:12px;transition:all .2s}
+.ann-card:hover{border-color:var(--border-hover);box-shadow:var(--shadow)}
+.ann-card-left{flex:1;min-width:0}
+.ann-card-header{display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap}
+.ann-card-title{font-size:14px;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:300px}
+.ann-card-summary{font-size:13px;color:var(--text3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ann-card-meta{display:flex;align-items:center;gap:6px;margin-top:6px;flex-wrap:wrap}
+.ann-card-actions{display:flex;align-items:center;gap:6px;flex-shrink:0}
+.type-badge{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:600;padding:2px 8px;border-radius:20px}
+.type-info{background:var(--primary-light);color:var(--primary)}
+.type-feature{background:rgba(16,185,129,0.08);color:var(--success)}
+.type-warning{background:rgba(245,158,11,0.08);color:var(--warning)}
+.meta-badge{font-size:11px;color:var(--text4);background:var(--surface2);padding:2px 8px;border-radius:4px;border:1px solid #f3f4f6}
+.popup-badge{font-size:11px;color:#7c3aed;background:rgba(124,58,237,0.06);padding:2px 8px;border-radius:4px}
+
+/* ===== Empty State ===== */
+.empty-state{text-align:center;padding:48px 20px;color:var(--text4)}
+.empty-state .icon{font-size:48px;margin-bottom:12px;opacity:.5}
+.empty-state p{font-size:14px;color:var(--text3)}
+
+/* ===== Ann Preview ===== */
+.ann-preview-popup{background:#1a1d27;border-radius:12px;padding:24px;max-width:380px;width:100%;border:1px solid rgba(255,255,255,0.06)}
+.ann-preview-header{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.ann-preview-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.ann-preview-title{font-size:16px;font-weight:700;color:#fff}
+.ann-preview-summary{font-size:13px;color:rgba(255,255,255,0.55);margin-bottom:12px}
+.ann-preview-content{font-size:13px;color:rgba(255,255,255,0.75);line-height:1.6;margin-bottom:16px;white-space:pre-line}
+.ann-preview-action{width:100%;padding:10px;border-radius:8px;background:var(--primary);color:#fff;font-size:14px;font-weight:600;border:none;cursor:pointer}
+
+/* ===== Modal ===== */
+.modal-backdrop{position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,0.35);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;padding:20px}
+.modal-backdrop.open{display:flex}
+.modal{background:var(--surface);border-radius:16px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:var(--shadow-lg);animation:modalIn .2s ease;border:1px solid var(--border)}
+.modal.modal-md{max-width:560px}
+.modal.modal-lg{max-width:780px}
+.modal.modal-xl{max-width:960px}
+.modal-header{display:flex;align-items:center;justify-content:space-between;padding:20px 24px;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--surface);z-index:10;border-radius:16px 16px 0 0}
+.modal-header h3{font-size:16px;font-weight:700;color:var(--text)}
+.modal-close{width:30px;height:30px;border-radius:8px;border:none;background:var(--surface2);color:var(--text3);cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.modal-close:hover{background:#e5e7eb;color:var(--text)}
+.modal-body{padding:20px 24px}
+.modal-footer{padding:16px 24px 20px;display:flex;gap:10px;justify-content:flex-end;border-top:1px solid var(--border)}
+@keyframes modalIn{from{opacity:0;transform:scale(.97) translateY(-6px)}to{opacity:1;transform:scale(1) translateY(0)}}
+
+/* ===== Toast ===== */
+.toast-container{position:fixed;top:76px;right:20px;z-index:2000;display:flex;flex-direction:column;gap:8px;pointer-events:none}
+.toast{border-radius:10px;padding:12px 16px;box-shadow:0 4px 12px rgba(0,0,0,0.1);display:flex;align-items:center;gap:10px;min-width:280px;max-width:400px;pointer-events:all;animation:toastIn .3s ease;font-size:14px}
+.toast.removing{animation:toastOut .3s ease forwards}
+.toast-icon{font-size:17px;flex-shrink:0}
+.toast-msg{flex:1}
+.toast.success{background:var(--success-bg);border:1px solid var(--success-border);color:var(--success-text)}
+.toast.error{background:var(--danger-bg);border:1px solid #fca5a5;color:#991b1b}
+.toast.info{background:#eff6ff;border:1px solid #93c5fd;color:#1e40af}
+@keyframes toastIn{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
+@keyframes toastOut{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(20px)}}
+
+/* ===== Confirm ===== */
+.confirm-box{background:var(--surface);border:1px solid var(--border);border-radius:16px;max-width:380px;width:100%;padding:28px;box-shadow:var(--shadow-lg);text-align:center;animation:modalIn .2s ease}
+.confirm-box .icon{font-size:40px;margin-bottom:12px}
+.confirm-box h3{font-size:17px;font-weight:700;margin-bottom:8px;color:var(--text)}
+.confirm-box p{font-size:14px;color:var(--text3);margin-bottom:20px;line-height:1.5}
+.confirm-actions{display:flex;gap:10px;justify-content:center}
+
+/* ===== Config Grid ===== */
+.config-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+
+/* ===== Code Block ===== */
+.code-block{background:#0f172a;color:#e2e8f0;border-radius:var(--radius-sm);border:1px solid #1e293b;padding:16px;font-family:"SF Mono","Fira Code",monospace;font-size:12px;line-height:1.6;overflow:auto;max-height:400px;white-space:pre}
+
+/* ===== Spinner ===== */
+.spinner{width:16px;height:16px;border:2px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0}
+@keyframes spin{to{transform:rotate(360deg)}}
 
 /* ===== Helpers ===== */
-.flex{display:flex}.items-center{align-items:center}.gap-8{gap:8px}.gap-12{gap:12px}.flex-1{flex:1}.justify-between{justify-content:space-between}.justify-end{justify-content:flex-end}.flex-wrap{flex-wrap:wrap}
-.mt-4{margin-top:4px}.mt-8{margin-top:8px}.mt-12{margin-top:12px}.mt-16{margin-top:16px}.mb-16{margin-bottom:16px}
-.text-sm{font-size:13px}.text-xs{font-size:12px}.text-secondary{color:var(--text-secondary)}.font-mono{font-family:"SF Mono","Fira Code",monospace;font-size:12px}
+.flex{display:flex}.items-center{align-items:center}.gap-8{gap:8px}.gap-12{gap:12px}.flex-1{flex:1}.justify-end{justify-content:flex-end}
+.mt-8{margin-top:8px}.mt-12{margin-top:12px}.mt-16{margin-top:16px}
+
+/* ===== Responsive ===== */
+@media(max-width:768px){
+  .fg-row,.fg-row3,.config-grid{grid-template-columns:1fr}
+  .main-wrap{padding:16px}
+  .topbar{padding:0 16px}
+  .tab-bar{display:flex;width:100%;overflow-x:auto}
+  .tab-btn{flex:1;justify-content:center;padding:8px 12px;font-size:13px}
+  .modal-backdrop{padding:12px}
+  .topbar-tag{display:none}
+}
 </style>
 </head>
 <body>
 
-<!-- ===== LOGIN PAGE ===== -->
+<!-- ===== LOGIN ===== -->
 <div id="login-page">
   <div class="login-card">
     <div class="login-logo">
-      <div class="icon">
-        <svg width="32" height="32" viewBox="0 0 2049 2049" fill="#ffffff"><path d="M1430.5 1431.3 c-3.3 -0.8 -6.2 -4.1 -15.7 -18.3 -5.1 -7.4 -10.6 -15.5 -12.3 -18 -1.7 -2.5 -6.1 -8.8 -9.7 -14 -3.6 -5.2 -10.2 -14.9 -14.8 -21.5 -4.6 -6.6 -14.7 -21.4 -22.5 -33 -15.9 -23.5 -35.3 -51.7 -38.2 -55.5 -1.1 -1.4 -9.8 -14.2 -19.5 -28.5 -9.6 -14.3 -20.4 -30.3 -24 -35.5 -3.5 -5.2 -12.7 -18.7 -20.3 -30 -15.3 -22.6 -25.6 -37.8 -35.1 -51.5 -3.5 -4.9 -11.1 -16.2 -17.1 -25 -5.9 -8.7 -18.2 -26.7 -27.2 -40 -9.1 -13.2 -21.6 -31.6 -27.9 -41 -6.3 -9.3 -19.2 -28.4 -28.6 -42.2 -9.4 -13.9 -22.5 -33.3 -29.1 -43 -30.4 -44.9 -37.4 -55.2 -41 -60.3 -2.2 -3 -8.5 -12.2 -14.1 -20.5 -5.5 -8.2 -12.1 -17.8 -14.5 -21.3 l-4.5 -6.3 -202.6 0 -202.7 -0.1 -3.1 -5.1 c-2.9 -4.7 -19.5 -31.5 -35.5 -57.2 -20.1 -32.3 -32.2 -51.6 -40.3 -63.9 -5 -7.7 -8.9 -14.3 -8.7 -14.6 0.4 -0.6 601.5 -0.7 611.6 -0.1 2 0.1 3.4 1.4 6.1 5.3 1.8 2.9 9.4 14.1 16.8 24.8 7.3 10.7 16.1 23.6 19.5 28.5 27.6 40.7 50.3 73.9 65.1 95.5 9.6 14 21.8 31.9 27 39.8 5.3 7.8 10.2 14.2 10.9 14.2 0.8 0 1.7 -1 2 -2.2 0.4 -1.1 4.7 -8 9.5 -15.2 4.8 -7.2 16.7 -25.2 26.4 -40.1 9.8 -14.8 23.7 -36 31 -47 7.3 -11 14.5 -22 16 -24.5 1.4 -2.5 4.4 -7 6.5 -10 2.1 -3 14.1 -21 26.6 -40 12.5 -19 24.1 -36.3 25.7 -38.5 3.2 -4.5 12.3 -18.2 21.7 -32.7 3.5 -5.4 6.9 -9.8 7.5 -9.8 1.2 0 9.8 11.7 11.1 15.1 0.3 0.9 -0.8 3.3 -2.8 6 -3.6 4.7 -15.3 21.1 -23.2 32.4 -2.7 3.9 -8.7 12.4 -13.5 19 -4.8 6.6 -15.4 21.4 -23.6 32.9 -8.2 11.5 -18.7 26.2 -23.4 32.7 -8.7 12 -33.8 46.9 -42.6 59.3 -25.8 36.2 -38.6 54.4 -43.1 61.6 -1.9 3 -4.4 6.5 -5.5 7.7 l-2 2.2 4.3 5.7 c2.4 3.2 4.9 5.9 5.4 6.1 0.6 0.1 5.8 -7.5 11.7 -17 5.8 -9.4 13.1 -20.8 16.2 -25.2 3.1 -4.4 11.4 -16.8 18.5 -27.5 7 -10.7 18.6 -28.2 25.7 -38.8 7.1 -10.7 17 -25.8 21.9 -33.6 8.6 -13.6 18 -27.9 30.8 -47.1 34.3 -51.3 48 -71.5 48.5 -71.5 0.7 0 8.8 12.4 10.6 16.1 0.7 1.4 -0.1 3.1 -3.5 7.6 -2.4 3.1 -6.4 8.7 -8.9 12.4 -2.5 3.6 -6.6 9.5 -9.2 13 -2.6 3.5 -9.2 12.7 -14.7 20.4 -5.6 7.7 -17.2 23.8 -25.8 35.9 -8.7 12 -20.5 28.7 -26.3 37.1 -5.8 8.3 -14.5 20.7 -19.5 27.4 -4.9 6.7 -9.7 13.2 -10.5 14.4 -0.8 1.3 -4.2 6 -7.5 10.6 -3.3 4.6 -6.9 9.6 -8 11.1 -2.4 3.4 -24.7 35 -33.5 47.5 -3.4 5 -7.6 10.5 -9.2 12.3 -1.6 1.9 -2.5 3.8 -2.1 4.5 3 5.2 8.5 12.7 9.1 12.3 0.4 -0.2 5.7 -8.1 11.7 -17.6 6.1 -9.4 18.5 -28.5 27.6 -42.3 9.1 -13.9 22.7 -34.6 30.3 -46.2 7.6 -11.5 16.1 -24.4 19 -28.6 2.8 -4.1 8.5 -12.7 12.6 -19 16.2 -24.9 46.9 -71.4 58.9 -89.2 12.1 -18.2 12.6 -18.8 14.1 -16.7 3.7 5.3 9 14.5 9 15.5 0 0.6 -2.3 4.3 -5 8.1 -2.8 3.8 -7.8 11 -11.2 15.9 -3.3 5 -7.3 10.6 -8.8 12.5 -1.5 1.9 -5.5 7.6 -8.8 12.5 -9.2 13.6 -18.2 26.3 -35.1 49.7 -8.5 11.7 -19.7 27.4 -24.9 34.8 -5.2 7.4 -13.2 18.4 -17.7 24.5 -4.5 6 -11.8 16.2 -16.1 22.5 -4.3 6.4 -10.5 15.2 -13.7 19.5 -7.6 10.5 -20.2 28.4 -29.3 41.6 l-7.3 10.6 4 5.9 c2.2 3.2 4.3 6 4.7 6.1 0.8 0.3 9.9 -12.5 17.5 -24.5 13.2 -20.8 20.9 -32.8 44.4 -68.4 13.8 -21.1 29.8 -45.5 35.6 -54.3 12.7 -19.5 35.1 -53.6 54.2 -82.5 7.8 -11.8 15.5 -23.6 17.1 -26.2 1.6 -2.7 3.1 -4.8 3.4 -4.8 0.4 0 3.2 3.9 6.3 8.6 6.6 9.9 6.9 7.8 -2.8 20.9 -5.1 6.9 -15.6 21.7 -18.5 25.9 -0.7 1.1 -6.8 9.7 -13.5 19 -6.6 9.3 -15.4 21.7 -19.5 27.7 -9.6 13.8 -34.9 49.2 -43 60.2 -1.4 1.9 -6.5 9.2 -11.4 16.3 -5 7.1 -11.5 16.3 -14.6 20.4 -3.1 4.1 -10.2 14 -15.7 22 -5.5 8 -15.1 21.7 -21.3 30.5 -6.2 8.8 -11.5 16.5 -11.7 17.2 -0.6 1.5 6.8 12.3 8.4 12.3 0.6 0 3.7 -3.7 6.8 -8.3 9.3 -13.6 38 -58 41.5 -64.3 1.9 -3.3 5.7 -9 8.5 -12.9 2.8 -3.8 7.3 -10.6 10 -15 2.7 -4.4 10.8 -16.9 18 -27.7 7.1 -10.9 17.3 -26.4 22.6 -34.5 5.3 -8.2 21.1 -32.2 35.2 -53.5 14 -21.2 26 -39.6 26.6 -40.7 0.7 -1.2 1.6 -2.1 2 -2.1 1.1 0 11.1 16 11.1 17.6 0 0.6 -2.2 4 -4.8 7.5 -2.7 3.5 -7.2 9.8 -10 13.9 -2.8 4.1 -8.5 12.2 -12.6 18 -4.2 5.8 -10.2 14.4 -13.5 19.2 -3.3 4.8 -8.4 11.8 -11.3 15.5 -6.4 8.2 -14.5 19.5 -26 36.3 -10.2 15 -19.5 28.2 -31.7 45 -18.2 25.2 -41.8 58.6 -48.5 69 -2.7 4.1 -8 11.9 -11.8 17.2 l-6.9 9.7 4.3 6.5 c2.4 3.6 4.8 6.4 5.3 6.3 0.6 -0.2 2.4 -2.5 4 -5.1 3 -4.7 13.3 -20.8 30.8 -48.1 4.9 -7.7 12 -18.5 15.7 -24 3.7 -5.5 9.7 -14.9 13.5 -21 3.7 -6 9.1 -14.6 12 -19 2.9 -4.4 8.7 -13.4 13 -20 9.9 -15.3 40.5 -61.7 66.9 -101.8 7.6 -11.4 14.2 -20.5 14.7 -20.1 1.4 0.8 9.9 15.6 9.9 17.2 0 0.8 -6.9 10.9 -15.3 22.6 -14 19.2 -27.5 38.3 -55.2 77.8 -5.5 7.8 -14.5 20.5 -20 28.1 -11.6 16.1 -17.1 23.9 -35.6 50.7 -7.5 10.7 -18 25.8 -23.4 33.5 -5.4 7.7 -13.3 19 -17.6 25.2 -4.4 6.2 -7.9 11.8 -7.9 12.4 0 1.8 8 12.1 9.1 11.7 0.5 -0.2 2.4 -2.7 4.2 -5.6 1.7 -2.9 7.1 -11 11.8 -18 4.8 -7 13.1 -19.7 18.6 -28.2 5.5 -8.5 15.1 -23.4 21.3 -33 6.1 -9.6 13.7 -21.1 16.7 -25.5 3 -4.4 6 -9 6.6 -10.2 1.9 -3.6 18.3 -29 30 -46.6 6 -8.9 12.1 -18.1 13.5 -20.5 15 -24 45 -69.2 46 -69.2 1.1 0 8.2 16.2 8.2 18.7 0 1.2 -1.1 3.4 -2.4 5 -1.3 1.5 -9.5 12.9 -18.2 25.3 -22.1 31.2 -25.8 36.6 -30.1 43.5 -2 3.3 -5.9 9 -8.7 12.7 -2.8 3.6 -7.3 9.9 -10.1 13.8 -2.7 4 -9.4 13.4 -14.8 20.9 -5.3 7.5 -12.6 17.9 -16.2 23.1 -3.6 5.2 -12 17.5 -18.8 27.2 -6.7 9.7 -15.3 22.2 -19.2 27.8 -3.8 5.6 -8.6 12.4 -10.5 15.1 -1.9 2.7 -5.5 7.8 -8 11.4 -2.5 3.6 -6.9 9.9 -9.8 14 -6.3 8.7 -7 6.2 7.3 26.5 5.7 8 13.8 19.7 18.1 26.1 4.4 6.3 15.6 22.7 24.9 36.3 25.7 37.4 52.5 76.5 63.1 92.1 5.2 7.7 13.2 19.4 17.7 26 26 37.7 35.7 52.5 35.7 54.3 0 3.9 -22.3 47.9 -33.7 66.7 -13.3 21.7 -35.4 50 -53.8 68.6 -13.6 13.8 -17.1 15.9 -24 14.2z"/><path d="M519 1370.1 c0 -0.5 10.2 -16.1 22.7 -34.7 32.9 -49.2 77.9 -116.2 86.1 -128.4 6.6 -9.8 39.1 -58.8 61.1 -92 5.3 -7.9 16.3 -24.4 24.4 -36.5 8.1 -12.1 34.5 -51.6 58.5 -87.7 l43.7 -65.7 92.7 -0.1 92.7 0 -8.4 12.3 c-4.6 6.7 -26.6 39.4 -48.9 72.7 -22.3 33.3 -46.4 69.3 -53.5 80 -16.2 24.1 -17.5 26.2 -57.7 86.5 -18 27 -32.9 49.6 -33.1 50.3 -0.4 0.9 25 1.2 124.8 1.2 69 0 125.9 -0.4 126.4 -0.8 0.6 -0.4 1.9 -2 3.1 -3.7 21.6 -31.1 35.9 -51.7 40.9 -59 12.4 -18.2 38.6 -56.1 40.3 -58.3 l1.7 -2.3 5.2 7.8 c5.2 8 27.9 40.5 59.8 85.8 9.9 14.1 20.4 28.9 23.3 33 2.8 4.2 5.2 7.9 5.2 8.5 0 0.5 -2.1 3.7 -4.8 7.2 -2.6 3.5 -8.7 12.2 -13.5 19.3 -4.8 7.2 -11.6 17.1 -15 22 -3.5 5 -10.3 14.9 -15.2 22 -4.9 7.2 -12.1 17.5 -16 23 -3.9 5.5 -11.3 16.4 -16.5 24.3 l-9.4 14.2 -310.3 0 c-179 0 -310.3 -0.4 -310.3 -0.9z"/></svg>
-      </div>
+      <svg width="48" height="48" viewBox="0 0 2049 2049" fill="#111827"><path d="M1430.5 1431.3 c-3.3 -0.8 -6.2 -4.1 -15.7 -18.3 -5.1 -7.4 -10.6 -15.5 -12.3 -18 -1.7 -2.5 -6.1 -8.8 -9.7 -14 -3.6 -5.2 -10.2 -14.9 -14.8 -21.5 -4.6 -6.6 -14.7 -21.4 -22.5 -33 -15.9 -23.5 -35.3 -51.7 -38.2 -55.5 -1.1 -1.4 -9.8 -14.2 -19.5 -28.5 -9.6 -14.3 -20.4 -30.3 -24 -35.5 -3.5 -5.2 -12.7 -18.7 -20.3 -30 -15.3 -22.6 -25.6 -37.8 -35.1 -51.5 -3.5 -4.9 -11.1 -16.2 -17.1 -25 -5.9 -8.7 -18.2 -26.7 -27.2 -40 -9.1 -13.2 -21.6 -31.6 -27.9 -41 -6.3 -9.3 -19.2 -28.4 -28.6 -42.2 -9.4 -13.9 -22.5 -33.3 -29.1 -43 -30.4 -44.9 -37.4 -55.2 -41 -60.3 -2.2 -3 -8.5 -12.2 -14.1 -20.5 -5.5 -8.2 -12.1 -17.8 -14.5 -21.3 l-4.5 -6.3 -202.6 0 -202.7 -0.1 -3.1 -5.1 c-2.9 -4.7 -19.5 -31.5 -35.5 -57.2 -20.1 -32.3 -32.2 -51.6 -40.3 -63.9 -5 -7.7 -8.9 -14.3 -8.7 -14.6 0.4 -0.6 601.5 -0.7 611.6 -0.1 2 0.1 3.4 1.4 6.1 5.3 1.8 2.9 9.4 14.1 16.8 24.8 7.3 10.7 16.1 23.6 19.5 28.5 27.6 40.7 50.3 73.9 65.1 95.5 9.6 14 21.8 31.9 27 39.8 5.3 7.8 10.2 14.2 10.9 14.2 0.8 0 1.7 -1 2 -2.2 0.4 -1.1 4.7 -8 9.5 -15.2 4.8 -7.2 16.7 -25.2 26.4 -40.1 9.8 -14.8 23.7 -36 31 -47 7.3 -11 14.5 -22 16 -24.5 1.4 -2.5 4.4 -7 6.5 -10 2.1 -3 14.1 -21 26.6 -40 12.5 -19 24.1 -36.3 25.7 -38.5 3.2 -4.5 12.3 -18.2 21.7 -32.7 3.5 -5.4 6.9 -9.8 7.5 -9.8 1.2 0 9.8 11.7 11.1 15.1 0.3 0.9 -0.8 3.3 -2.8 6 -3.6 4.7 -15.3 21.1 -23.2 32.4 -2.7 3.9 -8.7 12.4 -13.5 19 -4.8 6.6 -15.4 21.4 -23.6 32.9 -8.2 11.5 -18.7 26.2 -23.4 32.7 -8.7 12 -33.8 46.9 -42.6 59.3 -25.8 36.2 -38.6 54.4 -43.1 61.6 -1.9 3 -4.4 6.5 -5.5 7.7 l-2 2.2 4.3 5.7 c2.4 3.2 4.9 5.9 5.4 6.1 0.6 0.1 5.8 -7.5 11.7 -17 5.8 -9.4 13.1 -20.8 16.2 -25.2 3.1 -4.4 11.4 -16.8 18.5 -27.5 7 -10.7 18.6 -28.2 25.7 -38.8 7.1 -10.7 17 -25.8 21.9 -33.6 8.6 -13.6 18 -27.9 30.8 -47.1 34.3 -51.3 48 -71.5 48.5 -71.5 0.7 0 8.8 12.4 10.6 16.1 0.7 1.4 -0.1 3.1 -3.5 7.6 -2.4 3.1 -6.4 8.7 -8.9 12.4 -2.5 3.6 -6.6 9.5 -9.2 13 -2.6 3.5 -9.2 12.7 -14.7 20.4 -5.6 7.7 -17.2 23.8 -25.8 35.9 -8.7 12 -20.5 28.7 -26.3 37.1 -5.8 8.3 -14.5 20.7 -19.5 27.4 -4.9 6.7 -9.7 13.2 -10.5 14.4 -0.8 1.3 -4.2 6 -7.5 10.6 -3.3 4.6 -6.9 9.6 -8 11.1 -2.4 3.4 -24.7 35 -33.5 47.5 -3.4 5 -7.6 10.5 -9.2 12.3 -1.6 1.9 -2.5 3.8 -2.1 4.5 3 5.2 8.5 12.7 9.1 12.3 0.4 -0.2 5.7 -8.1 11.7 -17.6 6.1 -9.4 18.5 -28.5 27.6 -42.3 9.1 -13.9 22.7 -34.6 30.3 -46.2 7.6 -11.5 16.1 -24.4 19 -28.6 2.8 -4.1 8.5 -12.7 12.6 -19 16.2 -24.9 46.9 -71.4 58.9 -89.2 12.1 -18.2 12.6 -18.8 14.1 -16.7 3.7 5.3 9 14.5 9 15.5 0 0.6 -2.3 4.3 -5 8.1 -2.8 3.8 -7.8 11 -11.2 15.9 -3.3 5 -7.3 10.6 -8.8 12.5 -1.5 1.9 -5.5 7.6 -8.8 12.5 -9.2 13.6 -18.2 26.3 -35.1 49.7 -8.5 11.7 -19.7 27.4 -24.9 34.8 -5.2 7.4 -13.2 18.4 -17.7 24.5 -4.5 6 -11.8 16.2 -16.1 22.5 -4.3 6.4 -10.5 15.2 -13.7 19.5 -7.6 10.5 -20.2 28.4 -29.3 41.6 l-7.3 10.6 4 5.9 c2.2 3.2 4.3 6 4.7 6.1 0.8 0.3 9.9 -12.5 17.5 -24.5 13.2 -20.8 20.9 -32.8 44.4 -68.4 13.8 -21.1 29.8 -45.5 35.6 -54.3 12.7 -19.5 35.1 -53.6 54.2 -82.5 7.8 -11.8 15.5 -23.6 17.1 -26.2 1.6 -2.7 3.1 -4.8 3.4 -4.8 0.4 0 3.2 3.9 6.3 8.6 6.6 9.9 6.9 7.8 -2.8 20.9 -5.1 6.9 -15.6 21.7 -18.5 25.9 -0.7 1.1 -6.8 9.7 -13.5 19 -6.6 9.3 -15.4 21.7 -19.5 27.7 -9.6 13.8 -34.9 49.2 -43 60.2 -1.4 1.9 -6.5 9.2 -11.4 16.3 -5 7.1 -11.5 16.3 -14.6 20.4 -3.1 4.1 -10.2 14 -15.7 22 -5.5 8 -15.1 21.7 -21.3 30.5 -6.2 8.8 -11.5 16.5 -11.7 17.2 -0.6 1.5 6.8 12.3 8.4 12.3 0.6 0 3.7 -3.7 6.8 -8.3 9.3 -13.6 38 -58 41.5 -64.3 1.9 -3.3 5.7 -9 8.5 -12.9 2.8 -3.8 7.3 -10.6 10 -15 2.7 -4.4 10.8 -16.9 18 -27.7 7.1 -10.9 17.3 -26.4 22.6 -34.5 5.3 -8.2 21.1 -32.2 35.2 -53.5 14 -21.2 26 -39.6 26.6 -40.7 0.7 -1.2 1.6 -2.1 2 -2.1 1.1 0 11.1 16 11.1 17.6 0 0.6 -2.2 4 -4.8 7.5 -2.7 3.5 -7.2 9.8 -10 13.9 -2.8 4.1 -8.5 12.2 -12.6 18 -4.2 5.8 -10.2 14.4 -13.5 19.2 -3.3 4.8 -8.4 11.8 -11.3 15.5 -6.4 8.2 -14.5 19.5 -26 36.3 -10.2 15 -19.5 28.2 -31.7 45 -18.2 25.2 -41.8 58.6 -48.5 69 -2.7 4.1 -8 11.9 -11.8 17.2 l-6.9 9.7 4.3 6.5 c2.4 3.6 4.8 6.4 5.3 6.3 0.6 -0.2 2.4 -2.5 4 -5.1 3 -4.7 13.3 -20.8 30.8 -48.1 4.9 -7.7 12 -18.5 15.7 -24 3.7 -5.5 9.7 -14.9 13.5 -21 3.7 -6 9.1 -14.6 12 -19 2.9 -4.4 8.7 -13.4 13 -20 9.9 -15.3 40.5 -61.7 66.9 -101.8 7.6 -11.4 14.2 -20.5 14.7 -20.1 1.4 0.8 9.9 15.6 9.9 17.2 0 0.8 -6.9 10.9 -15.3 22.6 -14 19.2 -27.5 38.3 -55.2 77.8 -5.5 7.8 -14.5 20.5 -20 28.1 -11.6 16.1 -17.1 23.9 -35.6 50.7 -7.5 10.7 -18 25.8 -23.4 33.5 -5.4 7.7 -13.3 19 -17.6 25.2 -4.4 6.2 -7.9 11.8 -7.9 12.4 0 1.8 8 12.1 9.1 11.7 0.5 -0.2 2.4 -2.7 4.2 -5.6 1.7 -2.9 7.1 -11 11.8 -18 4.8 -7 13.1 -19.7 18.6 -28.2 5.5 -8.5 15.1 -23.4 21.3 -33 6.1 -9.6 13.7 -21.1 16.7 -25.5 3 -4.4 6 -9 6.6 -10.2 1.9 -3.6 18.3 -29 30 -46.6 6 -8.9 12.1 -18.1 13.5 -20.5 15 -24 45 -69.2 46 -69.2 1.1 0 8.2 16.2 8.2 18.7 0 1.2 -1.1 3.4 -2.4 5 -1.3 1.5 -9.5 12.9 -18.2 25.3 -22.1 31.2 -25.8 36.6 -30.1 43.5 -2 3.3 -5.9 9 -8.7 12.7 -2.8 3.6 -7.3 9.9 -10.1 13.8 -2.7 4 -9.4 13.4 -14.8 20.9 -5.3 7.5 -12.6 17.9 -16.2 23.1 -3.6 5.2 -12 17.5 -18.8 27.2 -6.7 9.7 -15.3 22.2 -19.2 27.8 -3.8 5.6 -8.6 12.4 -10.5 15.1 -1.9 2.7 -5.5 7.8 -8 11.4 -2.5 3.6 -6.9 9.9 -9.8 14 -6.3 8.7 -7 6.2 7.3 26.5 5.7 8 13.8 19.7 18.1 26.1 4.4 6.3 15.6 22.7 24.9 36.3 25.7 37.4 52.5 76.5 63.1 92.1 5.2 7.7 13.2 19.4 17.7 26 26 37.7 35.7 52.5 35.7 54.3 0 3.9 -22.3 47.9 -33.7 66.7 -13.3 21.7 -35.4 50 -53.8 68.6 -13.6 13.8 -17.1 15.9 -24 14.2z"/><path d="M519 1370.1 c0 -0.5 10.2 -16.1 22.7 -34.7 32.9 -49.2 77.9 -116.2 86.1 -128.4 6.6 -9.8 39.1 -58.8 61.1 -92 5.3 -7.9 16.3 -24.4 24.4 -36.5 8.1 -12.1 34.5 -51.6 58.5 -87.7 l43.7 -65.7 92.7 -0.1 92.7 0 -8.4 12.3 c-4.6 6.7 -26.6 39.4 -48.9 72.7 -22.3 33.3 -46.4 69.3 -53.5 80 -16.2 24.1 -17.5 26.2 -57.7 86.5 -18 27 -32.9 49.6 -33.1 50.3 -0.4 0.9 25 1.2 124.8 1.2 69 0 125.9 -0.4 126.4 -0.8 0.6 -0.4 1.9 -2 3.1 -3.7 21.6 -31.1 35.9 -51.7 40.9 -59 12.4 -18.2 38.6 -56.1 40.3 -58.3 l1.7 -2.3 5.2 7.8 c5.2 8 27.9 40.5 59.8 85.8 9.9 14.1 20.4 28.9 23.3 33 2.8 4.2 5.2 7.9 5.2 8.5 0 0.5 -2.1 3.7 -4.8 7.2 -2.6 3.5 -8.7 12.2 -13.5 19.3 -4.8 7.2 -11.6 17.1 -15 22 -3.5 5 -10.3 14.9 -15.2 22 -4.9 7.2 -12.1 17.5 -16 23 -3.9 5.5 -11.3 16.4 -16.5 24.3 l-9.4 14.2 -310.3 0 c-179 0 -310.3 -0.4 -310.3 -0.9z"/></svg>
       <h1>ZX AI Tools</h1>
       <p>管理后台 · 公告系统</p>
     </div>
     <form class="login-form" id="login-form" onsubmit="handleLogin(event)">
-      <div class="form-group">
-        <label>账号</label>
-        <input type="email" id="login-account" placeholder="请输入账号" required autocomplete="username">
-      </div>
-      <div class="form-group">
-        <label>密码</label>
-        <input type="password" id="login-password" placeholder="请输入密码" required autocomplete="current-password">
-      </div>
-      <button type="submit" class="btn-login" id="login-btn">登录</button>
+      <div class="fg"><label>账号</label><input type="email" id="login-account" placeholder="请输入账号" required autocomplete="username"></div>
+      <div class="fg"><label>密码</label><input type="password" id="login-password" placeholder="请输入密码" required autocomplete="current-password"></div>
+      <button type="submit" class="login-btn" id="login-btn">登录</button>
       <div class="login-error" id="login-error">账号或密码错误，请重试</div>
     </form>
   </div>
 </div>
 
-<!-- ===== MAIN APP ===== -->
+<!-- ===== APP ===== -->
 <div id="app">
-  <!-- Topbar -->
   <div class="topbar">
-    <div class="topbar-brand">
-      <div class="brand-icon">
-        <svg width="18" height="18" viewBox="0 0 2049 2049" fill="#ffffff"><path d="M1430.5 1431.3 c-3.3 -0.8 -6.2 -4.1 -15.7 -18.3 -5.1 -7.4 -10.6 -15.5 -12.3 -18 -1.7 -2.5 -6.1 -8.8 -9.7 -14 -3.6 -5.2 -10.2 -14.9 -14.8 -21.5 -4.6 -6.6 -14.7 -21.4 -22.5 -33 -15.9 -23.5 -35.3 -51.7 -38.2 -55.5 -1.1 -1.4 -9.8 -14.2 -19.5 -28.5 -9.6 -14.3 -20.4 -30.3 -24 -35.5 -3.5 -5.2 -12.7 -18.7 -20.3 -30 -15.3 -22.6 -25.6 -37.8 -35.1 -51.5 -3.5 -4.9 -11.1 -16.2 -17.1 -25 -5.9 -8.7 -18.2 -26.7 -27.2 -40 -9.1 -13.2 -21.6 -31.6 -27.9 -41 -6.3 -9.3 -19.2 -28.4 -28.6 -42.2 -9.4 -13.9 -22.5 -33.3 -29.1 -43 -30.4 -44.9 -37.4 -55.2 -41 -60.3 -2.2 -3 -8.5 -12.2 -14.1 -20.5 -5.5 -8.2 -12.1 -17.8 -14.5 -21.3 l-4.5 -6.3 -202.6 0 -202.7 -0.1 -3.1 -5.1 c-2.9 -4.7 -19.5 -31.5 -35.5 -57.2 -20.1 -32.3 -32.2 -51.6 -40.3 -63.9 -5 -7.7 -8.9 -14.3 -8.7 -14.6 0.4 -0.6 601.5 -0.7 611.6 -0.1 2 0.1 3.4 1.4 6.1 5.3 1.8 2.9 9.4 14.1 16.8 24.8 7.3 10.7 16.1 23.6 19.5 28.5 27.6 40.7 50.3 73.9 65.1 95.5 9.6 14 21.8 31.9 27 39.8 5.3 7.8 10.2 14.2 10.9 14.2 0.8 0 1.7 -1 2 -2.2 0.4 -1.1 4.7 -8 9.5 -15.2 4.8 -7.2 16.7 -25.2 26.4 -40.1 9.8 -14.8 23.7 -36 31 -47 7.3 -11 14.5 -22 16 -24.5 1.4 -2.5 4.4 -7 6.5 -10 2.1 -3 14.1 -21 26.6 -40 12.5 -19 24.1 -36.3 25.7 -38.5 3.2 -4.5 12.3 -18.2 21.7 -32.7 3.5 -5.4 6.9 -9.8 7.5 -9.8 1.2 0 9.8 11.7 11.1 15.1 0.3 0.9 -0.8 3.3 -2.8 6 -3.6 4.7 -15.3 21.1 -23.2 32.4 -2.7 3.9 -8.7 12.4 -13.5 19 -4.8 6.6 -15.4 21.4 -23.6 32.9 -8.2 11.5 -18.7 26.2 -23.4 32.7 -8.7 12 -33.8 46.9 -42.6 59.3 -25.8 36.2 -38.6 54.4 -43.1 61.6 -1.9 3 -4.4 6.5 -5.5 7.7 l-2 2.2 4.3 5.7 c2.4 3.2 4.9 5.9 5.4 6.1 0.6 0.1 5.8 -7.5 11.7 -17 5.8 -9.4 13.1 -20.8 16.2 -25.2 3.1 -4.4 11.4 -16.8 18.5 -27.5 7 -10.7 18.6 -28.2 25.7 -38.8 7.1 -10.7 17 -25.8 21.9 -33.6 8.6 -13.6 18 -27.9 30.8 -47.1 34.3 -51.3 48 -71.5 48.5 -71.5 0.7 0 8.8 12.4 10.6 16.1 0.7 1.4 -0.1 3.1 -3.5 7.6 -2.4 3.1 -6.4 8.7 -8.9 12.4 -2.5 3.6 -6.6 9.5 -9.2 13 -2.6 3.5 -9.2 12.7 -14.7 20.4 -5.6 7.7 -17.2 23.8 -25.8 35.9 -8.7 12 -20.5 28.7 -26.3 37.1 -5.8 8.3 -14.5 20.7 -19.5 27.4 -4.9 6.7 -9.7 13.2 -10.5 14.4 -0.8 1.3 -4.2 6 -7.5 10.6 -3.3 4.6 -6.9 9.6 -8 11.1 -2.4 3.4 -24.7 35 -33.5 47.5 -3.4 5 -7.6 10.5 -9.2 12.3 -1.6 1.9 -2.5 3.8 -2.1 4.5 3 5.2 8.5 12.7 9.1 12.3 0.4 -0.2 5.7 -8.1 11.7 -17.6 6.1 -9.4 18.5 -28.5 27.6 -42.3 9.1 -13.9 22.7 -34.6 30.3 -46.2 7.6 -11.5 16.1 -24.4 19 -28.6 2.8 -4.1 8.5 -12.7 12.6 -19 16.2 -24.9 46.9 -71.4 58.9 -89.2 12.1 -18.2 12.6 -18.8 14.1 -16.7 3.7 5.3 9 14.5 9 15.5 0 0.6 -2.3 4.3 -5 8.1 -2.8 3.8 -7.8 11 -11.2 15.9 -3.3 5 -7.3 10.6 -8.8 12.5 -1.5 1.9 -5.5 7.6 -8.8 12.5 -9.2 13.6 -18.2 26.3 -35.1 49.7 -8.5 11.7 -19.7 27.4 -24.9 34.8 -5.2 7.4 -13.2 18.4 -17.7 24.5 -4.5 6 -11.8 16.2 -16.1 22.5 -4.3 6.4 -10.5 15.2 -13.7 19.5 -7.6 10.5 -20.2 28.4 -29.3 41.6 l-7.3 10.6 4 5.9 c2.2 3.2 4.3 6 4.7 6.1 0.8 0.3 9.9 -12.5 17.5 -24.5 13.2 -20.8 20.9 -32.8 44.4 -68.4 13.8 -21.1 29.8 -45.5 35.6 -54.3 12.7 -19.5 35.1 -53.6 54.2 -82.5 7.8 -11.8 15.5 -23.6 17.1 -26.2 1.6 -2.7 3.1 -4.8 3.4 -4.8 0.4 0 3.2 3.9 6.3 8.6 6.6 9.9 6.9 7.8 -2.8 20.9 -5.1 6.9 -15.6 21.7 -18.5 25.9 -0.7 1.1 -6.8 9.7 -13.5 19 -6.6 9.3 -15.4 21.7 -19.5 27.7 -9.6 13.8 -34.9 49.2 -43 60.2 -1.4 1.9 -6.5 9.2 -11.4 16.3 -5 7.1 -11.5 16.3 -14.6 20.4 -3.1 4.1 -10.2 14 -15.7 22 -5.5 8 -15.1 21.7 -21.3 30.5 -6.2 8.8 -11.5 16.5 -11.7 17.2 -0.6 1.5 6.8 12.3 8.4 12.3 0.6 0 3.7 -3.7 6.8 -8.3 9.3 -13.6 38 -58 41.5 -64.3 1.9 -3.3 5.7 -9 8.5 -12.9 2.8 -3.8 7.3 -10.6 10 -15 2.7 -4.4 10.8 -16.9 18 -27.7 7.1 -10.9 17.3 -26.4 22.6 -34.5 5.3 -8.2 21.1 -32.2 35.2 -53.5 14 -21.2 26 -39.6 26.6 -40.7 0.7 -1.2 1.6 -2.1 2 -2.1 1.1 0 11.1 16 11.1 17.6 0 0.6 -2.2 4 -4.8 7.5 -2.7 3.5 -7.2 9.8 -10 13.9 -2.8 4.1 -8.5 12.2 -12.6 18 -4.2 5.8 -10.2 14.4 -13.5 19.2 -3.3 4.8 -8.4 11.8 -11.3 15.5 -6.4 8.2 -14.5 19.5 -26 36.3 -10.2 15 -19.5 28.2 -31.7 45 -18.2 25.2 -41.8 58.6 -48.5 69 -2.7 4.1 -8 11.9 -11.8 17.2 l-6.9 9.7 4.3 6.5 c2.4 3.6 4.8 6.4 5.3 6.3 0.6 -0.2 2.4 -2.5 4 -5.1 3 -4.7 13.3 -20.8 30.8 -48.1 4.9 -7.7 12 -18.5 15.7 -24 3.7 -5.5 9.7 -14.9 13.5 -21 3.7 -6 9.1 -14.6 12 -19 2.9 -4.4 8.7 -13.4 13 -20 9.9 -15.3 40.5 -61.7 66.9 -101.8 7.6 -11.4 14.2 -20.5 14.7 -20.1 1.4 0.8 9.9 15.6 9.9 17.2 0 0.8 -6.9 10.9 -15.3 22.6 -14 19.2 -27.5 38.3 -55.2 77.8 -5.5 7.8 -14.5 20.5 -20 28.1 -11.6 16.1 -17.1 23.9 -35.6 50.7 -7.5 10.7 -18 25.8 -23.4 33.5 -5.4 7.7 -13.3 19 -17.6 25.2 -4.4 6.2 -7.9 11.8 -7.9 12.4 0 1.8 8 12.1 9.1 11.7 0.5 -0.2 2.4 -2.7 4.2 -5.6 1.7 -2.9 7.1 -11 11.8 -18 4.8 -7 13.1 -19.7 18.6 -28.2 5.5 -8.5 15.1 -23.4 21.3 -33 6.1 -9.6 13.7 -21.1 16.7 -25.5 3 -4.4 6 -9 6.6 -10.2 1.9 -3.6 18.3 -29 30 -46.6 6 -8.9 12.1 -18.1 13.5 -20.5 15 -24 45 -69.2 46 -69.2 1.1 0 8.2 16.2 8.2 18.7 0 1.2 -1.1 3.4 -2.4 5 -1.3 1.5 -9.5 12.9 -18.2 25.3 -22.1 31.2 -25.8 36.6 -30.1 43.5 -2 3.3 -5.9 9 -8.7 12.7 -2.8 3.6 -7.3 9.9 -10.1 13.8 -2.7 4 -9.4 13.4 -14.8 20.9 -5.3 7.5 -12.6 17.9 -16.2 23.1 -3.6 5.2 -12 17.5 -18.8 27.2 -6.7 9.7 -15.3 22.2 -19.2 27.8 -3.8 5.6 -8.6 12.4 -10.5 15.1 -1.9 2.7 -5.5 7.8 -8 11.4 -2.5 3.6 -6.9 9.9 -9.8 14 -6.3 8.7 -7 6.2 7.3 26.5 5.7 8 13.8 19.7 18.1 26.1 4.4 6.3 15.6 22.7 24.9 36.3 25.7 37.4 52.5 76.5 63.1 92.1 5.2 7.7 13.2 19.4 17.7 26 26 37.7 35.7 52.5 35.7 54.3 0 3.9 -22.3 47.9 -33.7 66.7 -13.3 21.7 -35.4 50 -53.8 68.6 -13.6 13.8 -17.1 15.9 -24 14.2z"/><path d="M519 1370.1 c0 -0.5 10.2 -16.1 22.7 -34.7 32.9 -49.2 77.9 -116.2 86.1 -128.4 6.6 -9.8 39.1 -58.8 61.1 -92 5.3 -7.9 16.3 -24.4 24.4 -36.5 8.1 -12.1 34.5 -51.6 58.5 -87.7 l43.7 -65.7 92.7 -0.1 92.7 0 -8.4 12.3 c-4.6 6.7 -26.6 39.4 -48.9 72.7 -22.3 33.3 -46.4 69.3 -53.5 80 -16.2 24.1 -17.5 26.2 -57.7 86.5 -18 27 -32.9 49.6 -33.1 50.3 -0.4 0.9 25 1.2 124.8 1.2 69 0 125.9 -0.4 126.4 -0.8 0.6 -0.4 1.9 -2 3.1 -3.7 21.6 -31.1 35.9 -51.7 40.9 -59 12.4 -18.2 38.6 -56.1 40.3 -58.3 l1.7 -2.3 5.2 7.8 c5.2 8 27.9 40.5 59.8 85.8 9.9 14.1 20.4 28.9 23.3 33 2.8 4.2 5.2 7.9 5.2 8.5 0 0.5 -2.1 3.7 -4.8 7.2 -2.6 3.5 -8.7 12.2 -13.5 19.3 -4.8 7.2 -11.6 17.1 -15 22 -3.5 5 -10.3 14.9 -15.2 22 -4.9 7.2 -12.1 17.5 -16 23 -3.9 5.5 -11.3 16.4 -16.5 24.3 l-9.4 14.2 -310.3 0 c-179 0 -310.3 -0.4 -310.3 -0.9z"/></svg>
-      </div>
-      <h1>ZX AI Tools <span>管理后台</span></h1>
+    <div class="topbar-left">
+      <svg width="32" height="32" viewBox="0 0 2049 2049" fill="#111827"><path d="M1430.5 1431.3 c-3.3 -0.8 -6.2 -4.1 -15.7 -18.3 -5.1 -7.4 -10.6 -15.5 -12.3 -18 -1.7 -2.5 -6.1 -8.8 -9.7 -14 -3.6 -5.2 -10.2 -14.9 -14.8 -21.5 -4.6 -6.6 -14.7 -21.4 -22.5 -33 -15.9 -23.5 -35.3 -51.7 -38.2 -55.5 -1.1 -1.4 -9.8 -14.2 -19.5 -28.5 -9.6 -14.3 -20.4 -30.3 -24 -35.5 -3.5 -5.2 -12.7 -18.7 -20.3 -30 -15.3 -22.6 -25.6 -37.8 -35.1 -51.5 -3.5 -4.9 -11.1 -16.2 -17.1 -25 -5.9 -8.7 -18.2 -26.7 -27.2 -40 -9.1 -13.2 -21.6 -31.6 -27.9 -41 -6.3 -9.3 -19.2 -28.4 -28.6 -42.2 -9.4 -13.9 -22.5 -33.3 -29.1 -43 -30.4 -44.9 -37.4 -55.2 -41 -60.3 -2.2 -3 -8.5 -12.2 -14.1 -20.5 -5.5 -8.2 -12.1 -17.8 -14.5 -21.3 l-4.5 -6.3 -202.6 0 -202.7 -0.1 -3.1 -5.1 c-2.9 -4.7 -19.5 -31.5 -35.5 -57.2 -20.1 -32.3 -32.2 -51.6 -40.3 -63.9 -5 -7.7 -8.9 -14.3 -8.7 -14.6 0.4 -0.6 601.5 -0.7 611.6 -0.1 2 0.1 3.4 1.4 6.1 5.3 1.8 2.9 9.4 14.1 16.8 24.8 7.3 10.7 16.1 23.6 19.5 28.5 27.6 40.7 50.3 73.9 65.1 95.5 9.6 14 21.8 31.9 27 39.8 5.3 7.8 10.2 14.2 10.9 14.2 0.8 0 1.7 -1 2 -2.2 0.4 -1.1 4.7 -8 9.5 -15.2 4.8 -7.2 16.7 -25.2 26.4 -40.1 9.8 -14.8 23.7 -36 31 -47 7.3 -11 14.5 -22 16 -24.5 1.4 -2.5 4.4 -7 6.5 -10 2.1 -3 14.1 -21 26.6 -40 12.5 -19 24.1 -36.3 25.7 -38.5 3.2 -4.5 12.3 -18.2 21.7 -32.7 3.5 -5.4 6.9 -9.8 7.5 -9.8 1.2 0 9.8 11.7 11.1 15.1 0.3 0.9 -0.8 3.3 -2.8 6 -3.6 4.7 -15.3 21.1 -23.2 32.4 -2.7 3.9 -8.7 12.4 -13.5 19 -4.8 6.6 -15.4 21.4 -23.6 32.9 -8.2 11.5 -18.7 26.2 -23.4 32.7 -8.7 12 -33.8 46.9 -42.6 59.3 -25.8 36.2 -38.6 54.4 -43.1 61.6 -1.9 3 -4.4 6.5 -5.5 7.7 l-2 2.2 4.3 5.7 c2.4 3.2 4.9 5.9 5.4 6.1 0.6 0.1 5.8 -7.5 11.7 -17 5.8 -9.4 13.1 -20.8 16.2 -25.2 3.1 -4.4 11.4 -16.8 18.5 -27.5 7 -10.7 18.6 -28.2 25.7 -38.8 7.1 -10.7 17 -25.8 21.9 -33.6 8.6 -13.6 18 -27.9 30.8 -47.1 34.3 -51.3 48 -71.5 48.5 -71.5 0.7 0 8.8 12.4 10.6 16.1 0.7 1.4 -0.1 3.1 -3.5 7.6 -2.4 3.1 -6.4 8.7 -8.9 12.4 -2.5 3.6 -6.6 9.5 -9.2 13 -2.6 3.5 -9.2 12.7 -14.7 20.4 -5.6 7.7 -17.2 23.8 -25.8 35.9 -8.7 12 -20.5 28.7 -26.3 37.1 -5.8 8.3 -14.5 20.7 -19.5 27.4 -4.9 6.7 -9.7 13.2 -10.5 14.4 -0.8 1.3 -4.2 6 -7.5 10.6 -3.3 4.6 -6.9 9.6 -8 11.1 -2.4 3.4 -24.7 35 -33.5 47.5 -3.4 5 -7.6 10.5 -9.2 12.3 -1.6 1.9 -2.5 3.8 -2.1 4.5 3 5.2 8.5 12.7 9.1 12.3 0.4 -0.2 5.7 -8.1 11.7 -17.6 6.1 -9.4 18.5 -28.5 27.6 -42.3 9.1 -13.9 22.7 -34.6 30.3 -46.2 7.6 -11.5 16.1 -24.4 19 -28.6 2.8 -4.1 8.5 -12.7 12.6 -19 16.2 -24.9 46.9 -71.4 58.9 -89.2 12.1 -18.2 12.6 -18.8 14.1 -16.7 3.7 5.3 9 14.5 9 15.5 0 0.6 -2.3 4.3 -5 8.1 -2.8 3.8 -7.8 11 -11.2 15.9 -3.3 5 -7.3 10.6 -8.8 12.5 -1.5 1.9 -5.5 7.6 -8.8 12.5 -9.2 13.6 -18.2 26.3 -35.1 49.7 -8.5 11.7 -19.7 27.4 -24.9 34.8 -5.2 7.4 -13.2 18.4 -17.7 24.5 -4.5 6 -11.8 16.2 -16.1 22.5 -4.3 6.4 -10.5 15.2 -13.7 19.5 -7.6 10.5 -20.2 28.4 -29.3 41.6 l-7.3 10.6 4 5.9 c2.2 3.2 4.3 6 4.7 6.1 0.8 0.3 9.9 -12.5 17.5 -24.5 13.2 -20.8 20.9 -32.8 44.4 -68.4 13.8 -21.1 29.8 -45.5 35.6 -54.3 12.7 -19.5 35.1 -53.6 54.2 -82.5 7.8 -11.8 15.5 -23.6 17.1 -26.2 1.6 -2.7 3.1 -4.8 3.4 -4.8 0.4 0 3.2 3.9 6.3 8.6 6.6 9.9 6.9 7.8 -2.8 20.9 -5.1 6.9 -15.6 21.7 -18.5 25.9 -0.7 1.1 -6.8 9.7 -13.5 19 -6.6 9.3 -15.4 21.7 -19.5 27.7 -9.6 13.8 -34.9 49.2 -43 60.2 -1.4 1.9 -6.5 9.2 -11.4 16.3 -5 7.1 -11.5 16.3 -14.6 20.4 -3.1 4.1 -10.2 14 -15.7 22 -5.5 8 -15.1 21.7 -21.3 30.5 -6.2 8.8 -11.5 16.5 -11.7 17.2 -0.6 1.5 6.8 12.3 8.4 12.3 0.6 0 3.7 -3.7 6.8 -8.3 9.3 -13.6 38 -58 41.5 -64.3 1.9 -3.3 5.7 -9 8.5 -12.9 2.8 -3.8 7.3 -10.6 10 -15 2.7 -4.4 10.8 -16.9 18 -27.7 7.1 -10.9 17.3 -26.4 22.6 -34.5 5.3 -8.2 21.1 -32.2 35.2 -53.5 14 -21.2 26 -39.6 26.6 -40.7 0.7 -1.2 1.6 -2.1 2 -2.1 1.1 0 11.1 16 11.1 17.6 0 0.6 -2.2 4 -4.8 7.5 -2.7 3.5 -7.2 9.8 -10 13.9 -2.8 4.1 -8.5 12.2 -12.6 18 -4.2 5.8 -10.2 14.4 -13.5 19.2 -3.3 4.8 -8.4 11.8 -11.3 15.5 -6.4 8.2 -14.5 19.5 -26 36.3 -10.2 15 -19.5 28.2 -31.7 45 -18.2 25.2 -41.8 58.6 -48.5 69 -2.7 4.1 -8 11.9 -11.8 17.2 l-6.9 9.7 4.3 6.5 c2.4 3.6 4.8 6.4 5.3 6.3 0.6 -0.2 2.4 -2.5 4 -5.1 3 -4.7 13.3 -20.8 30.8 -48.1 4.9 -7.7 12 -18.5 15.7 -24 3.7 -5.5 9.7 -14.9 13.5 -21 3.7 -6 9.1 -14.6 12 -19 2.9 -4.4 8.7 -13.4 13 -20 9.9 -15.3 40.5 -61.7 66.9 -101.8 7.6 -11.4 14.2 -20.5 14.7 -20.1 1.4 0.8 9.9 15.6 9.9 17.2 0 0.8 -6.9 10.9 -15.3 22.6 -14 19.2 -27.5 38.3 -55.2 77.8 -5.5 7.8 -14.5 20.5 -20 28.1 -11.6 16.1 -17.1 23.9 -35.6 50.7 -7.5 10.7 -18 25.8 -23.4 33.5 -5.4 7.7 -13.3 19 -17.6 25.2 -4.4 6.2 -7.9 11.8 -7.9 12.4 0 1.8 8 12.1 9.1 11.7 0.5 -0.2 2.4 -2.7 4.2 -5.6 1.7 -2.9 7.1 -11 11.8 -18 4.8 -7 13.1 -19.7 18.6 -28.2 5.5 -8.5 15.1 -23.4 21.3 -33 6.1 -9.6 13.7 -21.1 16.7 -25.5 3 -4.4 6 -9 6.6 -10.2 1.9 -3.6 18.3 -29 30 -46.6 6 -8.9 12.1 -18.1 13.5 -20.5 15 -24 45 -69.2 46 -69.2 1.1 0 8.2 16.2 8.2 18.7 0 1.2 -1.1 3.4 -2.4 5 -1.3 1.5 -9.5 12.9 -18.2 25.3 -22.1 31.2 -25.8 36.6 -30.1 43.5 -2 3.3 -5.9 9 -8.7 12.7 -2.8 3.6 -7.3 9.9 -10.1 13.8 -2.7 4 -9.4 13.4 -14.8 20.9 -5.3 7.5 -12.6 17.9 -16.2 23.1 -3.6 5.2 -12 17.5 -18.8 27.2 -6.7 9.7 -15.3 22.2 -19.2 27.8 -3.8 5.6 -8.6 12.4 -10.5 15.1 -1.9 2.7 -5.5 7.8 -8 11.4 -2.5 3.6 -6.9 9.9 -9.8 14 -6.3 8.7 -7 6.2 7.3 26.5 5.7 8 13.8 19.7 18.1 26.1 4.4 6.3 15.6 22.7 24.9 36.3 25.7 37.4 52.5 76.5 63.1 92.1 5.2 7.7 13.2 19.4 17.7 26 26 37.7 35.7 52.5 35.7 54.3 0 3.9 -22.3 47.9 -33.7 66.7 -13.3 21.7 -35.4 50 -53.8 68.6 -13.6 13.8 -17.1 15.9 -24 14.2z"/><path d="M519 1370.1 c0 -0.5 10.2 -16.1 22.7 -34.7 32.9 -49.2 77.9 -116.2 86.1 -128.4 6.6 -9.8 39.1 -58.8 61.1 -92 5.3 -7.9 16.3 -24.4 24.4 -36.5 8.1 -12.1 34.5 -51.6 58.5 -87.7 l43.7 -65.7 92.7 -0.1 92.7 0 -8.4 12.3 c-4.6 6.7 -26.6 39.4 -48.9 72.7 -22.3 33.3 -46.4 69.3 -53.5 80 -16.2 24.1 -17.5 26.2 -57.7 86.5 -18 27 -32.9 49.6 -33.1 50.3 -0.4 0.9 25 1.2 124.8 1.2 69 0 125.9 -0.4 126.4 -0.8 0.6 -0.4 1.9 -2 3.1 -3.7 21.6 -31.1 35.9 -51.7 40.9 -59 12.4 -18.2 38.6 -56.1 40.3 -58.3 l1.7 -2.3 5.2 7.8 c5.2 8 27.9 40.5 59.8 85.8 9.9 14.1 20.4 28.9 23.3 33 2.8 4.2 5.2 7.9 5.2 8.5 0 0.5 -2.1 3.7 -4.8 7.2 -2.6 3.5 -8.7 12.2 -13.5 19.3 -4.8 7.2 -11.6 17.1 -15 22 -3.5 5 -10.3 14.9 -15.2 22 -4.9 7.2 -12.1 17.5 -16 23 -3.9 5.5 -11.3 16.4 -16.5 24.3 l-9.4 14.2 -310.3 0 c-179 0 -310.3 -0.4 -310.3 -0.9z"/></svg>
+      <span class="topbar-title">ZX AI Tools</span>
+      <span class="topbar-tag">管理后台</span>
     </div>
-    <div class="topbar-actions">
-      <span class="topbar-user" id="topbar-user"></span>
+    <div class="topbar-right">
+      <span class="topbar-status"><span class="dot"></span>已登录</span>
       <button class="btn-logout" onclick="handleLogout()">退出登录</button>
     </div>
   </div>
 
-  <!-- Tab Bar -->
-  <div class="tab-bar">
-    <button class="tab-btn active" onclick="switchTab('tab-ad')" data-tab="tab-ad"><span class="tab-icon">📢</span> 推广条管理</button>
-    <button class="tab-btn" onclick="switchTab('tab-ann')" data-tab="tab-ann"><span class="tab-icon">📋</span> 公告管理</button>
-    <button class="tab-btn" onclick="switchTab('tab-github')" data-tab="tab-github"><span class="tab-icon">🚀</span> 发布管理</button>
-  </div>
+  <div class="main-wrap">
+    <div class="tab-bar">
+      <button class="tab-btn active" onclick="switchTab('tab-ad')" data-tab="tab-ad">📢 推广条管理</button>
+      <button class="tab-btn" onclick="switchTab('tab-ann')" data-tab="tab-ann">📋 公告管理</button>
+      <button class="tab-btn" onclick="switchTab('tab-pub')" data-tab="tab-pub">🚀 发布管理</button>
+    </div>
 
-  <!-- Main Content -->
-  <div class="main-content">
-
-    <!-- ===== TAB: 推广条 ===== -->
+    <!-- ===== 推广条 ===== -->
     <div class="tab-panel active" id="tab-ad">
-      <!-- Tip Card -->
-      <div class="info-card">
-        <div class="info-card-title">💡 推广条功能说明</div>
-        <p>推广条会显示在软件界面的右上角，用于展示促销信息、新功能提示等内容。<br>用户可以关闭推广条，关闭后不再显示（直到下次更新）。</p>
+      <div class="tip-card">
+        <div class="tip-card-title">📢 推广条是什么？</div>
+        <div class="tip-card-body">推广条显示在软件界面右上角，是一个小横幅。你可以用它来：
+          <ul><li>推广你的付费版本或新功能</li><li>显示限时优惠活动</li><li>引导用户访问特定页面</li></ul>
+          用户可以点 × 关闭，关闭后下次打开软件不再显示（直到你更新内容）。
+        </div>
       </div>
-
       <div class="card">
-        <div class="card-title">📢 推广条管理 <span class="badge-tag">TopRightAd</span></div>
-        <div class="form-row">
-          <div class="form-group">
-            <label>ID（自动生成）</label>
-            <input type="text" id="ad-id" readonly style="background:var(--surface2);color:var(--text-secondary);font-family:monospace;font-size:12px">
-          </div>
-          <div class="form-group">
-            <label>优先级 <span class="required">*</span></label>
-            <input type="number" id="ad-priority" value="100" min="0" max="9999">
-            <div class="form-hint">数字越大越优先显示，多条推广时按此排序，建议填 100</div>
-          </div>
+        <div class="card-head">📢 推广条设置 <span class="tag">TopRightAd</span></div>
+        <div class="fg-row">
+          <div class="fg"><label>自动编号</label><input type="text" id="ad-id" readonly placeholder="自动生成，无需填写" style="font-family:monospace;font-size:12px"></div>
+          <div class="fg"><label>优先级 <span class="req">*</span></label><input type="number" id="ad-priority" value="100" min="0" max="9999" placeholder="建议填 100"><div class="hint">数字越大越优先显示</div></div>
         </div>
-        <div class="form-row">
-          <div class="form-group">
-            <label>推广文字（英文）<span class="required">*</span></label>
-            <input type="text" id="ad-text" placeholder="e.g. Try ZX AI Tools Pro now!">
-            <div class="form-hint">显示在推广条中的主要文字内容，建议简短有力，不超过 30 个字</div>
-          </div>
-          <div class="form-group">
-            <label>标签文字（英文）</label>
-            <input type="text" id="ad-badge" placeholder="e.g. NEW / HOT">
-            <div class="form-hint">显示在文字左侧的小标签，如 NEW、HOT、限时 等</div>
-          </div>
+        <div class="fg-row">
+          <div class="fg"><label>推广横幅文字 <span class="req">*</span></label><input type="text" id="ad-text" placeholder="例：立即体验 ZX AI Tools Pro 会员版"><div class="hint">显示在推广条中间的主要文字，建议不超过 20 个字</div></div>
+          <div class="fg"><label>小标签文字</label><input type="text" id="ad-badge" placeholder="例：新品 / 热门 / 限时"><div class="hint">显示在文字左侧的彩色小标签，可不填</div></div>
         </div>
-        <div class="form-row">
-          <div class="form-group">
-            <label>按钮文字（英文）<span class="required">*</span></label>
-            <input type="text" id="ad-cta-label" placeholder="e.g. Learn More">
-            <div class="form-hint">推广条右侧按钮的文字，如 了解更多、立即获取</div>
-          </div>
-          <div class="form-group">
-            <label>跳转链接 <span class="required">*</span></label>
-            <input type="url" id="ad-cta-url" placeholder="https://example.com">
-            <div class="form-hint">点击按钮后跳转的页面地址，填写完整的 https:// 链接</div>
-          </div>
+        <div class="fg-row">
+          <div class="fg"><label>按钮文字 <span class="req">*</span></label><input type="text" id="ad-cta-label" placeholder="例：了解更多"><div class="hint">推广条右侧按钮上的文字</div></div>
+          <div class="fg"><label>点击跳转链接 <span class="req">*</span></label><input type="url" id="ad-cta-url" placeholder="https://"><div class="hint">用户点击按钮后打开的页面</div></div>
         </div>
-        <div class="form-group">
-          <label>过期时间（可留空）</label>
-          <input type="datetime-local" id="ad-expires-at">
-          <div class="form-hint">可选填，到期后推广条自动停止显示，不填则永久有效</div>
-        </div>
-
+        <div class="fg"><label>过期时间（可选）</label><input type="datetime-local" id="ad-expires-at"><div class="hint">到期后自动停止显示，不填则永久有效</div></div>
         <div class="divider"></div>
-
-        <!-- zh-CN Locale -->
-        <div class="locale-section">
-          <div class="locale-title">🌐 中文本地化（可选）</div>
-          <div class="locale-desc">如果填写了中文内容，中文系统的用户会看到中文版本的推广条。不填则所有用户都看英文版本。</div>
-          <div class="form-row">
-            <div class="form-group">
-              <label>推广文字（中文）</label>
-              <input type="text" id="ad-zh-text" placeholder="中文推广文字">
-            </div>
-            <div class="form-group">
-              <label>标签文字（中文）</label>
-              <input type="text" id="ad-zh-badge" placeholder="如：推广 / 新品">
-            </div>
+        <div class="locale-box">
+          <div class="locale-title">🌐 中文内容（选填）</div>
+          <div class="locale-desc">如果填写了中文内容，中文系统的用户会看到中文版本。<br>不填写则所有用户都看上面填写的内容。建议都填中文即可。</div>
+          <div class="fg-row">
+            <div class="fg"><label>推广文字（中文）</label><input type="text" id="ad-zh-text" placeholder="中文推广文字"></div>
+            <div class="fg"><label>标签文字（中文）</label><input type="text" id="ad-zh-badge" placeholder="例：推广 / 新品"></div>
           </div>
-          <div class="form-group">
-            <label>按钮文字（中文）</label>
-            <input type="text" id="ad-zh-cta-label" placeholder="如：立即了解">
-          </div>
+          <div class="fg"><label>按钮文字（中文）</label><input type="text" id="ad-zh-cta-label" placeholder="例：立即了解"></div>
         </div>
       </div>
-
-      <!-- Preview -->
       <div class="card">
-        <div class="card-title">👁️ 实时预览</div>
-        <div class="preview-box" id="ad-preview-box">
-          <div class="ad-preview-inner">
-            <div class="ad-preview-text-area">
-              <div class="ad-preview-badge" id="pv-badge">推广</div>
-              <div class="ad-preview-text" id="pv-text">推广文字将在此显示</div>
-            </div>
-            <div class="ad-preview-btn" id="pv-btn">了解更多</div>
-          </div>
-        </div>
-        <div class="mt-12 flex justify-end">
-          <button class="btn btn-primary" onclick="saveAdToState()">💾 保存推广条</button>
-        </div>
+        <div class="card-head">👁️ 实时预览</div>
+        <div class="preview-box"><div class="ad-preview-inner"><div class="ad-preview-text-area"><div class="ad-preview-badge" id="pv-badge">推广</div><div class="ad-preview-text" id="pv-text">推广文字将在此显示</div></div><div class="ad-preview-btn" id="pv-btn">了解更多</div></div></div>
+        <div class="mt-12 flex justify-end"><button class="btn btn-primary" onclick="saveAdToState()">💾 保存推广条</button></div>
       </div>
     </div>
 
-    <!-- ===== TAB: 公告管理 ===== -->
+    <!-- ===== 公告管理 ===== -->
     <div class="tab-panel" id="tab-ann">
-      <!-- Tip Card -->
-      <div class="info-card green">
-        <div class="info-card-title">💡 公告功能说明</div>
-        <p>公告会以弹窗或通知的形式在软件内展示给用户。<br>支持 <strong>info</strong>（普通）、<strong>feature</strong>（新功能）、<strong>warning</strong>（警告）三种类型，分别对应蓝色、绿色、橙色的样式。</p>
+      <div class="tip-card">
+        <div class="tip-card-title">📋 公告通知是什么？</div>
+        <div class="tip-card-body">公告以弹窗或通知列表的形式出现在软件内。你可以用它来：
+          <ul><li>发布版本更新说明</li><li>通知重要维护信息</li><li>推送新功能介绍</li></ul>
+          支持三种样式：普通（蓝色）、新功能（绿色）、警告（橙色）。
+        </div>
       </div>
-
       <div class="card">
-        <div class="section-header">
-          <h2>📋 公告列表</h2>
-          <button class="btn btn-primary" onclick="openAnnModal(null)">➕ 添加公告</button>
-        </div>
-        <div id="ann-list-container">
-          <div class="empty-state">
-            <div class="icon">📭</div>
-            <p>暂无公告，点击"添加公告"开始创建</p>
-          </div>
-        </div>
+        <div class="section-header"><h2>📋 公告列表</h2><button class="btn btn-primary" onclick="openAnnModal(null)">➕ 添加公告</button></div>
+        <div id="ann-list-container"><div class="empty-state"><div class="icon">📭</div><p>暂无公告，点击「添加公告」开始创建</p></div></div>
       </div>
     </div>
 
-    <!-- ===== TAB: 发布管理 ===== -->
-    <div class="tab-panel" id="tab-github">
-      <!-- Tip Card -->
-      <div class="info-card amber">
-        <div class="info-card-title">💡 发布管理说明</div>
-        <p>在这里配置远程存储信息，编辑完推广条和公告后，<br>点击"同步发布"将内容上传到服务器，用户下次打开软件时即可看到更新。<br>Token 需要有仓库写入权限。</p>
+    <!-- ===== 发布管理 ===== -->
+    <div class="tab-panel" id="tab-pub">
+      <div class="tip-card">
+        <div class="tip-card-title">🚀 发布管理是什么？</div>
+        <div class="tip-card-body">编辑完推广条或公告后，需要点击「同步发布」才能生效。<br>发布后用户下次打开软件时会自动获取最新内容，无需用户手动更新软件。<br>配置只需填写一次，保存后下次直接使用。</div>
       </div>
-
-      <!-- Config -->
       <div class="card">
-        <div class="card-title">⚙️ 远程配置</div>
+        <div class="card-head">⚙️ 远程配置</div>
         <div class="config-grid">
-          <div class="form-group">
-            <label>用户名（Owner）<span class="required">*</span></label>
-            <input type="text" id="gh-owner" placeholder="你的账号用户名">
-            <div class="form-hint">你的账号用户名</div>
-          </div>
-          <div class="form-group">
-            <label>仓库名（Repo）<span class="required">*</span></label>
-            <input type="text" id="gh-repo" placeholder="zx-ai-tools">
-            <div class="form-hint">存放配置文件的仓库名称</div>
-          </div>
+          <div class="fg"><label>用户名 <span class="req">*</span></label><input type="text" id="gh-owner" placeholder="你的账号用户名"><div class="hint">远程仓库的拥有者用户名</div></div>
+          <div class="fg"><label>仓库名 <span class="req">*</span></label><input type="text" id="gh-repo" placeholder="zx-ai-tools"><div class="hint">存放配置文件的仓库名称</div></div>
         </div>
-        <div class="form-group">
-          <label>访问令牌（Token）<span class="required">*</span></label>
-          <input type="password" id="gh-token" placeholder="ghp_xxxxxx..." autocomplete="off">
-          <div class="form-hint">访问令牌，用于验证身份和写入权限，请妥善保管</div>
-        </div>
-        <div class="form-group">
-          <label>文件路径</label>
-          <input type="text" id="gh-path" value="announcements.json">
-          <div class="form-hint">配置文件在仓库中的路径，默认为 announcements.json</div>
-        </div>
-        <div class="flex justify-end">
-          <button class="btn btn-secondary" onclick="saveGithubConfig()">💾 保存配置</button>
-        </div>
+        <div class="fg"><label>访问令牌 <span class="req">*</span></label><input type="password" id="gh-token" placeholder="ghp_xxxxxx..." autocomplete="off"><div class="hint">访问令牌，用于验证身份和写入权限，请妥善保管</div></div>
+        <div class="fg"><label>文件路径</label><input type="text" id="gh-path" value="announcements.json"><div class="hint">配置文件在仓库中的路径，默认为 announcements.json</div></div>
+        <div class="flex justify-end"><button class="btn btn-secondary" onclick="saveGithubConfig()">💾 保存配置</button></div>
       </div>
-
-      <!-- Operations -->
       <div class="card">
-        <div class="card-title">🚀 操作</div>
-        <div class="config-actions">
+        <div class="card-head">🚀 操作</div>
+        <div class="flex gap-8" style="flex-wrap:wrap">
           <button class="btn btn-secondary" id="btn-pull" onclick="pullFromGithub()">⬇️ 拉取远程配置</button>
           <button class="btn btn-primary" id="btn-push" onclick="pushToGithub()">⬆️ 同步发布</button>
-          <button class="btn btn-ghost" onclick="previewJson()">📄 预览 JSON</button>
-          <button class="btn btn-ghost" onclick="copyJson()">📋 复制 JSON</button>
+          <button class="btn btn-ghost" onclick="previewJson()">📄 预览数据</button>
+          <button class="btn btn-ghost" onclick="copyJson()">📋 复制数据</button>
         </div>
-        <div id="gh-status" class="mt-12 text-sm text-secondary"></div>
+        <div id="gh-status" class="mt-12" style="font-size:13px;color:var(--text3)"></div>
       </div>
     </div>
+  </div>
+</div>
 
-  </div><!-- /main-content -->
-</div><!-- /app -->
-
-<!-- ===== TOAST CONTAINER ===== -->
+<!-- Toast -->
 <div class="toast-container" id="toast-container"></div>
 
-<!-- ===== CONFIRM MODAL ===== -->
-<div class="modal-backdrop" id="confirm-modal">
-  <div class="confirm-box">
-    <div class="icon" id="confirm-icon">⚠️</div>
-    <h3 id="confirm-title">确认操作</h3>
-    <p id="confirm-msg">确认执行此操作？</p>
-    <div class="confirm-actions">
-      <button class="btn btn-secondary" onclick="closeConfirm(false)">取消</button>
-      <button class="btn btn-danger" id="confirm-ok-btn" onclick="closeConfirm(true)">确认删除</button>
+<!-- Confirm -->
+<div class="modal-backdrop" id="confirm-modal"><div class="confirm-box"><div class="icon" id="confirm-icon">⚠️</div><h3 id="confirm-title">确认操作</h3><p id="confirm-msg">确认执行此操作？</p><div class="confirm-actions"><button class="btn btn-secondary" onclick="closeConfirm(false)">取消</button><button class="btn btn-danger" id="confirm-ok-btn" onclick="closeConfirm(true)">确认删除</button></div></div></div>
+
+<!-- Ann Modal -->
+<div class="modal-backdrop" id="ann-modal"><div class="modal modal-xl">
+  <div class="modal-header"><h3 id="ann-modal-title">添加公告</h3><button class="modal-close" onclick="closeAnnModal()">✕</button></div>
+  <div class="modal-body">
+    <div class="fg-row">
+      <div class="fg"><label>自动编号</label><input type="text" id="ann-id" readonly style="font-family:monospace;font-size:12px"></div>
+      <div class="fg"><label>类型 <span class="req">*</span></label><select id="ann-type"><option value="info">ℹ️ 普通通知（蓝色）</option><option value="feature">✨ 新功能（绿色）</option><option value="warning">⚠️ 警告提示（橙色）</option></select></div>
+    </div>
+    <div class="fg-row">
+      <div class="fg"><label>标题 <span class="req">*</span></label><input type="text" id="ann-title" placeholder="例：🎉 新功能上线！"></div>
+      <div class="fg"><label>优先级</label><input type="number" id="ann-priority" value="100" min="0" max="9999"><div class="hint">数字越大越靠前，建议用 100、200、300</div></div>
+    </div>
+    <div class="fg"><label>摘要 <span class="req">*</span></label><input type="text" id="ann-summary" placeholder="一句话简短描述"></div>
+    <div class="fg"><label>详细内容</label><textarea id="ann-content" rows="4" placeholder="详细内容，可以用 \n 换行"></textarea></div>
+    <div class="divider"></div>
+    <div class="card-head" style="font-size:14px;margin-bottom:12px">🔘 操作按钮（选填）</div>
+    <div class="fg-row">
+      <div class="fg"><label>按钮文字</label><input type="text" id="ann-action-label" placeholder="例：了解更多"></div>
+      <div class="fg"><label>跳转链接</label><input type="url" id="ann-action-target" placeholder="https://"></div>
+    </div>
+    <div class="divider"></div>
+    <div class="card-head" style="font-size:14px;margin-bottom:0">🎛️ 显示设置</div>
+    <div class="toggle-row"><div><div class="toggle-label">弹窗显示</div><div class="toggle-desc">开启后以弹窗形式显示，关闭则在通知列表中显示</div></div><label class="toggle"><input type="checkbox" id="ann-popup"><div class="toggle-track"></div><div class="toggle-thumb"></div></label></div>
+    <div class="toggle-row"><div><div class="toggle-label">仅显示一次</div><div class="toggle-desc">开启后用户看过就不再弹出，适合一次性公告</div></div><label class="toggle"><input type="checkbox" id="ann-show-once" checked><div class="toggle-track"></div><div class="toggle-thumb"></div></label></div>
+    <div class="fg mt-12"><label>过期时间（可选）</label><input type="datetime-local" id="ann-expires-at"></div>
+    <div class="divider"></div>
+    <div class="locale-box">
+      <div class="locale-title">🌐 中文内容（选填）</div>
+      <div class="locale-desc">填写后中文系统的用户会看到中文版本，不填则显示上面的内容。</div>
+      <div class="fg"><label>标题（中文）</label><input type="text" id="ann-zh-title" placeholder="中文标题"></div>
+      <div class="fg"><label>摘要（中文）</label><input type="text" id="ann-zh-summary" placeholder="中文摘要"></div>
+      <div class="fg"><label>详细内容（中文）</label><textarea id="ann-zh-content" rows="3" placeholder="中文详细内容"></textarea></div>
+      <div class="fg"><label>按钮文字（中文）</label><input type="text" id="ann-zh-action-label" placeholder="例：了解更多"></div>
+    </div>
+    <div class="divider"></div>
+    <div class="card-head" style="font-size:14px;margin-bottom:12px">👁️ 公告预览</div>
+    <div style="background:linear-gradient(135deg,#1e1b4b,#1e3a5f);border-radius:10px;padding:20px;display:flex;justify-content:center">
+      <div class="ann-preview-popup" id="ann-live-preview">
+        <div class="ann-preview-header"><div class="ann-preview-icon" id="pv-ann-icon" style="background:rgba(99,102,241,0.2)">ℹ️</div><div class="ann-preview-title" id="pv-ann-title">公告标题</div></div>
+        <div class="ann-preview-summary" id="pv-ann-summary">摘要内容</div>
+        <div class="ann-preview-content" id="pv-ann-content"></div>
+        <button class="ann-preview-action" id="pv-ann-action" style="display:none">操作按钮</button>
+      </div>
     </div>
   </div>
-</div>
+  <div class="modal-footer"><button class="btn btn-secondary" onclick="closeAnnModal()">取消</button><button class="btn btn-primary" onclick="saveAnnouncement()">💾 保存公告</button></div>
+</div></div>
 
-<!-- ===== ANNOUNCEMENT MODAL ===== -->
-<div class="modal-backdrop" id="ann-modal">
-  <div class="modal modal-xl">
-    <div class="modal-header">
-      <h3 id="ann-modal-title">添加公告</h3>
-      <button class="modal-close" onclick="closeAnnModal()">✕</button>
-    </div>
-    <div class="modal-body">
-      <div class="form-row">
-        <div class="form-group">
-          <label>ID（自动生成）</label>
-          <input type="text" id="ann-id" readonly style="background:var(--surface2);color:var(--text-secondary);font-family:monospace;font-size:12px">
-        </div>
-        <div class="form-group">
-          <label>类型 <span class="required">*</span></label>
-          <select id="ann-type">
-            <option value="info">ℹ️ info — 普通通知（蓝色，适合一般公告）</option>
-            <option value="feature">✨ feature — 新功能（绿色，适合功能更新说明）</option>
-            <option value="warning">⚠️ warning — 警告提示（橙色，适合重要提醒）</option>
-          </select>
-        </div>
-      </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label>标题（支持 emoji）<span class="required">*</span></label>
-          <input type="text" id="ann-title" placeholder="e.g. 🎉 New Feature Released!">
-        </div>
-        <div class="form-group">
-          <label>优先级（越大越靠前）</label>
-          <input type="number" id="ann-priority" value="100" min="0" max="9999">
-          <div class="form-hint">数字越大越靠前显示，建议用 100、200、300 这样的间隔便于插入</div>
-        </div>
-      </div>
-      <div class="form-group">
-        <label>摘要（一行）<span class="required">*</span></label>
-        <input type="text" id="ann-summary" placeholder="简短描述">
-      </div>
-      <div class="form-group">
-        <label>详细内容（支持 \n 换行）</label>
-        <textarea id="ann-content" rows="4" placeholder="详细内容，可以用 \n 换行&#10;多行内容示例"></textarea>
-      </div>
+<!-- JSON Modal -->
+<div class="modal-backdrop" id="json-modal"><div class="modal modal-lg">
+  <div class="modal-header"><h3>📄 数据预览</h3><button class="modal-close" onclick="closeModal('json-modal')">✕</button></div>
+  <div class="modal-body"><pre class="code-block" id="json-preview-content"></pre></div>
+  <div class="modal-footer"><button class="btn btn-secondary" onclick="closeModal('json-modal')">关闭</button><button class="btn btn-primary" onclick="copyJson()">📋 复制数据</button></div>
+</div></div>
 
-      <div class="divider"></div>
-
-      <!-- Action Button -->
-      <div class="card-title" style="font-size:13px;margin-bottom:12px">🔘 操作按钮（可选）</div>
-      <div class="form-row">
-        <div class="form-group">
-          <label>按钮文字</label>
-          <input type="text" id="ann-action-label" placeholder="e.g. 了解更多">
-        </div>
-        <div class="form-group">
-          <label>跳转链接</label>
-          <input type="url" id="ann-action-target" placeholder="https://example.com">
-        </div>
-      </div>
-
-      <div class="divider"></div>
-
-      <!-- Toggles -->
-      <div class="card-title" style="font-size:13px;margin-bottom:0">🎛️ 显示设置</div>
-      <div class="toggle-row">
-        <div>
-          <div class="toggle-label">弹窗显示（popup）</div>
-          <div class="toggle-desc">开启后以弹窗形式显示，关闭则在通知列表中显示</div>
-        </div>
-        <label class="toggle">
-          <input type="checkbox" id="ann-popup" onchange="this.nextElementSibling.nextElementSibling && null">
-          <div class="toggle-track"></div>
-          <div class="toggle-thumb"></div>
-        </label>
-      </div>
-      <div class="toggle-row">
-        <div>
-          <div class="toggle-label">只显示一次（showOnce）</div>
-          <div class="toggle-desc">仅显示一次：开启后用户看过就不再弹出，适合一次性公告</div>
-        </div>
-        <label class="toggle">
-          <input type="checkbox" id="ann-show-once" checked>
-          <div class="toggle-track"></div>
-          <div class="toggle-thumb"></div>
-        </label>
-      </div>
-
-      <div class="form-group mt-12">
-        <label>过期时间（可留空）</label>
-        <input type="datetime-local" id="ann-expires-at">
-      </div>
-
-      <div class="divider"></div>
-
-      <!-- zh-CN Locale -->
-      <div class="locale-section">
-        <div class="locale-title">🌐 中文本地化（可选）</div>
-        <div class="locale-desc">如果填写了中文内容，中文系统的用户会看到中文版本。不填则所有用户看英文版本。</div>
-        <div class="form-group">
-          <label>标题（中文）</label>
-          <input type="text" id="ann-zh-title" placeholder="中文标题">
-        </div>
-        <div class="form-group">
-          <label>摘要（中文）</label>
-          <input type="text" id="ann-zh-summary" placeholder="中文摘要">
-        </div>
-        <div class="form-group">
-          <label>详细内容（中文）</label>
-          <textarea id="ann-zh-content" rows="3" placeholder="中文详细内容"></textarea>
-        </div>
-        <div class="form-group">
-          <label>按钮文字（中文）</label>
-          <input type="text" id="ann-zh-action-label" placeholder="如：了解更多">
-        </div>
-      </div>
-
-      <!-- Preview inside modal -->
-      <div class="divider"></div>
-      <div class="card-title" style="font-size:13px;margin-bottom:12px">👁️ 公告预览</div>
-      <div style="background:linear-gradient(135deg,#1a1a2e,#16213e);border-radius:10px;padding:20px;display:flex;justify-content:center">
-        <div class="ann-preview-popup" id="ann-live-preview">
-          <div class="ann-preview-header">
-            <div class="ann-preview-icon" id="pv-ann-icon" style="background:rgba(99,102,241,0.2)">ℹ️</div>
-            <div class="ann-preview-title" id="pv-ann-title">公告标题</div>
-          </div>
-          <div class="ann-preview-summary" id="pv-ann-summary">摘要内容</div>
-          <div class="ann-preview-content" id="pv-ann-content"></div>
-          <button class="ann-preview-action" id="pv-ann-action" style="display:none">操作按钮</button>
-        </div>
-      </div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-secondary" onclick="closeAnnModal()">取消</button>
-      <button class="btn btn-primary" onclick="saveAnnouncement()">💾 保存公告</button>
-    </div>
-  </div>
-</div>
-
-<!-- ===== JSON PREVIEW MODAL ===== -->
-<div class="modal-backdrop" id="json-modal">
-  <div class="modal modal-lg">
-    <div class="modal-header">
-      <h3>📄 JSON 预览</h3>
-      <button class="modal-close" onclick="closeModal('json-modal')">✕</button>
-    </div>
-    <div class="modal-body">
-      <pre class="code-block" id="json-preview-content"></pre>
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-secondary" onclick="closeModal('json-modal')">关闭</button>
-      <button class="btn btn-primary" onclick="copyJson()">📋 复制 JSON</button>
-    </div>
-  </div>
-</div>
-
-<!-- ===== ANN PREVIEW MODAL ===== -->
-<div class="modal-backdrop" id="ann-preview-modal">
-  <div class="modal modal-md">
-    <div class="modal-header">
-      <h3>👁️ 公告效果预览</h3>
-      <button class="modal-close" onclick="closeModal('ann-preview-modal')">✕</button>
-    </div>
-    <div class="modal-body">
-      <div style="background:linear-gradient(135deg,#1a1a2e,#16213e);border-radius:10px;padding:20px;display:flex;justify-content:center">
-        <div class="ann-preview-popup" id="ann-solo-preview"></div>
-      </div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-secondary" onclick="closeModal('ann-preview-modal')">关闭</button>
-    </div>
-  </div>
-</div>
+<!-- Ann Preview Modal -->
+<div class="modal-backdrop" id="ann-preview-modal"><div class="modal modal-md">
+  <div class="modal-header"><h3>👁️ 公告效果预览</h3><button class="modal-close" onclick="closeModal('ann-preview-modal')">✕</button></div>
+  <div class="modal-body"><div style="background:linear-gradient(135deg,#1e1b4b,#1e3a5f);border-radius:10px;padding:20px;display:flex;justify-content:center"><div class="ann-preview-popup" id="ann-solo-preview"></div></div></div>
+  <div class="modal-footer"><button class="btn btn-secondary" onclick="closeModal('ann-preview-modal')">关闭</button></div>
+</div></div>
 
 <script>
-// ============================================================
-// CONSTANTS
-// ============================================================
-const CRED_HASH = '67cc50b8c76dd0bace63dba7ef5a7779ab343ebcb17a1d177523dcd20a3ca756';
-const LS = {
-  TOKEN:     'zxai_admin_token',
-  TOKEN_EXP: 'zxai_admin_token_exp',
-  GH_OWNER:  'zxai_admin_gh_owner',
-  GH_REPO:   'zxai_admin_gh_repo',
-  GH_TOKEN:  'zxai_admin_gh_token',
-  GH_PATH:   'zxai_admin_gh_path',
-  DATA:      'zxai_admin_data',
-};
-const TOKEN_TTL = 7 * 24 * 60 * 60 * 1000; // 7 days ms
+const CRED_HASH='67cc50b8c76dd0bace63dba7ef5a7779ab343ebcb17a1d177523dcd20a3ca756';
+const LS={TOKEN:'zxai_admin_token',TOKEN_EXP:'zxai_admin_token_exp',GH_OWNER:'zxai_admin_gh_owner',GH_REPO:'zxai_admin_gh_repo',GH_TOKEN:'zxai_admin_gh_token',GH_PATH:'zxai_admin_gh_path',DATA:'zxai_admin_data'};
+const TOKEN_TTL=7*24*60*60*1000;
+let state={version:'1.0',topRightAd:null,announcements:[]};
+let ghFileSha=null,editingAnnIndex=null;
 
-// ============================================================
-// STATE
-// ============================================================
-let state = {
-  version: '1.0',
-  topRightAd: null,
-  announcements: [],
-};
-let ghFileSha = null; // SHA of the file on GitHub for PUT
-let editingAnnIndex = null; // null = new, number = edit
+async function sha256(s){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));return Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,'0')).join('')}
+function uid(){return crypto.randomUUID()}
+function toast(msg,type='info'){const icons={success:'✅',error:'❌',info:'ℹ️'};const el=document.createElement('div');el.className=`toast ${type}`;el.innerHTML=`<span class="toast-icon">${icons[type]||'ℹ️'}</span><span class="toast-msg">${msg}</span>`;document.getElementById('toast-container').appendChild(el);setTimeout(()=>{el.classList.add('removing');el.addEventListener('animationend',()=>el.remove())},3000)}
+let _cr=null;
+function confirm(t,m,bl='确认删除'){document.getElementById('confirm-title').textContent=t;document.getElementById('confirm-msg').textContent=m;document.getElementById('confirm-ok-btn').textContent=bl;document.getElementById('confirm-modal').classList.add('open');return new Promise(r=>{_cr=r})}
+function closeConfirm(ok){document.getElementById('confirm-modal').classList.remove('open');if(_cr){_cr(ok);_cr=null}}
+function openModal(id){document.getElementById(id).classList.add('open')}
+function closeModal(id){document.getElementById(id).classList.remove('open')}
+function setLoading(id,l,t=''){const b=document.getElementById(id);if(!b)return;b.disabled=l;if(l){b.dataset.o=b.innerHTML;b.innerHTML=`<div class="spinner"></div>${t||'请稍候…'}`}else{b.innerHTML=b.dataset.o||b.innerHTML}}
 
-// ============================================================
-// UTILS — SHA-256
-// ============================================================
-async function sha256(str) {
-  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
-  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+async function handleLogin(e){
+  e.preventDefault();const a=document.getElementById('login-account').value.trim(),p=document.getElementById('login-password').value,err=document.getElementById('login-error'),btn=document.getElementById('login-btn');
+  btn.disabled=true;btn.innerHTML='<div class="spinner" style="border-color:rgba(255,255,255,.3);border-top-color:#fff"></div>验证中…';err.style.display='none';
+  if(await sha256(`${a}:${p}`)===CRED_HASH){const tk=await sha256(Date.now()+Math.random().toString());localStorage.setItem(LS.TOKEN,tk);localStorage.setItem(LS.TOKEN_EXP,(Date.now()+TOKEN_TTL).toString());showApp()}
+  else{err.style.display='block';btn.disabled=false;btn.textContent='登录'}
 }
+function handleLogout(){localStorage.removeItem(LS.TOKEN);localStorage.removeItem(LS.TOKEN_EXP);document.getElementById('app').style.display='none';document.getElementById('login-page').style.display='flex';document.getElementById('login-password').value=''}
+function checkAuth(){const t=localStorage.getItem(LS.TOKEN),e=parseInt(localStorage.getItem(LS.TOKEN_EXP)||'0',10);return t&&Date.now()<e}
 
-// ============================================================
-// UTILS — UUID
-// ============================================================
-function uid() {
-  return crypto.randomUUID();
-}
+function showApp(){document.getElementById('login-page').style.display='none';document.getElementById('app').style.display='flex';loadState();loadGithubConfig();renderAdForm();renderAnnList();bindAdPreview()}
+function loadState(){try{const r=localStorage.getItem(LS.DATA);if(r){state={version:'1.0',topRightAd:null,announcements:[],...JSON.parse(r)}}}catch(e){}}
+function saveState(){localStorage.setItem(LS.DATA,JSON.stringify(state))}
+function switchTab(id){document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelector(`[data-tab="${id}"]`).classList.add('active')}
+function buildJson(){return JSON.stringify(state,null,2)}
 
-// ============================================================
-// UTILS — Toast
-// ============================================================
-function toast(msg, type = 'info') {
-  const icons = { success: '✅', error: '❌', info: 'ℹ️' };
-  const el = document.createElement('div');
-  el.className = `toast ${type}`;
-  el.innerHTML = `<span class="toast-icon">${icons[type]||'ℹ️'}</span><span class="toast-msg">${msg}</span>`;
-  const container = document.getElementById('toast-container');
-  container.appendChild(el);
-  setTimeout(() => {
-    el.classList.add('removing');
-    el.addEventListener('animationend', () => el.remove());
-  }, 3000);
-}
-
-// ============================================================
-// UTILS — Confirm Dialog
-// ============================================================
-let _confirmResolve = null;
-function confirm(title, msg, btnLabel = '确认删除') {
-  document.getElementById('confirm-title').textContent = title;
-  document.getElementById('confirm-msg').textContent = msg;
-  document.getElementById('confirm-ok-btn').textContent = btnLabel;
-  document.getElementById('confirm-modal').classList.add('open');
-  return new Promise(r => { _confirmResolve = r; });
-}
-function closeConfirm(ok) {
-  document.getElementById('confirm-modal').classList.remove('open');
-  if (_confirmResolve) { _confirmResolve(ok); _confirmResolve = null; }
-}
-
-// ============================================================
-// UTILS — Modal helpers
-// ============================================================
-function openModal(id) { document.getElementById(id).classList.add('open'); }
-function closeModal(id) { document.getElementById(id).classList.remove('open'); }
-
-// ============================================================
-// UTILS — setLoading
-// ============================================================
-function setLoading(btnId, loading, text = '') {
-  const btn = document.getElementById(btnId);
-  if (!btn) return;
-  btn.disabled = loading;
-  if (loading) {
-    btn.dataset.origHtml = btn.innerHTML;
-    btn.innerHTML = `<div class="spinner"></div>${text || '请稍候…'}`;
-  } else {
-    btn.innerHTML = btn.dataset.origHtml || btn.innerHTML;
-  }
-}
-
-// ============================================================
-// AUTH — Login
-// ============================================================
-async function handleLogin(e) {
-  e.preventDefault();
-  const account  = document.getElementById('login-account').value.trim();
-  const password = document.getElementById('login-password').value;
-  const errEl    = document.getElementById('login-error');
-  const btn      = document.getElementById('login-btn');
-
-  btn.disabled = true;
-  btn.innerHTML = '<div class="spinner" style="border-color:rgba(255,255,255,.3);border-top-color:#fff"></div>验证中…';
-  errEl.style.display = 'none';
-
-  const input = `${account}:${password}`;
-  const hash  = await sha256(input);
-
-  if (hash === CRED_HASH) {
-    const token    = await sha256(Date.now() + Math.random().toString());
-    const expireAt = Date.now() + TOKEN_TTL;
-    localStorage.setItem(LS.TOKEN, token);
-    localStorage.setItem(LS.TOKEN_EXP, expireAt.toString());
-    showApp();
-  } else {
-    errEl.style.display = 'block';
-    btn.disabled = false;
-    btn.textContent = '登录';
-  }
-}
-
-function handleLogout() {
-  localStorage.removeItem(LS.TOKEN);
-  localStorage.removeItem(LS.TOKEN_EXP);
-  document.getElementById('app').style.display = 'none';
-  document.getElementById('login-page').style.display = 'flex';
-  document.getElementById('login-password').value = '';
-}
-
-function checkAuth() {
-  const token = localStorage.getItem(LS.TOKEN);
-  const exp   = parseInt(localStorage.getItem(LS.TOKEN_EXP) || '0', 10);
-  return token && Date.now() < exp;
-}
-
-// ============================================================
-// APP INIT
-// ============================================================
-function showApp() {
-  document.getElementById('login-page').style.display = 'none';
-  document.getElementById('app').style.display = 'flex';
-  // Show logged-in user hint
-  const userEl = document.getElementById('topbar-user');
-  if (userEl) userEl.textContent = '已登录';
-  loadState();
-  loadGithubConfig();
-  renderAdForm();
-  renderAnnList();
-  bindAdPreview();
-}
-
-function loadState() {
-  try {
-    const raw = localStorage.getItem(LS.DATA);
-    if (raw) {
-      const parsed = JSON.parse(raw);
-      state = { version: '1.0', topRightAd: null, announcements: [], ...parsed };
-    }
-  } catch(e) {}
-}
-
-function saveState() {
-  localStorage.setItem(LS.DATA, JSON.stringify(state));
-}
-
-// ============================================================
-// TAB SWITCHING
-// ============================================================
-function switchTab(tabId) {
-  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById(tabId).classList.add('active');
-  document.querySelector(`[data-tab="${tabId}"]`).classList.add('active');
-}
-
-// ============================================================
-// STATE → JSON
-// ============================================================
-function buildJson() {
-  return JSON.stringify(state, null, 2);
-}
-
-// ============================================================
-// AD FORM
-// ============================================================
-function renderAdForm() {
-  const ad = state.topRightAd || {};
-  document.getElementById('ad-id').value         = ad.id || uid();
-  document.getElementById('ad-priority').value   = ad.priority ?? 100;
-  document.getElementById('ad-text').value       = ad.text || '';
-  document.getElementById('ad-badge').value      = ad.badge || '';
-  document.getElementById('ad-cta-label').value  = ad.ctaLabel || '';
-  document.getElementById('ad-cta-url').value    = ad.ctaUrl || '';
-  if (ad.expiresAt) {
-    document.getElementById('ad-expires-at').value = ad.expiresAt.replace('Z','').slice(0,16);
-  }
-  const zh = (ad.locales && ad.locales['zh-CN']) || {};
-  document.getElementById('ad-zh-text').value     = zh.text || '';
-  document.getElementById('ad-zh-badge').value    = zh.badge || '';
-  document.getElementById('ad-zh-cta-label').value= zh.ctaLabel || '';
+function renderAdForm(){
+  const a=state.topRightAd||{};
+  document.getElementById('ad-id').value=a.id||uid();document.getElementById('ad-priority').value=a.priority??100;
+  document.getElementById('ad-text').value=a.text||'';document.getElementById('ad-badge').value=a.badge||'';
+  document.getElementById('ad-cta-label').value=a.ctaLabel||'';document.getElementById('ad-cta-url').value=a.ctaUrl||'';
+  if(a.expiresAt)document.getElementById('ad-expires-at').value=a.expiresAt.replace('Z','').slice(0,16);
+  const z=(a.locales&&a.locales['zh-CN'])||{};
+  document.getElementById('ad-zh-text').value=z.text||'';document.getElementById('ad-zh-badge').value=z.badge||'';document.getElementById('ad-zh-cta-label').value=z.ctaLabel||'';
   updateAdPreview();
 }
-
-function bindAdPreview() {
-  ['ad-text','ad-badge','ad-cta-label','ad-zh-text','ad-zh-badge','ad-zh-cta-label'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.addEventListener('input', updateAdPreview);
-  });
+function bindAdPreview(){['ad-text','ad-badge','ad-cta-label','ad-zh-text','ad-zh-badge','ad-zh-cta-label'].forEach(id=>{const e=document.getElementById(id);if(e)e.addEventListener('input',updateAdPreview)})}
+function updateAdPreview(){
+  const zt=document.getElementById('ad-zh-text').value.trim(),zb=document.getElementById('ad-zh-badge').value.trim(),zn=document.getElementById('ad-zh-cta-label').value.trim();
+  const et=document.getElementById('ad-text').value.trim(),eb=document.getElementById('ad-badge').value.trim(),en=document.getElementById('ad-cta-label').value.trim();
+  document.getElementById('pv-text').textContent=zt||et||'推广文字';document.getElementById('pv-badge').textContent=zb||eb||'';
+  document.getElementById('pv-badge').style.display=(zb||eb)?'inline-block':'none';document.getElementById('pv-btn').textContent=zn||en||'了解更多';
 }
-
-function updateAdPreview() {
-  const zhText   = document.getElementById('ad-zh-text').value.trim();
-  const zhBadge  = document.getElementById('ad-zh-badge').value.trim();
-  const zhBtn    = document.getElementById('ad-zh-cta-label').value.trim();
-  const enText   = document.getElementById('ad-text').value.trim();
-  const enBadge  = document.getElementById('ad-badge').value.trim();
-  const enBtn    = document.getElementById('ad-cta-label').value.trim();
-
-  document.getElementById('pv-text').textContent  = zhText || enText || '推广文字';
-  document.getElementById('pv-badge').textContent = zhBadge || enBadge || '';
-  document.getElementById('pv-badge').style.display = (zhBadge || enBadge) ? 'inline-block' : 'none';
-  document.getElementById('pv-btn').textContent   = zhBtn || enBtn || '了解更多';
-}
-
-function saveAdToState() {
-  const expiresInput = document.getElementById('ad-expires-at').value;
-  state.topRightAd = {
-    id:       document.getElementById('ad-id').value,
-    priority: parseInt(document.getElementById('ad-priority').value, 10) || 100,
-    text:     document.getElementById('ad-text').value.trim(),
-    badge:    document.getElementById('ad-badge').value.trim(),
-    ctaLabel: document.getElementById('ad-cta-label').value.trim(),
-    ctaUrl:   document.getElementById('ad-cta-url').value.trim(),
-    targetVersions: '*',
-    targetLanguages: ['*'],
-    createdAt:  (state.topRightAd && state.topRightAd.createdAt) || new Date().toISOString(),
-    expiresAt:  expiresInput ? new Date(expiresInput).toISOString() : null,
-    locales: {
-      'zh-CN': {
-        text:     document.getElementById('ad-zh-text').value.trim(),
-        badge:    document.getElementById('ad-zh-badge').value.trim(),
-        ctaLabel: document.getElementById('ad-zh-cta-label').value.trim(),
-      }
-    }
-  };
-  saveState();
-  toast('推广条已保存！', 'success');
+function saveAdToState(){
+  const ei=document.getElementById('ad-expires-at').value;
+  state.topRightAd={id:document.getElementById('ad-id').value,priority:parseInt(document.getElementById('ad-priority').value,10)||100,text:document.getElementById('ad-text').value.trim(),badge:document.getElementById('ad-badge').value.trim(),ctaLabel:document.getElementById('ad-cta-label').value.trim(),ctaUrl:document.getElementById('ad-cta-url').value.trim(),targetVersions:'*',targetLanguages:['*'],createdAt:(state.topRightAd&&state.topRightAd.createdAt)||new Date().toISOString(),expiresAt:ei?new Date(ei).toISOString():null,locales:{'zh-CN':{text:document.getElementById('ad-zh-text').value.trim(),badge:document.getElementById('ad-zh-badge').value.trim(),ctaLabel:document.getElementById('ad-zh-cta-label').value.trim()}}};
+  saveState();toast('推广条已保存！','success');
 }
 </script>
-
 <script>
-// ============================================================
-// ANNOUNCEMENT LIST RENDER
-// ============================================================
-function renderAnnList() {
-  const container = document.getElementById('ann-list-container');
-  const list = state.announcements || [];
-  if (!list.length) {
-    container.innerHTML = `<div class="empty-state"><div class="icon">📭</div><p>暂无公告，点击"添加公告"开始创建</p></div>`;
-    return;
-  }
-  container.innerHTML = `<div class="ann-list">${list.map((ann, i) => renderAnnCard(ann, i, list.length)).join('')}</div>`;
+const TYPE_META={info:{icon:'ℹ️',label:'普通',cls:'type-info',bg:'rgba(99,102,241,0.15)'},feature:{icon:'✨',label:'新功能',cls:'type-feature',bg:'rgba(16,185,129,0.15)'},warning:{icon:'⚠️',label:'警告',cls:'type-warning',bg:'rgba(245,158,11,0.15)'}};
+function escHtml(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+function renderAnnList(){
+  const c=document.getElementById('ann-list-container'),l=state.announcements||[];
+  if(!l.length){c.innerHTML='<div class="empty-state"><div class="icon">📭</div><p>暂无公告，点击「添加公告」开始创建</p></div>';return}
+  c.innerHTML=`<div class="ann-list">${l.map((a,i)=>renderAnnCard(a,i,l.length)).join('')}</div>`;
+}
+function renderAnnCard(a,i,t){
+  const m=TYPE_META[a.type]||TYPE_META.info;
+  const pb=a.popup?'<span class="popup-badge">弹窗</span>':'';const ob=a.showOnce?'<span class="meta-badge">仅一次</span>':'';
+  const eb=a.expiresAt?`<span class="meta-badge">过期 ${a.expiresAt.slice(0,10)}</span>`:'';
+  return `<div class="ann-card"><div class="ann-card-left"><div class="ann-card-header"><span class="type-badge ${m.cls}">${m.icon} ${m.label}</span><span class="ann-card-title">${escHtml(a.title||'(无标题)')}</span><span class="meta-badge">优先级 ${a.priority??100}</span></div><div class="ann-card-summary">${escHtml(a.summary||'')}</div><div class="ann-card-meta">${pb}${ob}${eb}</div></div><div class="ann-card-actions"><button class="btn-icon" title="上移" onclick="moveAnn(${i},-1)" ${i===0?'disabled':''}>↑</button><button class="btn-icon" title="下移" onclick="moveAnn(${i},1)" ${i===t-1?'disabled':''}>↓</button><button class="btn btn-sm btn-ghost" onclick="previewAnn(${i})">👁️</button><button class="btn btn-sm btn-secondary" onclick="openAnnModal(${i})">✏️</button><button class="btn btn-sm btn-danger" onclick="deleteAnn(${i})">🗑️</button></div></div>`;
 }
 
-const TYPE_META = {
-  info:    { icon: 'ℹ️',  label: 'info',    cls: 'type-info',    bg: 'rgba(99,102,241,0.2)' },
-  feature: { icon: '✨', label: 'feature', cls: 'type-feature', bg: 'rgba(34,197,94,0.2)'  },
-  warning: { icon: '⚠️', label: 'warning', cls: 'type-warning', bg: 'rgba(245,158,11,0.2)'  },
-};
-
-function renderAnnCard(ann, i, total) {
-  const meta = TYPE_META[ann.type] || TYPE_META.info;
-  const popupBadge  = ann.popup    ? '<span class="popup-badge">弹窗</span>' : '';
-  const onceBadge   = ann.showOnce ? '<span class="once-badge">仅一次</span>' : '';
-  const expBadge    = ann.expiresAt ? `<span class="priority-badge">过期 ${ann.expiresAt.slice(0,10)}</span>` : '';
-  return `
-  <div class="ann-card" id="ann-card-${i}">
-    <div class="ann-card-left">
-      <div class="ann-card-header">
-        <span class="type-badge ${meta.cls}">${meta.icon} ${meta.label}</span>
-        <span class="ann-card-title">${escHtml(ann.title || '(无标题)')}</span>
-        <span class="priority-badge">优先级 ${ann.priority ?? 100}</span>
-      </div>
-      <div class="ann-card-summary">${escHtml(ann.summary || '')}</div>
-      <div class="ann-card-meta">${popupBadge}${onceBadge}${expBadge}</div>
-    </div>
-    <div class="ann-card-actions">
-      <button class="btn-icon" title="上移" onclick="moveAnn(${i},-1)" ${i===0?'disabled':''}>&uarr;</button>
-      <button class="btn-icon" title="下移" onclick="moveAnn(${i},1)"  ${i===total-1?'disabled':''}>&darr;</button>
-      <button class="btn btn-sm btn-ghost" onclick="previewAnn(${i})">👁️</button>
-      <button class="btn btn-sm btn-secondary" onclick="openAnnModal(${i})">✏️ 编辑</button>
-      <button class="btn btn-sm btn-danger-ghost" onclick="deleteAnn(${i})">🗑️</button>
-    </div>
-  </div>`;
+function openAnnModal(idx){
+  editingAnnIndex=idx;document.getElementById('ann-modal-title').textContent=idx===null?'添加公告':'编辑公告';
+  let a={};if(idx!==null&&idx>=0)a=state.announcements[idx]||{};
+  document.getElementById('ann-id').value=a.id||uid();document.getElementById('ann-type').value=a.type||'info';
+  document.getElementById('ann-title').value=a.title||'';document.getElementById('ann-priority').value=a.priority??100;
+  document.getElementById('ann-summary').value=a.summary||'';document.getElementById('ann-content').value=a.content||'';
+  document.getElementById('ann-action-label').value=(a.action&&a.action.label)||'';document.getElementById('ann-action-target').value=(a.action&&a.action.target)||'';
+  document.getElementById('ann-popup').checked=!!a.popup;document.getElementById('ann-show-once').checked=a.showOnce!==false;
+  document.getElementById('ann-expires-at').value=a.expiresAt?a.expiresAt.replace('Z','').slice(0,16):'';
+  const z=(a.locales&&a.locales['zh-CN'])||{};
+  document.getElementById('ann-zh-title').value=z.title||'';document.getElementById('ann-zh-summary').value=z.summary||'';
+  document.getElementById('ann-zh-content').value=z.content||'';document.getElementById('ann-zh-action-label').value=z.actionLabel||'';
+  updateAnnPreview();openModal('ann-modal');
+  ['ann-type','ann-title','ann-summary','ann-content','ann-action-label','ann-zh-title','ann-zh-summary','ann-zh-content','ann-zh-action-label'].forEach(id=>{const e=document.getElementById(id);if(e){e.oninput=updateAnnPreview;e.onchange=updateAnnPreview}});
 }
-
-function escHtml(s) {
-  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+function updateAnnPreview(){
+  const t=document.getElementById('ann-type').value,ti=document.getElementById('ann-zh-title').value.trim()||document.getElementById('ann-title').value.trim()||'公告标题';
+  const su=document.getElementById('ann-zh-summary').value.trim()||document.getElementById('ann-summary').value.trim()||'';
+  const co=document.getElementById('ann-zh-content').value.trim()||document.getElementById('ann-content').value.trim()||'';
+  const lb=document.getElementById('ann-zh-action-label').value.trim()||document.getElementById('ann-action-label').value.trim()||'';
+  const m=TYPE_META[t]||TYPE_META.info;
+  document.getElementById('pv-ann-icon').textContent=m.icon;document.getElementById('pv-ann-icon').style.background=m.bg;
+  document.getElementById('pv-ann-title').textContent=ti;document.getElementById('pv-ann-summary').textContent=su;
+  document.getElementById('pv-ann-content').textContent=co.replace(/\\n/g,'\n');
+  const ae=document.getElementById('pv-ann-action');if(lb){ae.textContent=lb;ae.style.display='block'}else{ae.style.display='none'}
 }
-
-// ============================================================
-// ANNOUNCEMENT CRUD
-// ============================================================
-function openAnnModal(index) {
-  editingAnnIndex = index;
-  document.getElementById('ann-modal-title').textContent = index === null ? '添加公告' : '编辑公告';
-
-  let ann = {};
-  if (index !== null && index >= 0) {
-    ann = state.announcements[index] || {};
-  }
-
-  document.getElementById('ann-id').value           = ann.id || uid();
-  document.getElementById('ann-type').value         = ann.type || 'info';
-  document.getElementById('ann-title').value        = ann.title || '';
-  document.getElementById('ann-priority').value     = ann.priority ?? 100;
-  document.getElementById('ann-summary').value      = ann.summary || '';
-  document.getElementById('ann-content').value      = ann.content || '';
-  document.getElementById('ann-action-label').value = (ann.action && ann.action.label) || '';
-  document.getElementById('ann-action-target').value= (ann.action && ann.action.target) || '';
-  document.getElementById('ann-popup').checked      = !!ann.popup;
-  document.getElementById('ann-show-once').checked  = ann.showOnce !== false;
-
-  if (ann.expiresAt) {
-    document.getElementById('ann-expires-at').value = ann.expiresAt.replace('Z','').slice(0,16);
-  } else {
-    document.getElementById('ann-expires-at').value = '';
-  }
-
-  const zh = (ann.locales && ann.locales['zh-CN']) || {};
-  document.getElementById('ann-zh-title').value        = zh.title || '';
-  document.getElementById('ann-zh-summary').value      = zh.summary || '';
-  document.getElementById('ann-zh-content').value      = zh.content || '';
-  document.getElementById('ann-zh-action-label').value = zh.actionLabel || '';
-
-  updateAnnPreview();
-  openModal('ann-modal');
-
-  // Bind live preview
-  ['ann-type','ann-title','ann-summary','ann-content','ann-action-label',
-   'ann-zh-title','ann-zh-summary','ann-zh-content','ann-zh-action-label'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) {
-      el.oninput = updateAnnPreview;
-      el.onchange = updateAnnPreview;
-    }
-  });
+function closeAnnModal(){closeModal('ann-modal');editingAnnIndex=null}
+function saveAnnouncement(){
+  const ti=document.getElementById('ann-title').value.trim(),su=document.getElementById('ann-summary').value.trim();
+  if(!ti){toast('请填写公告标题','error');return}if(!su){toast('请填写公告摘要','error');return}
+  const ei=document.getElementById('ann-expires-at').value,al=document.getElementById('ann-action-label').value.trim(),at=document.getElementById('ann-action-target').value.trim();
+  const a={id:document.getElementById('ann-id').value,type:document.getElementById('ann-type').value,priority:parseInt(document.getElementById('ann-priority').value,10)||100,title:ti,summary:su,content:document.getElementById('ann-content').value.trim(),action:(al||at)?{type:'url',target:at,label:al}:undefined,targetVersions:'*',targetLanguages:['*'],showOnce:document.getElementById('ann-show-once').checked,popup:document.getElementById('ann-popup').checked,createdAt:(editingAnnIndex!==null&&state.announcements[editingAnnIndex]?state.announcements[editingAnnIndex].createdAt:new Date().toISOString()),expiresAt:ei?new Date(ei).toISOString():null,locales:{'zh-CN':{title:document.getElementById('ann-zh-title').value.trim(),summary:document.getElementById('ann-zh-summary').value.trim(),content:document.getElementById('ann-zh-content').value.trim(),actionLabel:document.getElementById('ann-zh-action-label').value.trim()}}};
+  if(!a.action)delete a.action;
+  if(editingAnnIndex===null)state.announcements.unshift(a);else state.announcements[editingAnnIndex]=a;
+  state.announcements.sort((a,b)=>(b.priority||0)-(a.priority||0));saveState();renderAnnList();closeAnnModal();
+  toast(editingAnnIndex===null?'公告已添加！':'公告已更新！','success');
 }
-
-function updateAnnPreview() {
-  const type    = document.getElementById('ann-type').value;
-  const title   = document.getElementById('ann-zh-title').value.trim() || document.getElementById('ann-title').value.trim() || '公告标题';
-  const summary = document.getElementById('ann-zh-summary').value.trim() || document.getElementById('ann-summary').value.trim() || '';
-  const content = document.getElementById('ann-zh-content').value.trim() || document.getElementById('ann-content').value.trim() || '';
-  const label   = document.getElementById('ann-zh-action-label').value.trim() || document.getElementById('ann-action-label').value.trim() || '';
-
-  const meta = TYPE_META[type] || TYPE_META.info;
-  document.getElementById('pv-ann-icon').textContent = meta.icon;
-  document.getElementById('pv-ann-icon').style.background = meta.bg;
-  document.getElementById('pv-ann-title').textContent = title;
-  document.getElementById('pv-ann-summary').textContent = summary;
-  document.getElementById('pv-ann-content').textContent = content.replace(/\\n/g, '\n');
-  const actionEl = document.getElementById('pv-ann-action');
-  if (label) {
-    actionEl.textContent = label;
-    actionEl.style.display = 'block';
-  } else {
-    actionEl.style.display = 'none';
-  }
-}
-
-function closeAnnModal() {
-  closeModal('ann-modal');
-  editingAnnIndex = null;
-}
-
-function saveAnnouncement() {
-  const title = document.getElementById('ann-title').value.trim();
-  const summary = document.getElementById('ann-summary').value.trim();
-  if (!title) { toast('请填写公告标题', 'error'); return; }
-  if (!summary) { toast('请填写公告摘要', 'error'); return; }
-
-  const expiresInput = document.getElementById('ann-expires-at').value;
-  const actionLabel  = document.getElementById('ann-action-label').value.trim();
-  const actionTarget = document.getElementById('ann-action-target').value.trim();
-
-  const ann = {
-    id:        document.getElementById('ann-id').value,
-    type:      document.getElementById('ann-type').value,
-    priority:  parseInt(document.getElementById('ann-priority').value, 10) || 100,
-    title,
-    summary,
-    content:   document.getElementById('ann-content').value.trim(),
-    action:    (actionLabel || actionTarget) ? { type: 'url', target: actionTarget, label: actionLabel } : undefined,
-    targetVersions:  '*',
-    targetLanguages: ['*'],
-    showOnce:  document.getElementById('ann-show-once').checked,
-    popup:     document.getElementById('ann-popup').checked,
-    createdAt: (editingAnnIndex !== null && state.announcements[editingAnnIndex]
-               ? state.announcements[editingAnnIndex].createdAt
-               : new Date().toISOString()),
-    expiresAt: expiresInput ? new Date(expiresInput).toISOString() : null,
-    locales: {
-      'zh-CN': {
-        title:       document.getElementById('ann-zh-title').value.trim(),
-        summary:     document.getElementById('ann-zh-summary').value.trim(),
-        content:     document.getElementById('ann-zh-content').value.trim(),
-        actionLabel: document.getElementById('ann-zh-action-label').value.trim(),
-      }
-    }
-  };
-  if (!ann.action) delete ann.action;
-
-  if (editingAnnIndex === null) {
-    state.announcements.unshift(ann);
-  } else {
-    state.announcements[editingAnnIndex] = ann;
-  }
-
-  state.announcements.sort((a,b) => (b.priority||0) - (a.priority||0));
-  saveState();
-  renderAnnList();
-  closeAnnModal();
-  toast(editingAnnIndex === null ? '公告已添加！' : '公告已更新！', 'success');
-}
-
-async function deleteAnn(i) {
-  const ann = state.announcements[i];
-  const ok = await confirm('删除公告', `确认删除公告「${ann.title}」？此操作不可撤销。`);
-  if (!ok) return;
-  state.announcements.splice(i, 1);
-  saveState();
-  renderAnnList();
-  toast('公告已删除', 'success');
-}
-
-function moveAnn(i, dir) {
-  const list = state.announcements;
-  const j = i + dir;
-  if (j < 0 || j >= list.length) return;
-  [list[i], list[j]] = [list[j], list[i]];
-  saveState();
-  renderAnnList();
-}
-
-function previewAnn(i) {
-  const ann = state.announcements[i];
-  const zh  = (ann.locales && ann.locales['zh-CN']) || {};
-  const meta = TYPE_META[ann.type] || TYPE_META.info;
-  const title   = zh.title   || ann.title;
-  const summary = zh.summary || ann.summary || '';
-  const content = zh.content || ann.content || '';
-  const label   = zh.actionLabel || (ann.action && ann.action.label) || '';
-
-  const html = `
-    <div class="ann-preview-header">
-      <div class="ann-preview-icon" style="background:${meta.bg}">${meta.icon}</div>
-      <div class="ann-preview-title">${escHtml(title)}</div>
-    </div>
-    <div class="ann-preview-summary">${escHtml(summary)}</div>
-    <div class="ann-preview-content">${escHtml(content.replace(/\\n/g,'\n'))}</div>
-    ${label ? `<button class="ann-preview-action">${escHtml(label)}</button>` : ''}
-  `;
-  document.getElementById('ann-solo-preview').innerHTML = html;
+async function deleteAnn(i){const a=state.announcements[i];if(!await confirm('删除公告',`确认删除公告「${a.title}」？此操作不可撤销。`))return;state.announcements.splice(i,1);saveState();renderAnnList();toast('公告已删除','success')}
+function moveAnn(i,d){const l=state.announcements,j=i+d;if(j<0||j>=l.length)return;[l[i],l[j]]=[l[j],l[i]];saveState();renderAnnList()}
+function previewAnn(i){
+  const a=state.announcements[i],z=(a.locales&&a.locales['zh-CN'])||{},m=TYPE_META[a.type]||TYPE_META.info;
+  const ti=z.title||a.title,su=z.summary||a.summary||'',co=z.content||a.content||'',lb=z.actionLabel||(a.action&&a.action.label)||'';
+  document.getElementById('ann-solo-preview').innerHTML=`<div class="ann-preview-header"><div class="ann-preview-icon" style="background:${m.bg}">${m.icon}</div><div class="ann-preview-title">${escHtml(ti)}</div></div><div class="ann-preview-summary">${escHtml(su)}</div><div class="ann-preview-content">${escHtml(co.replace(/\\n/g,'\n'))}</div>${lb?`<button class="ann-preview-action">${escHtml(lb)}</button>`:''}`;
   openModal('ann-preview-modal');
 }
 </script>
-
 <script>
-// ============================================================
-// GITHUB CONFIG
-// ============================================================
-function loadGithubConfig() {
-  document.getElementById('gh-owner').value = localStorage.getItem(LS.GH_OWNER) || '';
-  document.getElementById('gh-repo').value  = localStorage.getItem(LS.GH_REPO)  || '';
-  document.getElementById('gh-token').value = localStorage.getItem(LS.GH_TOKEN) || '';
-  document.getElementById('gh-path').value  = localStorage.getItem(LS.GH_PATH)  || 'announcements.json';
+function loadGithubConfig(){document.getElementById('gh-owner').value=localStorage.getItem(LS.GH_OWNER)||'';document.getElementById('gh-repo').value=localStorage.getItem(LS.GH_REPO)||'';document.getElementById('gh-token').value=localStorage.getItem(LS.GH_TOKEN)||'';document.getElementById('gh-path').value=localStorage.getItem(LS.GH_PATH)||'announcements.json'}
+function saveGithubConfig(){localStorage.setItem(LS.GH_OWNER,document.getElementById('gh-owner').value.trim());localStorage.setItem(LS.GH_REPO,document.getElementById('gh-repo').value.trim());localStorage.setItem(LS.GH_TOKEN,document.getElementById('gh-token').value.trim());localStorage.setItem(LS.GH_PATH,document.getElementById('gh-path').value.trim()||'announcements.json');toast('配置已保存','success')}
+function getGithubConfig(){const o=document.getElementById('gh-owner').value.trim(),r=document.getElementById('gh-repo').value.trim(),t=document.getElementById('gh-token').value.trim(),p=document.getElementById('gh-path').value.trim()||'announcements.json';if(!o||!r||!t){toast('请先填写完整配置（用户名、仓库名、令牌）','error');return null}return{owner:o,repo:r,token:t,path:p}}
+function setGhStatus(m,t='info'){const e=document.getElementById('gh-status');e.textContent=m;e.style.color=t==='success'?'var(--success)':t==='error'?'var(--danger)':'var(--text3)'}
+
+async function pullFromGithub(){
+  const c=getGithubConfig();if(!c)return;setLoading('btn-pull',true,'拉取中…');setGhStatus('正在拉取远程配置…');
+  try{const r=await fetch(`https://api.github.com/repos/${c.owner}/${c.repo}/contents/${c.path}`,{headers:{'Authorization':`token ${c.token}`,'Accept':'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28'}});if(!r.ok)throw new Error((await r.json().catch(()=>({}))).message||`HTTP ${r.status}`);const d=await r.json();ghFileSha=d.sha;state={version:'1.0',topRightAd:null,announcements:[],...JSON.parse(atob(d.content.replace(/\n/g,'')))};saveState();renderAdForm();renderAnnList();setGhStatus(`✅ 拉取成功（SHA: ${ghFileSha.slice(0,8)}…）`,'success');toast('远程配置拉取成功！','success')}
+  catch(e){setGhStatus(`❌ 拉取失败：${e.message}`,'error');toast(`拉取失败：${e.message}`,'error')}
+  finally{setLoading('btn-pull',false)}
 }
-
-function saveGithubConfig() {
-  localStorage.setItem(LS.GH_OWNER, document.getElementById('gh-owner').value.trim());
-  localStorage.setItem(LS.GH_REPO,  document.getElementById('gh-repo').value.trim());
-  localStorage.setItem(LS.GH_TOKEN, document.getElementById('gh-token').value.trim());
-  localStorage.setItem(LS.GH_PATH,  document.getElementById('gh-path').value.trim() || 'announcements.json');
-  toast('配置已保存', 'success');
+async function pushToGithub(){
+  const c=getGithubConfig();if(!c)return;setLoading('btn-push',true,'发布中…');setGhStatus('正在同步发布…');
+  try{if(!ghFileSha){const hr=await fetch(`https://api.github.com/repos/${c.owner}/${c.repo}/contents/${c.path}`,{headers:{'Authorization':`token ${c.token}`,'Accept':'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28'}});if(hr.ok)ghFileSha=(await hr.json()).sha}
+  const j=buildJson(),b={message:`chore: update announcements.json [${new Date().toISOString().slice(0,16)}]`,content:btoa(unescape(encodeURIComponent(j)))};if(ghFileSha)b.sha=ghFileSha;
+  const r=await fetch(`https://api.github.com/repos/${c.owner}/${c.repo}/contents/${c.path}`,{method:'PUT',headers:{'Authorization':`token ${c.token}`,'Accept':'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28','Content-Type':'application/json'},body:JSON.stringify(b)});
+  if(!r.ok)throw new Error((await r.json().catch(()=>({}))).message||`HTTP ${r.status}`);const res=await r.json();ghFileSha=res.content&&res.content.sha;
+  setGhStatus(`✅ 发布成功！SHA: ${(ghFileSha||'').slice(0,8)}…`,'success');toast('同步发布成功！🎉','success')}
+  catch(e){setGhStatus(`❌ 发布失败：${e.message}`,'error');toast(`发布失败：${e.message}`,'error')}
+  finally{setLoading('btn-push',false)}
 }
+function previewJson(){document.getElementById('json-preview-content').textContent=buildJson();openModal('json-modal')}
+async function copyJson(){try{await navigator.clipboard.writeText(buildJson());toast('数据已复制到剪贴板','success')}catch(e){toast('复制失败','error')}}
 
-function getGithubConfig() {
-  const owner = document.getElementById('gh-owner').value.trim();
-  const repo  = document.getElementById('gh-repo').value.trim();
-  const token = document.getElementById('gh-token').value.trim();
-  const path  = document.getElementById('gh-path').value.trim() || 'announcements.json';
-  if (!owner || !repo || !token) {
-    toast('请先填写完整配置（用户名、仓库名、Token）', 'error');
-    return null;
-  }
-  return { owner, repo, token, path };
-}
-
-function setGhStatus(msg, type = 'info') {
-  const el = document.getElementById('gh-status');
-  const colors = { info: 'var(--text-secondary)', success: 'var(--success)', error: 'var(--danger)' };
-  el.textContent = msg;
-  el.style.color = colors[type] || colors.info;
-}
-
-// ============================================================
-// GITHUB — PULL
-// ============================================================
-async function pullFromGithub() {
-  const cfg = getGithubConfig();
-  if (!cfg) return;
-
-  setLoading('btn-pull', true, '拉取中…');
-  setGhStatus('正在拉取远程配置…');
-
-  try {
-    const url = `https://api.github.com/repos/${cfg.owner}/${cfg.repo}/contents/${cfg.path}`;
-    const res = await fetch(url, {
-      headers: {
-        'Authorization': `token ${cfg.token}`,
-        'Accept': 'application/vnd.github+json',
-        'X-GitHub-Api-Version': '2022-11-28',
-      }
-    });
-
-    if (!res.ok) {
-      const err = await res.json().catch(() => ({}));
-      throw new Error(err.message || `HTTP ${res.status}`);
-    }
-
-    const data = await res.json();
-    ghFileSha = data.sha;
-    const content = JSON.parse(atob(data.content.replace(/\n/g, '')));
-
-    state = { version: '1.0', topRightAd: null, announcements: [], ...content };
-    saveState();
-    renderAdForm();
-    renderAnnList();
-
-    setGhStatus(`✅ 拉取成功（SHA: ${ghFileSha.slice(0,8)}…）`, 'success');
-    toast('远程配置拉取成功！', 'success');
-  } catch(e) {
-    setGhStatus(`❌ 拉取失败：${e.message}`, 'error');
-    toast(`拉取失败：${e.message}`, 'error');
-  } finally {
-    setLoading('btn-pull', false);
-  }
-}
-
-// ============================================================
-// GITHUB — PUSH
-// ============================================================
-async function pushToGithub() {
-  const cfg = getGithubConfig();
-  if (!cfg) return;
-
-  setLoading('btn-push', true, '发布中…');
-  setGhStatus('正在同步发布…');
-
-  try {
-    // First get current sha if we don't have one
-    if (!ghFileSha) {
-      const headUrl = `https://api.github.com/repos/${cfg.owner}/${cfg.repo}/contents/${cfg.path}`;
-      const headRes = await fetch(headUrl, {
-        headers: {
-          'Authorization': `token ${cfg.token}`,
-          'Accept': 'application/vnd.github+json',
-          'X-GitHub-Api-Version': '2022-11-28',
-        }
-      });
-      if (headRes.ok) {
-        const headData = await headRes.json();
-        ghFileSha = headData.sha;
-      }
-    }
-
-    const jsonContent = buildJson();
-    const encoded = btoa(unescape(encodeURIComponent(jsonContent)));
-
-    const body = {
-      message: `chore: update announcements.json [${new Date().toISOString().slice(0,16)}]`,
-      content: encoded,
-    };
-    if (ghFileSha) body.sha = ghFileSha;
-
-    const url = `https://api.github.com/repos/${cfg.owner}/${cfg.repo}/contents/${cfg.path}`;
-    const res = await fetch(url, {
-      method: 'PUT',
-      headers: {
-        'Authorization': `token ${cfg.token}`,
-        'Accept': 'application/vnd.github+json',
-        'X-GitHub-Api-Version': '2022-11-28',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(body),
-    });
-
-    if (!res.ok) {
-      const err = await res.json().catch(() => ({}));
-      throw new Error(err.message || `HTTP ${res.status}`);
-    }
-
-    const result = await res.json();
-    ghFileSha = result.content && result.content.sha;
-
-    setGhStatus(`✅ 发布成功！SHA: ${(ghFileSha||'').slice(0,8)}…`, 'success');
-    toast('同步发布成功！🎉', 'success');
-  } catch(e) {
-    setGhStatus(`❌ 发布失败：${e.message}`, 'error');
-    toast(`发布失败：${e.message}`, 'error');
-  } finally {
-    setLoading('btn-push', false);
-  }
-}
-
-// ============================================================
-// JSON PREVIEW / COPY
-// ============================================================
-function previewJson() {
-  document.getElementById('json-preview-content').textContent = buildJson();
-  openModal('json-modal');
-}
-
-async function copyJson() {
-  try {
-    await navigator.clipboard.writeText(buildJson());
-    toast('JSON 已复制到剪贴板', 'success');
-  } catch(e) {
-    toast('复制失败，请手动复制', 'error');
-  }
-}
-
-// ============================================================
-// ENTRY POINT
-// ============================================================
-window.addEventListener('DOMContentLoaded', () => {
-  if (checkAuth()) {
-    showApp();
-  } else {
-    document.getElementById('login-page').style.display = 'flex';
-    document.getElementById('app').style.display = 'none';
-  }
-
-  // Close modals on backdrop click
-  ['ann-modal','json-modal','ann-preview-modal'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.addEventListener('click', e => { if (e.target === el) closeModal(id); });
-  });
-  const confirmModal = document.getElementById('confirm-modal');
-  if (confirmModal) confirmModal.addEventListener('click', e => { if (e.target === confirmModal) closeConfirm(false); });
-
-  // Keyboard: Escape closes modals
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') {
-      ['ann-modal','json-modal','ann-preview-modal'].forEach(closeModal);
-      closeConfirm(false);
-    }
-  });
+window.addEventListener('DOMContentLoaded',()=>{
+  if(checkAuth())showApp();else{document.getElementById('login-page').style.display='flex';document.getElementById('app').style.display='none'}
+  ['ann-modal','json-modal','ann-preview-modal'].forEach(id=>{const e=document.getElementById(id);if(e)e.addEventListener('click',ev=>{if(ev.target===e)closeModal(id)})});
+  const cm=document.getElementById('confirm-modal');if(cm)cm.addEventListener('click',e=>{if(e.target===cm)closeConfirm(false)});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'){['ann-modal','json-modal','ann-preview-modal'].forEach(closeModal);closeConfirm(false)}});
 });
 </script>
 </body>
