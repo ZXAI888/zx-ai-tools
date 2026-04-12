@@ -1,29 +1,6 @@
 {
   "version": "1.0",
-  "topRightAd": {
-    "id": "top-right-ad-my-promo",
-    "priority": 100,
-    "text": "这里写你的推广文字，所有客户端会自动显示。",
-    "badge": "推广",
-    "ctaLabel": "了解更多",
-    "ctaUrl": "https://你的网站地址.com",
-    "targetVersions": "*",
-    "targetLanguages": ["*"],
-    "createdAt": "2026-04-09T00:00:00Z",
-    "expiresAt": null,
-    "locales": {
-      "zh-CN": {
-        "text": "这里写你的推广文字，所有客户端会自动显示。",
-        "badge": "推广",
-        "ctaLabel": "了解更多"
-      },
-      "en": {
-        "text": "Your promo text here. All clients will show this automatically.",
-        "badge": "Ad",
-        "ctaLabel": "Learn More"
-      }
-    }
-  },
+  "topRightAd": null,
   "announcements": [
     {
       "id": "ann-welcome",
