@@ -11,7 +11,7 @@ use super::logger;
 // 例如你的 GitHub: https://raw.githubusercontent.com/你的用户名/你的仓库/main/announcements.json
 // 或者你自己的服务器: https://你的域名/api/announcements.json
 const ANNOUNCEMENT_URL: &str =
-    "https://raw.githubusercontent.com/SUZIXI-AI/zx-ai-tools/main/announcements.json";
+    "https://raw.githubusercontent.com/ZXAI888/zx-ai-tools/main/announcements.json";
 const ANNOUNCEMENT_CACHE_FILE: &str = "announcement_cache.json";
 const ANNOUNCEMENT_READ_IDS_FILE: &str = "announcement_read_ids.json";
 const ANNOUNCEMENT_LOCAL_OVERRIDE_FILE: &str = "announcements.local.json";
