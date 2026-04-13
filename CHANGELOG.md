@@ -7,6 +7,13 @@ All notable changes to Cockpit Tools will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
+## [0.20.20] - 2026-04-13
+
+### Changed
+- **Announcement and promotion data source switched to own repository**: Client announcement URL changed to `ZXAI888/zx-ai-tools`, enabling unified promotion control through the admin dashboard.
+- **Default promotion banner cleared**: Sample promotion data in `announcements.json` has been removed; clients no longer show a promotion banner by default — only after publishing from the admin dashboard.
+
+---
 ## [0.20.19] - 2026-04-07
 
 ### Changed
