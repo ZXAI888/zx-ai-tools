@@ -1,5 +1,5 @@
 cask "zx-ai-tools" do
-  version "0.20.19"
+  version "0.20.20"
   sha256 ""
 
   url "https://github.com/SUZIXI-AI/zx-ai-tools/releases/download/v#{version}/ZX.AI.Tools_#{version}_universal.dmg",
