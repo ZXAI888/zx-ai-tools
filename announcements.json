@@ -11,7 +11,7 @@
       "content": "感谢你选择本工具。\n\n如果你有建议或问题，欢迎随时联系我们。",
       "action": {
         "type": "url",
-        "target": "https://你的网站地址.com",
+        "target": "https://www.gptai.work/",
         "label": "联系我们"
       },
       "targetVersions": "*",
